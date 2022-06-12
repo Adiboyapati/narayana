@@ -1,0 +1,10 @@
+{
+	"name": "Azadf_copydata_df",
+	"properties": {
+		"description": "This pipeline is used to copy data rawzone to strucked zone",
+		"folder": {
+			"name": "AzureADF"
+		},
+		"annotations": []
+	}
+}
