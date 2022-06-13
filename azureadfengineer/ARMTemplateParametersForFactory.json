@@ -1,0 +1,18 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "azureadfengineer"
+		},
+		"AzureBlobStorage_adfdevlopment_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage_adf_development_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage_adf_development_properties_typeProperties_url": {
+			"value": "https://azuredataengineerdev1.dfs.core.windows.net/"
+		}
+	}
+}
