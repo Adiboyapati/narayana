@@ -1,0 +1,17 @@
+{
+	"name": "adfdeploy_adls_binary",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage_adf_development",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "prepare"
+			}
+		}
+	}
+}
