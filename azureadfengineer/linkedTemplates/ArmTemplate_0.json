@@ -68,7 +68,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "already.xls",
+						"fileName": "Copy of Supplier_Banks_Dubai_FAT (003).xlsx",
 						"container": "rawzone"
 					}
 				}
@@ -91,7 +91,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileSystem": "prepare"
+						"fileSystem": "transiant"
 					}
 				}
 			},
