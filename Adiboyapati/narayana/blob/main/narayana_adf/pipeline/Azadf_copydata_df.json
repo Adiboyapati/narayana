@@ -2,6 +2,68 @@
 	"name": "Azadf_copydata_df",
 	"properties": {
 		"description": "This pipeline is used to copy data rawzone to strucked zone",
+		"activities": [
+			{
+				"name": "Rawzone to struct to copy data",
+				"description": "this data copy from rawzone to struct zone",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false,
+					"validateDataConsistency": false,
+					"logSettings": {
+						"enableCopyActivityLog": true,
+						"copyActivityLogSettings": {
+							"logLevel": "Warning",
+							"enableReliableLogging": false
+						},
+						"logLocationSettings": {
+							"linkedServiceName": {
+								"referenceName": "AzureBlobStorage_adfdevlopment",
+								"type": "LinkedServiceReference"
+							},
+							"path": "ingesterror"
+						}
+					}
+				},
+				"inputs": [
+					{
+						"referenceName": "Adfdeploy_ds",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "adfdeploy_adls_binary",
+						"type": "DatasetReference"
+					}
+				]
+			}
+		],
 		"folder": {
 			"name": "AzureADF"
 		},
