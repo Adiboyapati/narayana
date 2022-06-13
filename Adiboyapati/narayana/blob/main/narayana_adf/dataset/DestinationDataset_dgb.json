@@ -1,0 +1,21 @@
+{
+	"name": "DestinationDataset_dgb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage_adf_development",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "structzone"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
