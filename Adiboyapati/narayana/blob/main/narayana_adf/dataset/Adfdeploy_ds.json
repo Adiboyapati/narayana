@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Copy of Supplier_Banks_Dubai_FAT (003).xlsx",
+				"fileName": "Copy of Supplier_Banks_Dubai_FAT (002).xlsx",
 				"container": "rawzone"
 			}
 		}
