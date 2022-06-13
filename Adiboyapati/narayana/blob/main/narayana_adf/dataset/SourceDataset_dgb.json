@@ -13,7 +13,7 @@
 				"fileName": "stock_locator.xls",
 				"container": "rawzone"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "",
 			"rowDelimiter": "\n",
 			"escapeChar": "\\",
 			"firstRowAsHeader": false,
