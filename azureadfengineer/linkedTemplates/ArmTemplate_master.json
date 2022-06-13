@@ -17,7 +17,7 @@
 		},
 		"AzureDataLakeStorage_adf_development_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://azuredataengineerdev1.dfs.core.windows.net/"
+			"defaultValue": "https://azureadfadls.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"type": "string",

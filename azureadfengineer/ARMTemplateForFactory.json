@@ -17,7 +17,7 @@
 		},
 		"AzureDataLakeStorage_adf_development_properties_typeProperties_url": {
 			"type": "string",
-			"defaultValue": "https://azuredataengineerdev1.dfs.core.windows.net/"
+			"defaultValue": "https://azureadfadls.dfs.core.windows.net/"
 		}
 	},
 	"variables": {
@@ -110,19 +110,6 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_adfdevlopment')]",
-			"type": "Microsoft.DataFactory/factories/linkedServices",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"annotations": [],
-				"type": "AzureBlobStorage",
-				"typeProperties": {
-					"connectionString": "[parameters('AzureBlobStorage_adfdevlopment_connectionString')]"
-				}
-			},
-			"dependsOn": []
-		},
-		{
 			"name": "[concat(parameters('factoryName'), '/Adfdeploy_ds')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -136,7 +123,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Copy of Supplier_Banks_Dubai_FAT (003).xlsx",
+						"fileName": "Copy of Supplier_Banks_Dubai_FAT (002).xlsx",
 						"container": "rawzone"
 					}
 				}
@@ -144,6 +131,41 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/adfdeploy_adls_binary')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage_adf_development",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "structzone"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_adf_development')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_adfdevlopment')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage_adfdevlopment_connectionString')]"
+				}
+			},
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/AzureDataLakeStorage_adf_development')]",
@@ -161,28 +183,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/adfdeploy_adls_binary')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage_adf_development",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "transiant"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_adf_development')]"
-			]
 		}
 	]
 }

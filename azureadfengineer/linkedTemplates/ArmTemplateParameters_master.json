@@ -12,7 +12,7 @@
 			"value": ""
 		},
 		"AzureDataLakeStorage_adf_development_properties_typeProperties_url": {
-			"value": "https://azuredataengineerdev1.dfs.core.windows.net/"
+			"value": "https://azureadfadls.dfs.core.windows.net/"
 		},
 		"containerUri": {
 			"value": ""
