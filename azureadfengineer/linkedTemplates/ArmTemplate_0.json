@@ -117,10 +117,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "stock_locator.xls",
+						"fileName": "Request_new software to IT .txt",
 						"container": "rawzone"
 					},
-					"columnDelimiter": "\t",
+					"columnDelimiter": ",",
 					"rowDelimiter": "\n",
 					"escapeChar": "\\",
 					"firstRowAsHeader": true,
