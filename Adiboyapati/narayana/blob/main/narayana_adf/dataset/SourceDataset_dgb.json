@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Request_new software to IT .txt",
 				"container": "rawzone"
 			},
 			"columnDelimiter": ",",
