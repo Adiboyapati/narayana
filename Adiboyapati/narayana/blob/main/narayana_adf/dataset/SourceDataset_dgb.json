@@ -12,7 +12,7 @@
 				"type": "AzureBlobStorageLocation",
 				"container": "rawzone"
 			},
-			"columnDelimiter": ",",
+			"columnDelimiter": "",
 			"rowDelimiter": "\n",
 			"escapeChar": "\\",
 			"firstRowAsHeader": false,
