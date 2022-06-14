@@ -164,6 +164,7 @@
 							],
 							"storeSettings": {
 								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
 								"enablePartitionDiscovery": false
 							},
 							"formatSettings": {
@@ -194,6 +195,27 @@
 								"type": "Expression"
 							}
 						}
+					},
+					{
+						"name": "Execute Pipeline_cpoydata",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Delete rawzone data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "CopyPipeline_onetinecopy",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"policy": {
@@ -209,6 +231,7 @@
 				"[concat(variables('factoryId'), '/datasets/Adfdeploy_ds')]",
 				"[concat(variables('factoryId'), '/datasets/adfdeploy_adls_binary')]",
 				"[concat(variables('factoryId'), '/datasets/Binary_getmetadata')]",
+				"[concat(variables('factoryId'), '/pipelines/CopyPipeline_onetinecopy')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
 			]
 		},
@@ -296,6 +319,9 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"folder": {
+					"name": "AzureADF"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -306,6 +332,28 @@
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Adfdeploy_ds')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_adfdevlopment",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "rawzone"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary_getmetadata')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -435,28 +483,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Binary_getmetadata')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_adfdevlopment",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "rawzone"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
-			]
 		}
 	]
 }
