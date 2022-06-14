@@ -132,6 +132,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -161,6 +162,26 @@
 						"value": "@contains(activity('Get Metadata_blob').output.childItems[0].name,item().name)",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Execute Pipeline_cpoydata",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Delete rawzone data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "CopyPipeline_onetinecopy",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
 				}
 			}
 		],
