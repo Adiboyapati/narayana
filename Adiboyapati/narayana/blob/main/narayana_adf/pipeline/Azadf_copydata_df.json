@@ -113,7 +113,14 @@
 			{
 				"name": "Get Metadata_blob",
 				"type": "GetMetadata",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable_TokenID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -183,8 +190,28 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "Set variable_TokenID",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "tokenID",
+					"value": ""
+				}
 			}
 		],
+		"parameters": {
+			"Filename": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"tokenID": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "AzureADF"
 		},
