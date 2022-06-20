@@ -18,6 +18,10 @@
 		"AzureDataLakeStorage_adf_development_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://azureadfadls.dfs.core.windows.net/"
+		},
+		"adf_blobread_to_load_ADLS_triggers_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ee0de6f1-cf99-4eb8-9985-322331e4c2e7/resourceGroups/Azuredataengineer/providers/Microsoft.Storage/storageAccounts/azuredataengineerdev1"
 		}
 	},
 	"variables": {
@@ -1142,6 +1146,38 @@
 				"[concat(variables('factoryId'), '/datasets/Binary_getmetadata')]",
 				"[concat(variables('factoryId'), '/pipelines/CopyPipeline_onetinecopy')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/adf_blobread_to_load_ADLS_triggers')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this triggers can use to load pileline to read data from blobstograge account to ADLS",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Azadf_copydata_df",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/rawzone/blobs/stock_",
+					"blobPathEndsWith": ".xls",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('adf_blobread_to_load_ADLS_triggers_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Azadf_copydata_df')]"
 			]
 		}
 	]

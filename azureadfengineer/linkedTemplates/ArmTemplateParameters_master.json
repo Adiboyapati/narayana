@@ -14,6 +14,9 @@
 		"AzureDataLakeStorage_adf_development_properties_typeProperties_url": {
 			"value": "https://azureadfadls.dfs.core.windows.net/"
 		},
+		"adf_blobread_to_load_ADLS_triggers_properties_typeProperties_scope": {
+			"value": "/subscriptions/ee0de6f1-cf99-4eb8-9985-322331e4c2e7/resourceGroups/Azuredataengineer/providers/Microsoft.Storage/storageAccounts/azuredataengineerdev1"
+		},
 		"containerUri": {
 			"value": ""
 		},
