@@ -286,7 +286,19 @@
 							]
 						},
 						{
-							"value": "Import"
+							"value": "Import",
+							"activities": [
+								{
+									"name": "Set variable Import",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": "/structzone/"
+									}
+								}
+							]
 						}
 					]
 				}
