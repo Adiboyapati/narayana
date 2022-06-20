@@ -198,7 +198,7 @@
 				}
 			},
 			{
-				"name": "Set variable CURRENCY",
+				"name": "Set variable Value",
 				"type": "SetVariable",
 				"dependsOn": [],
 				"userProperties": [],
@@ -211,7 +211,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Set variableRuntokenvalue",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -221,20 +221,7 @@
 						]
 					},
 					{
-						"activity": "Set variable CURRENCY",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": []
-			},
-			{
-				"name": "Switch1",
-				"type": "Switch",
-				"dependsOn": [
-					{
-						"activity": "Set variable1",
+						"activity": "Set variable Value",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -242,7 +229,53 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"cases": []
+					"variableName": "Runtokenvalue",
+					"value": {
+						"value": "@concat(variables('TokenID'),'_',variables('Value'),'_Runreq.txt')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Switch_Runtoenvalue Token ID",
+				"type": "Switch",
+				"dependsOn": [
+					{
+						"activity": "Set variableRuntokenvalue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@variables('TokenID')",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "Clean",
+							"activities": [
+								{
+									"name": "Set variable Clean",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": "/structzone/"
+									}
+								}
+							]
+						},
+						{
+							"value": "Export"
+						},
+						{
+							"value": "Import"
+						}
+					]
 				}
 			}
 		],
@@ -259,6 +292,9 @@
 				"type": "String"
 			},
 			"Runtokenvalue": {
+				"type": "String"
+			},
+			"Tokenpath": {
 				"type": "String"
 			}
 		},
