@@ -270,7 +270,20 @@
 							]
 						},
 						{
-							"value": "Export"
+							"value": "Export",
+							"activities": [
+								{
+									"name": "Set variable Export",
+									"description": "",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": "/structzone/"
+									}
+								}
+							]
 						},
 						{
 							"value": "Import"
