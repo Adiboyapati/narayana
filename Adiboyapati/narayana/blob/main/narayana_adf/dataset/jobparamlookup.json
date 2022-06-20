@@ -1,0 +1,44 @@
+{
+	"name": "jobparamlookup",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_adfdevlopment",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "jobparam.txt",
+				"container": "transiant"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Env",
+				"type": "String"
+			},
+			{
+				"name": "Blob_path",
+				"type": "String"
+			},
+			{
+				"name": "ADLS_path",
+				"type": "String"
+			},
+			{
+				"name": "Token_id",
+				"type": "String"
+			},
+			{
+				"name": "ADLS_param_path",
+				"type": "String"
+			}
+		]
+	}
+}
