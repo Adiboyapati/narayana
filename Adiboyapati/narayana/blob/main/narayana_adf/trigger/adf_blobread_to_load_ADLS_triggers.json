@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "this triggers can use to load pileline to read data from blobstograge account to ADLS",
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
