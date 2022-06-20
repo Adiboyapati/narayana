@@ -769,6 +769,11 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					}
+				},
 				"folder": {
 					"name": "AzureADF"
 				},
