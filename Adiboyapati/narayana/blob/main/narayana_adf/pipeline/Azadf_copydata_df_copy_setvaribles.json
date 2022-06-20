@@ -198,7 +198,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "tokenID",
-					"value": ""
+					"value": {
+						"value": "@split(pipeline().parameters.Filename,'_')[1]",
+						"type": "Expression"
+					}
 				}
 			}
 		],
