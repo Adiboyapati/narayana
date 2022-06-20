@@ -179,6 +179,55 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/jobparamlookup')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_adfdevlopment",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "jobparam.txt",
+						"container": "transiant"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "Env",
+						"type": "String"
+					},
+					{
+						"name": "Blob_path",
+						"type": "String"
+					},
+					{
+						"name": "ADLS_path",
+						"type": "String"
+					},
+					{
+						"name": "Token_id",
+						"type": "String"
+					},
+					{
+						"name": "ADLS_param_path",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/CopyPipeline_onetinecopy')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -481,6 +530,256 @@
 				"[concat(variables('factoryId'), '/datasets/adfdeploy_adls_binary')]",
 				"[concat(variables('factoryId'), '/datasets/Binary_getmetadata')]",
 				"[concat(variables('factoryId'), '/pipelines/CopyPipeline_onetinecopy')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Azadf_copydata_df_copy_lookup')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This pipeline is used to copy data rawzone to strucked zone",
+				"activities": [
+					{
+						"name": "Rawzone to struct to copy data",
+						"description": "this data copy from rawzone to struct zone",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Filter_condition",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false,
+							"validateDataConsistency": false,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureBlobStorage_adfdevlopment",
+										"type": "LinkedServiceReference"
+									},
+									"path": "ingesterror"
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "Adfdeploy_ds",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "adfdeploy_adls_binary",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "Delete rawzone data",
+						"description": "this activity delete rawzone datafiles",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "Rawzone to struct to copy data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": true
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Adfdeploy_ds",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"logStorageSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzureBlobStorage_adfdevlopment",
+									"type": "LinkedServiceReference"
+								},
+								"path": "logzone"
+							},
+							"enableLogging": true,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					},
+					{
+						"name": "Get Metadata_blob",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Lookup_jobparam",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Binary_getmetadata",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Filter_condition",
+						"description": "filter the list of conditions",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_blob",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata_blob').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@contains(activity('Get Metadata_blob').output.childItems[0].name,item().name)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Execute Pipeline_cpoydata",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Delete rawzone data",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "CopyPipeline_onetinecopy",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Lookup_jobparam",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "jobparamlookup",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "AzureADF"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Adfdeploy_ds')]",
+				"[concat(variables('factoryId'), '/datasets/adfdeploy_adls_binary')]",
+				"[concat(variables('factoryId'), '/datasets/Binary_getmetadata')]",
+				"[concat(variables('factoryId'), '/pipelines/CopyPipeline_onetinecopy')]",
+				"[concat(variables('factoryId'), '/datasets/jobparamlookup')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
 			]
 		},
