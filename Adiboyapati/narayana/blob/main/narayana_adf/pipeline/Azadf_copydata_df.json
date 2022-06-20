@@ -185,16 +185,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"Filename": {
-				"type": "string"
-			}
-		},
-		"variables": {
-			"tokenID": {
-				"type": "String"
-			}
-		},
 		"folder": {
 			"name": "AzureADF"
 		},
