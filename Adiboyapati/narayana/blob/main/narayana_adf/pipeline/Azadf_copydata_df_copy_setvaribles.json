@@ -257,6 +257,9 @@
 			},
 			"Value": {
 				"type": "String"
+			},
+			"Runtokenvalue": {
+				"type": "String"
 			}
 		},
 		"folder": {
