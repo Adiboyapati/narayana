@@ -113,14 +113,7 @@
 			{
 				"name": "Get Metadata_blob",
 				"type": "GetMetadata",
-				"dependsOn": [
-					{
-						"activity": "Set variable_TokenID",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -189,16 +182,6 @@
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
-				}
-			},
-			{
-				"name": "Set variable_TokenID",
-				"type": "SetVariable",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "tokenID",
-					"value": ""
 				}
 			}
 		],
