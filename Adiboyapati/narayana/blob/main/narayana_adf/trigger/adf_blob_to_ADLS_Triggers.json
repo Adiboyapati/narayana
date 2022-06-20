@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "this Triggers use to copy data from blob storage to ADLS ",
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
