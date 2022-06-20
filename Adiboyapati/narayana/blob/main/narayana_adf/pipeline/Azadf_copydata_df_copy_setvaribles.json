@@ -113,14 +113,7 @@
 			{
 				"name": "Get Metadata_blob",
 				"type": "GetMetadata",
-				"dependsOn": [
-					{
-						"activity": "Set variable_TokenID",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -197,11 +190,59 @@
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "tokenID",
+					"variableName": "TokenID",
 					"value": {
 						"value": "@split(pipeline().parameters.Filename,'_')[1]",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Set variable CURRENCY",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Value",
+					"value": {
+						"value": "@split(pipeline().parameters.Filename,'_')[2]",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable_TokenID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable CURRENCY",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
+			},
+			{
+				"name": "Switch1",
+				"type": "Switch",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"cases": []
 				}
 			}
 		],
@@ -211,7 +252,10 @@
 			}
 		},
 		"variables": {
-			"tokenID": {
+			"TokenID": {
+				"type": "String"
+			},
+			"Value": {
 				"type": "String"
 			}
 		},
