@@ -1,0 +1,28 @@
+{
+	"name": "adl_to_blob_to_aadls_trigger",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Azadf_copydata_df_copy_lookup",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"filename": "Payables_Open_Interface_Import_061219.txt"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/rawzone/blobs/Payables_",
+			"blobPathEndsWith": ".txt",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/ee0de6f1-cf99-4eb8-9985-322331e4c2e7/resourceGroups/Azuredataengineer/providers/Microsoft.Storage/storageAccounts/azuredataengineerdev1",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
