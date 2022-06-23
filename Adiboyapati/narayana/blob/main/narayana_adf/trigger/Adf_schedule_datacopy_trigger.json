@@ -1,0 +1,28 @@
+{
+	"name": "Adf_schedule_datacopy_trigger",
+	"properties": {
+		"description": "this is schedule based  trigger to trigger pipeline on wall clock window",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "Azadf_copydata_df_copy_lookup",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"filename": "Autoinvoice_Import_Program_061219_2.txt"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 4,
+				"startTime": "2022-06-23T15:00:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
