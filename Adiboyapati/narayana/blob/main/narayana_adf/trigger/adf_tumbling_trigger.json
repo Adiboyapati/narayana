@@ -1,0 +1,29 @@
+{
+	"name": "adf_tumbling_trigger",
+	"properties": {
+		"description": "this is a tumbling  trigger based on pipeline on triggers",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "Azadf_copydata_df_copy_setvaribles",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"Filename": "Autoinvoice_Import_Program_300320.txt"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Minute",
+			"interval": 30,
+			"startTime": "2022-06-23T09:43:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": []
+		}
+	}
+}
