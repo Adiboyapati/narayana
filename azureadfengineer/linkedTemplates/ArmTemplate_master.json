@@ -19,9 +19,9 @@
 			"type": "string",
 			"defaultValue": "https://azureadfadls.dfs.core.windows.net/"
 		},
-		"adf_blobread_to_load_ADLS_triggers_properties_typeProperties_scope": {
+		"Adf_schedule_datacopy_trigger_properties_Azadf_copydata_df_copy_lookup_parameters_filename": {
 			"type": "string",
-			"defaultValue": "/subscriptions/ee0de6f1-cf99-4eb8-9985-322331e4c2e7/resourceGroups/Azuredataengineer/providers/Microsoft.Storage/storageAccounts/azuredataengineerdev1"
+			"defaultValue": "Autoinvoice_Import_Program_061219_2.txt"
 		},
 		"containerUri": {
 			"type": "string",
@@ -59,8 +59,8 @@
 					"AzureDataLakeStorage_adf_development_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_adf_development_properties_typeProperties_url')]"
 					},
-					"adf_blobread_to_load_ADLS_triggers_properties_typeProperties_scope": {
-						"value": "[parameters('adf_blobread_to_load_ADLS_triggers_properties_typeProperties_scope')]"
+					"Adf_schedule_datacopy_trigger_properties_Azadf_copydata_df_copy_lookup_parameters_filename": {
+						"value": "[parameters('Adf_schedule_datacopy_trigger_properties_Azadf_copydata_df_copy_lookup_parameters_filename')]"
 					}
 				}
 			},
