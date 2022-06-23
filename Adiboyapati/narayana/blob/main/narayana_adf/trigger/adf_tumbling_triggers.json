@@ -3,15 +3,6 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipeline": {
-			"pipelineReference": {
-				"referenceName": "Azadf_copydata_df_copy_lookup_tubling",
-				"type": "PipelineReference"
-			},
-			"parameters": {
-				"filename": "Autoinvoice_Import_Program_300320.txt"
-			}
-		},
 		"type": "TumblingWindowTrigger",
 		"typeProperties": {
 			"frequency": "Minute",
