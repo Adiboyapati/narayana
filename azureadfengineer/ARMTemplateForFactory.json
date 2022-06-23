@@ -40,116 +40,6 @@
 				"description": "This pipeline is used to copy data iterative  loop",
 				"activities": [
 					{
-						"name": "Rawzone to struct to copy data",
-						"description": "this data copy from rawzone to struct zone",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Filter_condition",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								}
-							},
-							"enableStaging": false,
-							"validateDataConsistency": false,
-							"logSettings": {
-								"enableCopyActivityLog": true,
-								"copyActivityLogSettings": {
-									"logLevel": "Warning",
-									"enableReliableLogging": false
-								},
-								"logLocationSettings": {
-									"linkedServiceName": {
-										"referenceName": "AzureBlobStorage_adfdevlopment",
-										"type": "LinkedServiceReference"
-									},
-									"path": "ingesterror"
-								}
-							}
-						},
-						"inputs": [
-							{
-								"referenceName": "Adfdeploy_ds",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "adfdeploy_adls_binary",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "Delete rawzone data",
-						"description": "this activity delete rawzone datafiles",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "Rawzone to struct to copy data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": true
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "Adfdeploy_ds",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"logStorageSettings": {
-								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_adfdevlopment",
-									"type": "LinkedServiceReference"
-								},
-								"path": "logzone"
-							},
-							"enableLogging": true,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							}
-						}
-					},
-					{
 						"name": "Get Metadata_blob",
 						"type": "GetMetadata",
 						"dependsOn": [],
@@ -163,7 +53,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "Binary_getmetadata",
+								"referenceName": "getmetadata_dataset",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -181,9 +71,8 @@
 						}
 					},
 					{
-						"name": "Filter_condition",
-						"description": "filter the list of conditions",
-						"type": "Filter",
+						"name": "Iterative each file_forloop",
+						"type": "ForEach",
 						"dependsOn": [
 							{
 								"activity": "Get Metadata_blob",
@@ -198,31 +87,57 @@
 								"value": "@activity('Get Metadata_blob').output.childItems",
 								"type": "Expression"
 							},
-							"condition": {
-								"value": "@contains(activity('Get Metadata_blob').output.childItems[0].name,item().name)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Execute Pipeline_cpoydata",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Delete rawzone data",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "CopyPipeline_onetinecopy",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "Copy data_foreach_loop",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"wildcardFileName": "*.txt",
+												"deleteFilesAfterCompletion": false
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											}
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "Binary_copy_foreach",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Binary_foreach_ADLS",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								}
+							]
 						}
 					}
 				],
@@ -236,11 +151,9 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Adfdeploy_ds')]",
-				"[concat(variables('factoryId'), '/datasets/adfdeploy_adls_binary')]",
-				"[concat(variables('factoryId'), '/datasets/Binary_getmetadata')]",
-				"[concat(variables('factoryId'), '/pipelines/CopyPipeline_onetinecopy')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
+				"[concat(variables('factoryId'), '/datasets/getmetadata_dataset')]",
+				"[concat(variables('factoryId'), '/datasets/Binary_copy_foreach')]",
+				"[concat(variables('factoryId'), '/datasets/Binary_foreach_ADLS')]"
 			]
 		},
 		{
@@ -1402,7 +1315,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipeline": {
 					"pipelineReference": {
 						"referenceName": "Azadf_copydata_df_copy_lookup",
@@ -1427,6 +1340,72 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Azadf_copydata_df_copy_lookup')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/getmetadata_dataset')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_adfdevlopment",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "rawzone"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary_copy_foreach')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_adfdevlopment",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "rawzone"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Binary_foreach_ADLS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage_adf_development",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "structzone"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_adf_development')]"
 			]
 		}
 	]
