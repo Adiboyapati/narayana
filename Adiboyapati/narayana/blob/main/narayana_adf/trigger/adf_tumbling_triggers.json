@@ -1,0 +1,28 @@
+{
+	"name": "adf_tumbling_triggers",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "Azadf_copydata_df_copy_lookup",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"filename": "Mass_Additions_Post_300320.txt"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Minute",
+			"interval": 15,
+			"startTime": "2022-06-23T12:04:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": []
+		}
+	}
+}
