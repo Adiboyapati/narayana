@@ -144,14 +144,7 @@
 				"name": "Filter_condition",
 				"description": "filter the list of conditions",
 				"type": "Filter",
-				"dependsOn": [
-					{
-						"activity": "Get Metadata_blob",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
@@ -183,6 +176,19 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata_blob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": []
 			}
 		],
 		"folder": {
