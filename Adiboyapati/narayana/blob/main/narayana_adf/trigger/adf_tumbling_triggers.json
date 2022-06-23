@@ -3,6 +3,15 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "Azadf_copydata_df_copy_lookup",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"filename": "Mass_Additions_Post_300320.txt"
+			}
+		},
 		"type": "TumblingWindowTrigger",
 		"typeProperties": {
 			"frequency": "Minute",
