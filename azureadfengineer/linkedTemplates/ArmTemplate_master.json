@@ -23,6 +23,10 @@
 			"type": "string",
 			"defaultValue": "Autoinvoice_Import_Program_061219_2.txt"
 		},
+		"adf_tumbling_window_triggers_properties_pipeline_parameters_filename": {
+			"type": "string",
+			"defaultValue": "Mass_Additions_Post_300320.txt"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -61,6 +65,9 @@
 					},
 					"Adf_schedule_datacopy_trigger_properties_Azadf_copydata_df_copy_lookup_parameters_filename": {
 						"value": "[parameters('Adf_schedule_datacopy_trigger_properties_Azadf_copydata_df_copy_lookup_parameters_filename')]"
+					},
+					"adf_tumbling_window_triggers_properties_pipeline_parameters_filename": {
+						"value": "[parameters('adf_tumbling_window_triggers_properties_pipeline_parameters_filename')]"
 					}
 				}
 			},

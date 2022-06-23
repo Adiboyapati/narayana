@@ -22,6 +22,10 @@
 		"Adf_schedule_datacopy_trigger_properties_Azadf_copydata_df_copy_lookup_parameters_filename": {
 			"type": "string",
 			"defaultValue": "Autoinvoice_Import_Program_061219_2.txt"
+		},
+		"adf_tumbling_window_triggers_properties_pipeline_parameters_filename": {
+			"type": "string",
+			"defaultValue": "Mass_Additions_Post_300320.txt"
 		}
 	},
 	"variables": {
@@ -1386,6 +1390,39 @@
 						"startTime": "2022-06-23T15:00:00",
 						"timeZone": "India Standard Time"
 					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Azadf_copydata_df_copy_lookup')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/adf_tumbling_window_triggers')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "Azadf_copydata_df_copy_lookup",
+						"type": "PipelineReference"
+					},
+					"parameters": {
+						"filename": "[parameters('adf_tumbling_window_triggers_properties_pipeline_parameters_filename')]"
+					}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 15,
+					"startTime": "2022-06-23T17:54:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
 				}
 			},
 			"dependsOn": [

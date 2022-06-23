@@ -17,6 +17,9 @@
 		"Adf_schedule_datacopy_trigger_properties_Azadf_copydata_df_copy_lookup_parameters_filename": {
 			"value": "Autoinvoice_Import_Program_061219_2.txt"
 		},
+		"adf_tumbling_window_triggers_properties_pipeline_parameters_filename": {
+			"value": "Mass_Additions_Post_300320.txt"
+		},
 		"containerUri": {
 			"value": ""
 		},
