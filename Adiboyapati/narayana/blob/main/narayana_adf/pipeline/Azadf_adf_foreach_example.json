@@ -178,7 +178,7 @@
 				}
 			},
 			{
-				"name": "ForEach1",
+				"name": "Iterative each file_forloop",
 				"type": "ForEach",
 				"dependsOn": [
 					{
@@ -188,7 +188,14 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata_blob').output.childItems",
+						"type": "Expression"
+					},
+					"isSequential": true
+				}
 			}
 		],
 		"folder": {
