@@ -78,7 +78,7 @@
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"fileListPath": "Autoinvoice_Import_Program_300320.txt",
+									"recursive": true,
 									"enablePartitionDiscovery": false
 								}
 							}
