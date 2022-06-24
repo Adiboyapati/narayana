@@ -98,6 +98,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "Autoinvoice_Import_Program_300320.txt",
 						"container": "rawzone"
 					}
 				}
@@ -511,7 +512,7 @@
 										"enableLogging": true,
 										"storeSettings": {
 											"type": "AzureBlobStorageReadSettings",
-											"fileListPath": "Autoinvoice_Import_Program_300320.txt",
+											"recursive": true,
 											"enablePartitionDiscovery": false
 										}
 									}
@@ -535,7 +536,7 @@
 											"type": "BinarySource",
 											"storeSettings": {
 												"type": "AzureBlobStorageReadSettings",
-												"fileListPath": "Autoinvoice_Import_Program_300320.txt",
+												"recursive": true,
 												"deleteFilesAfterCompletion": true
 											},
 											"formatSettings": {
