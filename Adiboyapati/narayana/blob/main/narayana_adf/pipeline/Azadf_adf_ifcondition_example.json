@@ -69,10 +69,16 @@
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
 										"fileListPath": "rawzone",
-										"deleteFilesAfterCompletion": false
+										"deleteFilesAfterCompletion": true
 									},
 									"formatSettings": {
 										"type": "BinaryReadSettings"
+									}
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
 									}
 								},
 								"enableStaging": false
@@ -80,6 +86,12 @@
 							"inputs": [
 								{
 									"referenceName": "Binary_getmetadata",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Binary_foreach_ADLS",
 									"type": "DatasetReference"
 								}
 							]
