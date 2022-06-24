@@ -240,7 +240,7 @@
 										"enableLogging": true,
 										"storeSettings": {
 											"type": "AzureBlobStorageReadSettings",
-											"fileListPath": "Rheem Customer Item Xrefs.xls",
+											"fileListPath": "Autoinvoice_Import_Program_300320.txt",
 											"enablePartitionDiscovery": false
 										}
 									}
@@ -264,7 +264,7 @@
 											"type": "BinarySource",
 											"storeSettings": {
 												"type": "AzureBlobStorageReadSettings",
-												"fileListPath": "Rheem Customer Item Xrefs.xls",
+												"fileListPath": "Autoinvoice_Import_Program_300320.txt",
 												"deleteFilesAfterCompletion": true
 											},
 											"formatSettings": {
