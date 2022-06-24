@@ -65,7 +65,7 @@
 			},
 			"LoggingPath": {
 				"type": "string",
-				"defaultValue": "structzone/STRUCT_ARCH/"
+				"defaultValue": "/transiant"
 			}
 		},
 		"folder": {
