@@ -65,13 +65,33 @@
 					},
 					"Adf_schedule_datacopy_trigger_properties_Azadf_copydata_df_copy_lookup_parameters_filename": {
 						"value": "[parameters('Adf_schedule_datacopy_trigger_properties_Azadf_copydata_df_copy_lookup_parameters_filename')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "azureadfengineer_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"adf_tumbling_window_triggers_properties_pipeline_parameters_filename": {
 						"value": "[parameters('adf_tumbling_window_triggers_properties_pipeline_parameters_filename')]"
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'azureadfengineer_ArmTemplate_0')]"
+			]
 		}
 	]
 }
