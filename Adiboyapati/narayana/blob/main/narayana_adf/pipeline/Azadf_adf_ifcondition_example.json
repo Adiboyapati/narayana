@@ -102,7 +102,7 @@
 									"type": "BinarySource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
-										"fileListPath": "rawzone/Autoinvoice_Import_Program_300320.txt",
+										"fileListPath": "Autoinvoice_Import_Program_300320.txt",
 										"deleteFilesAfterCompletion": true
 									},
 									"formatSettings": {
