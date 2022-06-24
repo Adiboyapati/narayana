@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Autoinvoice_Import_Program_300320.txt",
 				"container": "rawzone"
 			}
 		}
