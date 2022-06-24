@@ -511,7 +511,7 @@
 										"enableLogging": true,
 										"storeSettings": {
 											"type": "AzureBlobStorageReadSettings",
-											"fileListPath": "rawzone/Rheem Customer Item Xrefs.xls",
+											"fileListPath": "Rheem Customer Item Xrefs.xls",
 											"enablePartitionDiscovery": false
 										}
 									}
@@ -535,7 +535,7 @@
 											"type": "BinarySource",
 											"storeSettings": {
 												"type": "AzureBlobStorageReadSettings",
-												"fileListPath": "rawzone/Rheem Customer Item Xrefs.xls",
+												"fileListPath": "Rheem Customer Item Xrefs.xls",
 												"deleteFilesAfterCompletion": true
 											},
 											"formatSettings": {
