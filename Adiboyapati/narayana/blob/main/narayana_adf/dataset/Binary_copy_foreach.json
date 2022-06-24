@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "Rheem Customer Item Xrefs.xls",
 				"container": "rawzone"
 			}
 		}
