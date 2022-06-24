@@ -65,7 +65,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "Binary_getmetadata",
+									"referenceName": "getmetadata_dataset",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {
