@@ -21,7 +21,7 @@
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"childItems"
+						"exists"
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
@@ -34,8 +34,8 @@
 				}
 			},
 			{
-				"name": "Iterative each file_forloop",
-				"type": "ForEach",
+				"name": "If Condition_metadata",
+				"type": "IfCondition",
 				"dependsOn": [
 					{
 						"activity": "Get Metadata_blob",
@@ -46,14 +46,13 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
-					"items": {
-						"value": "@activity('Get Metadata_blob').output.childItems",
+					"expression": {
+						"value": "@activity('Get Metadata_blob').output.exists",
 						"type": "Expression"
 					},
-					"isSequential": true,
-					"activities": [
+					"ifTrueActivities": [
 						{
-							"name": "Copy data_foreach_loop",
+							"name": "Copy data1",
 							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
@@ -69,31 +68,18 @@
 									"type": "BinarySource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
-										"recursive": true,
-										"wildcardFileName": "*.xls",
+										"fileListPath": "rawzone",
 										"deleteFilesAfterCompletion": false
 									},
 									"formatSettings": {
 										"type": "BinaryReadSettings"
 									}
 								},
-								"sink": {
-									"type": "BinarySink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									}
-								},
 								"enableStaging": false
 							},
 							"inputs": [
 								{
-									"referenceName": "Binary_copy_foreach",
-									"type": "DatasetReference"
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "Binary_foreach_ADLS",
+									"referenceName": "Binary_getmetadata",
 									"type": "DatasetReference"
 								}
 							]
