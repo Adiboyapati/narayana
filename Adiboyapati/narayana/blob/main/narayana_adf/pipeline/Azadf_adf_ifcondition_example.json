@@ -102,7 +102,7 @@
 									"type": "BinarySource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
-										"fileListPath": "rawzone",
+										"fileListPath": "rawzone/Mass_Additions_Post_300320.txt",
 										"deleteFilesAfterCompletion": true
 									},
 									"formatSettings": {
