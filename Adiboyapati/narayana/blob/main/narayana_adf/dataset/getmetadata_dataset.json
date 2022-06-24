@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Mass_Additions_Post_300320.txt",
 				"container": "rawzone"
 			}
 		}
