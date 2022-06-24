@@ -119,7 +119,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "getmetadata_dataset",
+									"referenceName": "Binary_copy_foreach",
 									"type": "DatasetReference"
 								}
 							],
