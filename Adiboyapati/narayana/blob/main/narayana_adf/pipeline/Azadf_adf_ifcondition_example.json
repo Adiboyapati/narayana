@@ -17,7 +17,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "getmetadata_dataset",
+						"referenceName": "Binary_copy_foreach",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
@@ -65,7 +65,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "getmetadata_dataset",
+									"referenceName": "Binary_copy_foreach",
 									"type": "DatasetReference"
 								},
 								"logStorageSettings": {
@@ -102,7 +102,7 @@
 									"type": "BinarySource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
-										"fileListPath": "rawzone/Mass_Additions_Post_300320.txt",
+										"fileListPath": "rawzone/Rheem Customer Item Xrefs.xls",
 										"deleteFilesAfterCompletion": true
 									},
 									"formatSettings": {
