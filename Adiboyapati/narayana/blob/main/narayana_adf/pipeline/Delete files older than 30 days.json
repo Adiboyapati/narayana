@@ -33,7 +33,7 @@
 					},
 					"logStorageSettings": {
 						"linkedServiceName": {
-							"referenceName": "AzureDataLakeStorage_adf_development",
+							"referenceName": "AzureBlobStorage_adfdevlopment",
 							"type": "LinkedServiceReference"
 						},
 						"path": {
