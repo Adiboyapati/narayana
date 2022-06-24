@@ -78,7 +78,7 @@
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"fileListPath": "Rheem Customer Item Xrefs.xls",
+									"fileListPath": "rawzone/Autoinvoice_Import_Program_300320.txt",
 									"enablePartitionDiscovery": false
 								}
 							}
