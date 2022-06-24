@@ -751,7 +751,7 @@
 							},
 							"logStorageSettings": {
 								"linkedServiceName": {
-									"referenceName": "AzureDataLakeStorage_adf_development",
+									"referenceName": "AzureBlobStorage_adfdevlopment",
 									"type": "LinkedServiceReference"
 								},
 								"path": {
@@ -779,15 +779,15 @@
 				"parameters": {
 					"SourceFolder": {
 						"type": "string",
-						"defaultValue": "sourcefolder"
+						"defaultValue": "structzone"
 					},
 					"SourceDirectory": {
 						"type": "string",
-						"defaultValue": "subfolder"
+						"defaultValue": "STRUCT_ARCH"
 					},
 					"LoggingPath": {
 						"type": "string",
-						"defaultValue": "loggingfolder/subfolder"
+						"defaultValue": "/transiant"
 					}
 				},
 				"folder": {
@@ -797,7 +797,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/BinaryDatasetForDeleteActivity')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_adf_development')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevlopment')]"
 			]
 		},
 		{
