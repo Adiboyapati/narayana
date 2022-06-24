@@ -78,7 +78,7 @@
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"fileListPath": "rawzone/Mass_Additions_Post_300320.txt",
+									"fileListPath": "rawzone/Rheem Customer Item Xrefs.xls",
 									"enablePartitionDiscovery": false
 								}
 							}
