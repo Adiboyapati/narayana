@@ -119,7 +119,7 @@
 							},
 							"inputs": [
 								{
-									"referenceName": "Binary_getmetadata",
+									"referenceName": "getmetadata_dataset",
 									"type": "DatasetReference"
 								}
 							],
