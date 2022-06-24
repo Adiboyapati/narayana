@@ -125,7 +125,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "adfdeploy_adls_binary",
+									"referenceName": "Binary_foreach_ADLS",
 									"type": "DatasetReference"
 								}
 							]
