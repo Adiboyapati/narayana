@@ -57,7 +57,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"maxConcurrentConnections": 10,
-									"fileListPath": "rawblob",
+									"recursive": true,
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -293,6 +293,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "Payables_Open_Interface_Import_061219.txt",
 						"container": "rawblob"
 					},
 					"columnDelimiter": ",",
