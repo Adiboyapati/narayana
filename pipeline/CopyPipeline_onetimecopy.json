@@ -29,7 +29,7 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"maxConcurrentConnections": 10,
-							"recursive": true,
+							"fileListPath": "rawblob",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
