@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "Autoinvoice_Import_Program_061219_2.txt",
 				"container": "rawblob"
 			},
 			"columnDelimiter": ",",
