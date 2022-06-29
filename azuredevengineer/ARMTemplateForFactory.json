@@ -59,7 +59,7 @@
 									"maxConcurrentConnections": 10,
 									"recursive": true,
 									"enablePartitionDiscovery": false,
-									"prefix": ""
+									"prefix": ".txt"
 								},
 								"formatSettings": {
 									"type": "DelimitedTextReadSettings",
@@ -294,6 +294,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "Mass_Additions_Post_300320.txt",
 						"container": "rawblob"
 					},
 					"columnDelimiter": ",",
