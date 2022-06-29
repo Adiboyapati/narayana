@@ -293,7 +293,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Payables_Open_Interface_Import_061219.txt",
+						"fileName": "Autoinvoice_Import_Program_061219_2.txt",
 						"container": "rawblob"
 					},
 					"columnDelimiter": ",",
