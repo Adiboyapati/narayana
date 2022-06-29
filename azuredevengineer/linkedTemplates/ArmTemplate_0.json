@@ -239,25 +239,22 @@
 								"type": "DelimitedTextSource",
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"maxConcurrentConnections": 10,
 									"recursive": true,
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
-									"type": "DelimitedTextReadSettings",
-									"skipLineCount": 5
+									"type": "DelimitedTextReadSettings"
 								}
 							},
 							"sink": {
 								"type": "DelimitedTextSink",
 								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings",
-									"maxConcurrentConnections": 10
+									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
 									"type": "DelimitedTextWriteSettings",
 									"quoteAllText": true,
-									"fileExtension": ".txt"
+									"fileExtension": ""
 								}
 							},
 							"enableStaging": false,
