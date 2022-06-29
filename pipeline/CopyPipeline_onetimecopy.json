@@ -30,7 +30,6 @@
 							"type": "AzureBlobStorageReadSettings",
 							"maxConcurrentConnections": 10,
 							"recursive": true,
-							"wildcardFileName": "*",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
