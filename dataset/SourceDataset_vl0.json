@@ -1,0 +1,27 @@
+{
+	"name": "SourceDataset_vl0",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlobStorage_adfdevelopment",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "rawblob"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "       Transaction Type:",
+				"type": "String"
+			}
+		]
+	}
+}
