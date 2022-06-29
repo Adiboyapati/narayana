@@ -30,7 +30,8 @@
 							"type": "AzureBlobStorageReadSettings",
 							"maxConcurrentConnections": 10,
 							"recursive": true,
-							"enablePartitionDiscovery": false
+							"enablePartitionDiscovery": false,
+							"prefix": ""
 						},
 						"formatSettings": {
 							"type": "DelimitedTextReadSettings",
