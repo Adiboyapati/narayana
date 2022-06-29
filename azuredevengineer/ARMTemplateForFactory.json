@@ -57,7 +57,7 @@
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"maxConcurrentConnections": 10,
-									"recursive": true,
+									"fileListPath": "rawblob",
 									"enablePartitionDiscovery": false
 								},
 								"formatSettings": {
@@ -293,7 +293,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Mass_Additions_Post_300320.txt",
 						"container": "rawblob"
 					},
 					"columnDelimiter": ",",
