@@ -18,6 +18,10 @@
 		"AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://azuredatalakestoragee.dfs.core.windows.net/"
+		},
+		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
 		}
 	},
 	"variables": {
@@ -166,7 +170,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Autoinvoice_Import_Program_061219_2.txt",
+						"fileName": "Mass_Additions_Post_300320.txt",
 						"container": "rawblob"
 					},
 					"columnDelimiter": ",",
@@ -407,6 +411,38 @@
 				"[concat(variables('factoryId'), '/datasets/Azureblobstorage')]",
 				"[concat(variables('factoryId'), '/datasets/azuredelpoy_adls')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azuredatacopy_adls_triggers')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this triggers will run based on event created",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "CopyPipeline_onetimecopy",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/rawblob/blobs/Autoinvoice_",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('azuredatacopy_adls_triggers_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/CopyPipeline_onetimecopy')]"
 			]
 		}
 	]
