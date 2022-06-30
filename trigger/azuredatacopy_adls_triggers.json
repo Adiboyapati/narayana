@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "this triggers will run based on event created",
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [
 			{
 				"pipelineReference": {
