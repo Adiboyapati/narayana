@@ -94,19 +94,6 @@
 											"type": "Expression"
 										}
 									}
-								},
-								{
-									"name": "Set variable_ABC_copy1",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "Tokenpath",
-										"value": {
-											"value": "/struckzone/",
-											"type": "Expression"
-										}
-									}
 								}
 							]
 						},
