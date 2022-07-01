@@ -74,19 +74,7 @@
 					},
 					"cases": [
 						{
-							"value": "ABC",
-							"activities": [
-								{
-									"name": "Set variable_ABC",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "Tokenpath",
-										"value": "/struckzone/"
-									}
-								}
-							]
+							"value": "ABC"
 						},
 						{
 							"value": "DEF",
