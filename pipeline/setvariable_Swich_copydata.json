@@ -1,5 +1,5 @@
 {
-	"name": "setvariable_copydata",
+	"name": "setvariable_Swich_copydata",
 	"properties": {
 		"description": "this is data copy from azureblodstoraage to azuredatalake storage",
 		"activities": [
@@ -261,7 +261,19 @@
 							]
 						},
 						{
-							"value": "DEF"
+							"value": "DEF",
+							"activities": [
+								{
+									"name": "Set variable_DEF",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": "/struckzone/"
+									}
+								}
+							]
 						},
 						{
 							"value": "GHI"
