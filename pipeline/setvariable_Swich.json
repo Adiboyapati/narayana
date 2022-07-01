@@ -56,7 +56,7 @@
 				}
 			},
 			{
-				"name": "Switch_RuntoenvalueTokenID",
+				"name": "Switch1",
 				"type": "Switch",
 				"dependsOn": [
 					{
@@ -74,13 +74,10 @@
 					},
 					"cases": [
 						{
-							"value": "ABC"
-						},
-						{
-							"value": "DEF",
+							"value": "ABC",
 							"activities": [
 								{
-									"name": "Set variable_DEF",
+									"name": "Set variable_ABC",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
@@ -92,34 +89,13 @@
 							]
 						},
 						{
-							"value": "GHI",
-							"activities": [
-								{
-									"name": "Set variable_GHI",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "Tokenpath",
-										"value": "/struckzone/"
-									}
-								}
-							]
+							"value": "DEF"
 						},
 						{
-							"value": "XYZ",
-							"activities": [
-								{
-									"name": "Set variable_XYZ",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "Tokenpath",
-										"value": "/struckzone/"
-									}
-								}
-							]
+							"value": "GHI"
+						},
+						{
+							"value": "XYZ"
 						}
 					]
 				}
