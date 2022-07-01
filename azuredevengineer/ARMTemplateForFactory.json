@@ -1159,6 +1159,174 @@
 				"[concat(variables('factoryId'), '/pipelines/copydata')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/setvariable_Swich')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this is data copy from azureblodstoraage to azuredatalake storage",
+				"activities": [
+					{
+						"name": "Set variable_tokenID",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "TokenID",
+							"value": {
+								"value": "@split(pipeline().parameters.Filename,'_')[1]",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable_value",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Value",
+							"value": {
+								"value": "@split(pipeline().parameters.Filename,'_')[2]",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable_runtokenvalue",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable_tokenID",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set variable_value",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Runtokenvalue",
+							"value": {
+								"value": "@concat(variables('TokenID'),'_',variables('Value'),'_Runreq.xls')",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Switch_setvaTokenID",
+						"type": "Switch",
+						"dependsOn": [
+							{
+								"activity": "Set variable_runtokenvalue",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"on": {
+								"value": "@variables('TokenID')",
+								"type": "Expression"
+							},
+							"cases": [
+								{
+									"value": "ABC",
+									"activities": [
+										{
+											"name": "Set variable_ABC",
+											"type": "SetVariable",
+											"dependsOn": [],
+											"userProperties": [],
+											"typeProperties": {
+												"variableName": "Tokenpath",
+												"value": "/struckzone/"
+											}
+										}
+									]
+								},
+								{
+									"value": "DEF",
+									"activities": [
+										{
+											"name": "Set variable_DEF",
+											"type": "SetVariable",
+											"dependsOn": [],
+											"userProperties": [],
+											"typeProperties": {
+												"variableName": "Tokenpath",
+												"value": "/struckzone/"
+											}
+										}
+									]
+								},
+								{
+									"value": "GHI",
+									"activities": [
+										{
+											"name": "Set variable_GHI",
+											"type": "SetVariable",
+											"dependsOn": [],
+											"userProperties": [],
+											"typeProperties": {
+												"variableName": "Tokenpath",
+												"value": "/struckzone/"
+											}
+										}
+									]
+								},
+								{
+									"value": "XYZ",
+									"activities": [
+										{
+											"name": "Set variable_XYZ",
+											"type": "SetVariable",
+											"dependsOn": [],
+											"userProperties": [],
+											"typeProperties": {
+												"variableName": "Tokenpath",
+												"value": "/struckzone/"
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"Filename": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"TokenID": {
+						"type": "String"
+					},
+					"Value": {
+						"type": "String"
+					},
+					"Runtokenvalue": {
+						"type": "String"
+					},
+					"Tokenpath": {
+						"type": "String"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
 		}
 	]
 }
