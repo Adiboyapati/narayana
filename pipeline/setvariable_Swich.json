@@ -104,7 +104,19 @@
 							]
 						},
 						{
-							"value": "GHI"
+							"value": "GHI",
+							"activities": [
+								{
+									"name": "Set variable_GHI",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": "/struckzone/"
+									}
+								}
+							]
 						},
 						{
 							"value": "XYZ"
