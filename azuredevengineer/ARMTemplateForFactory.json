@@ -1214,7 +1214,7 @@
 						"typeProperties": {
 							"variableName": "Runtokenvalue",
 							"value": {
-								"value": "@concat(variables('TokenID'),'_',variables('Value'),'_Runreq.xls')",
+								"value": "@concat(variables('TokenID'),'_',variables('Value'))",
 								"type": "Expression"
 							}
 						}
@@ -1247,7 +1247,10 @@
 											"userProperties": [],
 											"typeProperties": {
 												"variableName": "Tokenpath",
-												"value": "/struckzone/"
+												"value": {
+													"value": "/struckzone/",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -1262,7 +1265,10 @@
 											"userProperties": [],
 											"typeProperties": {
 												"variableName": "Tokenpath",
-												"value": "/struckzone/"
+												"value": {
+													"value": "/struckzone/",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -1277,7 +1283,10 @@
 											"userProperties": [],
 											"typeProperties": {
 												"variableName": "Tokenpath",
-												"value": "/struckzone/"
+												"value": {
+													"value": "/struckzone/",
+													"type": "Expression"
+												}
 											}
 										}
 									]
@@ -1292,7 +1301,10 @@
 											"userProperties": [],
 											"typeProperties": {
 												"variableName": "Tokenpath",
-												"value": "/struckzone/"
+												"value": {
+													"value": "/struckzone/",
+													"type": "Expression"
+												}
 											}
 										}
 									]
