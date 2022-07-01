@@ -43,7 +43,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "azureprepare_deloy",
+						"referenceName": "azureprepare_adls",
 						"type": "DatasetReference"
 					}
 				]
