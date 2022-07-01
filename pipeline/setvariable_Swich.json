@@ -119,7 +119,19 @@
 							]
 						},
 						{
-							"value": "XYZ"
+							"value": "XYZ",
+							"activities": [
+								{
+									"name": "Set variable_XYZ",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": "/struckzone/"
+									}
+								}
+							]
 						}
 					]
 				}
