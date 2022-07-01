@@ -161,6 +161,10 @@
 				],
 				"userProperties": [],
 				"typeProperties": {
+					"pipeline": {
+						"referenceName": "copydata",
+						"type": "PipelineReference"
+					},
 					"waitOnCompletion": true
 				}
 			}
