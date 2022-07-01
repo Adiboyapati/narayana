@@ -56,7 +56,7 @@
 				}
 			},
 			{
-				"name": "Switch1",
+				"name": "Switch_setvaTokenID",
 				"type": "Switch",
 				"dependsOn": [
 					{
@@ -89,7 +89,19 @@
 							]
 						},
 						{
-							"value": "DEF"
+							"value": "DEF",
+							"activities": [
+								{
+									"name": "Set variable_DEF",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": "/struckzone/"
+									}
+								}
+							]
 						},
 						{
 							"value": "GHI"
