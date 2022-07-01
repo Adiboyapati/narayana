@@ -1208,13 +1208,19 @@
 								"dependencyConditions": [
 									"Succeeded"
 								]
+							},
+							{
+								"activity": "Set variable_TokenID1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
 							}
 						],
 						"userProperties": [],
 						"typeProperties": {
 							"variableName": "Runtokenvalue",
 							"value": {
-								"value": "@concat(variables('TokenID'),'_',variables('Value'))",
+								"value": "@concat(variables('TokenID1'),'_',variables('TokenID'),'_',variables('Value'))",
 								"type": "Expression"
 							}
 						}
@@ -1311,6 +1317,19 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Set variable_TokenID1",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "TokenID1",
+							"value": {
+								"value": "@split(pipeline().parameters.Filename,'_')[0]",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
@@ -1333,6 +1352,9 @@
 						"type": "String"
 					},
 					"Tokenpath": {
+						"type": "String"
+					},
+					"TokenID1": {
 						"type": "String"
 					}
 				},
