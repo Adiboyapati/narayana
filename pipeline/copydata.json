@@ -37,13 +37,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Azureblobstorage",
+						"referenceName": "azureblobprepare",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "azuredelpoy_adls",
+						"referenceName": "azureprepare_deloy",
 						"type": "DatasetReference"
 					}
 				]
