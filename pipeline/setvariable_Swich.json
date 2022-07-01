@@ -83,7 +83,10 @@
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "Tokenpath",
-										"value": "/struckzone/"
+										"value": {
+											"value": "/struckzone/",
+											"type": "Expression"
+										}
 									}
 								}
 							]
