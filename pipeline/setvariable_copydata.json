@@ -1,0 +1,297 @@
+{
+	"name": "setvariable_copydata",
+	"properties": {
+		"description": "this is data copy from azureblodstoraage to azuredatalake storage",
+		"activities": [
+			{
+				"name": "copy azureblob to ADLS",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Filter_condition",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"deleteFilesAfterCompletion": false
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "Azureblobstorage",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "azuredelpoy_adls",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "delete copydata",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "copy azureblob to ADLS",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Azureblobstorage",
+						"type": "DatasetReference"
+					},
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlobStorage_adfdevelopment",
+							"type": "LinkedServiceReference"
+						},
+						"path": "logzone"
+					},
+					"enableLogging": true,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			},
+			{
+				"name": "Get Metadata_copydata",
+				"description": "this getmetadata activity copy from blob to ADLS",
+				"type": "GetMetadata",
+				"dependsOn": [
+					{
+						"activity": "Switch_RuntoenvalueTokenID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "Binary_getmetadata",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "BinaryReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Filter_condition",
+				"description": "this filter will copy data",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata_copydata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata_copydata').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@contains(activity('Get Metadata_copydata').output.childItems[0].name,item().name)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Execute Pipeline_copydata",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "delete copydata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "copydata",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Set variable_tokenID",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "TokenID",
+					"value": {
+						"value": "@split(pipeline().parameters.Filename,'_')[1]",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable_value",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Value",
+					"value": {
+						"value": "@split(pipeline().parameters.Filename,'_')[2]",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable_runtokenvalue",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable_tokenID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable_value",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Runtokenvalue",
+					"value": {
+						"value": "@concat(variables('TokenID'),'_',variables('Value'),'_Runreq.xls')",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Switch_RuntoenvalueTokenID",
+				"type": "Switch",
+				"dependsOn": [
+					{
+						"activity": "Set variable_runtokenvalue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@variables('TokenID')",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "ABC",
+							"activities": [
+								{
+									"name": "Set variable_ABC",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": "/struckzone/"
+									}
+								}
+							]
+						},
+						{
+							"value": "DEF"
+						},
+						{
+							"value": "GHI"
+						},
+						{
+							"value": "XYZ"
+						}
+					]
+				}
+			}
+		],
+		"parameters": {
+			"Filename": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"TokenID": {
+				"type": "String"
+			},
+			"Value": {
+				"type": "String"
+			},
+			"Runtokenvalue": {
+				"type": "String"
+			},
+			"Tokenpath": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
