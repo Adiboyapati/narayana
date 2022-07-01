@@ -446,7 +446,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Get Metadata_copydata",
+								"activity": "Filter_condition",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -563,6 +563,30 @@
 							},
 							"formatSettings": {
 								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Filter_condition",
+						"description": "this filter will copy data",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_copydata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata_copydata').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@contains(activity('Get Metadata_copydata').output.childItems[0].name,item().name)",
+								"type": "Expression"
 							}
 						}
 					}
