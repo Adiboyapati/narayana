@@ -244,7 +244,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "prepare"
+						"container": "rawblob"
 					}
 				}
 			},
@@ -326,7 +326,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileSystem": "preparezone"
+						"fileSystem": "struckzone"
 					}
 				}
 			},
@@ -699,14 +699,14 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "Azureblobstorage",
+								"referenceName": "azureblobprepare",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "azuredelpoy_adls",
+								"referenceName": "azureprepare_deloy",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
@@ -733,7 +733,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "Azureblobstorage",
+								"referenceName": "azureblobprepare",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -760,9 +760,53 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Azureblobstorage')]",
-				"[concat(variables('factoryId'), '/datasets/azuredelpoy_adls')]",
+				"[concat(variables('factoryId'), '/datasets/azureblobprepare')]",
+				"[concat(variables('factoryId'), '/datasets/azureprepare_deloy')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureblobprepare')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_adfdevelopment",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "prepare"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azureprepare_deloy')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeStorage_adfdevelopment",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "preparezone"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_adfdevelopment')]"
 			]
 		}
 	]
