@@ -57,7 +57,7 @@
 			"properties": {
 				"description": "This triggers will run the wall clock window ",
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
