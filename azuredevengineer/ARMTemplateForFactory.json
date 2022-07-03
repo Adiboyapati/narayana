@@ -1756,7 +1756,7 @@
 			"properties": {
 				"description": "this Trigger will fire on the around the day ",
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipeline": {
 					"pipelineReference": {
 						"referenceName": "setvariable_Swich_copydata",
