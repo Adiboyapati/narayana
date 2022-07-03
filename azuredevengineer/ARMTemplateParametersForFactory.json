@@ -16,6 +16,9 @@
 		},
 		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
 			"value": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
+		},
+		"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
+			"value": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
 		}
 	}
 }

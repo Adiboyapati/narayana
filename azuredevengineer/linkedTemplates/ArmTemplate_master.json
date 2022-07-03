@@ -23,6 +23,10 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
 		},
+		"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -65,6 +69,29 @@
 				}
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "azuredevengineer_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
+						"value": "[parameters('adf_blobread_to_loadADLS_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'azuredevengineer_ArmTemplate_0')]"
+			]
 		}
 	]
 }

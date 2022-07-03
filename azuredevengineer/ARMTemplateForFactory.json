@@ -22,6 +22,10 @@
 		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
+		},
+		"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
 		}
 	},
 	"variables": {
@@ -120,6 +124,244 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SourceDataset_vl0')]",
 				"[concat(variables('factoryId'), '/datasets/DestinationDataset_vl0')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/blobToadls_getmetadata_lookup')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this is data copy from azureblodstoraage to azuredatalake storage",
+				"activities": [
+					{
+						"name": "copy azureblob to ADLS",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Filter_condition",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"deleteFilesAfterCompletion": false
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "Azureblobstorage",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "azuredelpoy_adls",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "delete copydata",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "copy azureblob to ADLS",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Azureblobstorage",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"logStorageSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzureBlobStorage_adfdevelopment",
+									"type": "LinkedServiceReference"
+								},
+								"path": "logzone"
+							},
+							"enableLogging": true,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					},
+					{
+						"name": "Get Metadata_copydata",
+						"description": "this getmetadata activity copy from blob to ADLS",
+						"type": "GetMetadata",
+						"dependsOn": [
+							{
+								"activity": "Lookup_jobparam",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "Binary_getmetadata",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Filter_condition",
+						"description": "this filter will copy data",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_copydata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata_copydata').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@contains(activity('Get Metadata_copydata').output.childItems[0].name,item().name)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Execute Pipeline_copydata",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "delete copydata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "copydata",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "Lookup_jobparam",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"dataset": {
+								"referenceName": "jobparam_ds",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"firstRowOnly": true
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"Filaname": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Azureblobstorage')]",
+				"[concat(variables('factoryId'), '/datasets/azuredelpoy_adls')]",
+				"[concat(variables('factoryId'), '/datasets/Binary_getmetadata')]",
+				"[concat(variables('factoryId'), '/pipelines/copydata')]",
+				"[concat(variables('factoryId'), '/datasets/jobparam_ds')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
 			]
 		},
@@ -1255,6 +1497,55 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/jobparam_ds')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlobStorage_adfdevelopment",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "jobparam.txt",
+						"container": "transiant"
+					},
+					"columnDelimiter": "|",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "ENV",
+						"type": "String"
+					},
+					{
+						"name": "Blob_path",
+						"type": "String"
+					},
+					{
+						"name": "ADLS_Path",
+						"type": "String"
+					},
+					{
+						"name": "Token_Id",
+						"type": "String"
+					},
+					{
+						"name": "Param_Path",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage_adfdevelopment')]",
 			"type": "Microsoft.DataFactory/factories/linkedServices",
 			"apiVersion": "2018-06-01",
@@ -1365,290 +1656,35 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/blobToadls_getmetadata_lookup')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
+			"name": "[concat(parameters('factoryName'), '/adf_blobread_to_loadADLS')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "this is data copy from azureblodstoraage to azuredatalake storage",
-				"activities": [
+				"description": "This triggers data copy from blob to ADLS",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
 					{
-						"name": "copy azureblob to ADLS",
-						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Filter_condition",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
+						"pipelineReference": {
+							"referenceName": "copydatablob toadls_getmetadata",
+							"type": "PipelineReference"
 						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "BinarySource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"deleteFilesAfterCompletion": false
-								},
-								"formatSettings": {
-									"type": "BinaryReadSettings"
-								}
-							},
-							"sink": {
-								"type": "BinarySink",
-								"storeSettings": {
-									"type": "AzureBlobFSWriteSettings"
-								}
-							},
-							"enableStaging": false
-						},
-						"inputs": [
-							{
-								"referenceName": "Azureblobstorage",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						],
-						"outputs": [
-							{
-								"referenceName": "azuredelpoy_adls",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						]
-					},
-					{
-						"name": "delete copydata",
-						"type": "Delete",
-						"dependsOn": [
-							{
-								"activity": "copy azureblob to ADLS",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "Azureblobstorage",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"logStorageSettings": {
-								"linkedServiceName": {
-									"referenceName": "AzureBlobStorage_adfdevelopment",
-									"type": "LinkedServiceReference"
-								},
-								"path": "logzone"
-							},
-							"enableLogging": true,
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							}
-						}
-					},
-					{
-						"name": "Get Metadata_copydata",
-						"description": "this getmetadata activity copy from blob to ADLS",
-						"type": "GetMetadata",
-						"dependsOn": [
-							{
-								"activity": "Lookup_jobparam",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "Binary_getmetadata",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "BinaryReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Filter_condition",
-						"description": "this filter will copy data",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata_copydata",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata_copydata').output.childItems",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@contains(activity('Get Metadata_copydata').output.childItems[0].name,item().name)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Execute Pipeline_copydata",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "delete copydata",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "copydata",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "Lookup_jobparam",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "DelimitedTextSource",
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							},
-							"dataset": {
-								"referenceName": "jobparam_ds",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"firstRowOnly": true
-						}
+						"parameters": {}
 					}
 				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"Filaname": {
-						"type": "string"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Azureblobstorage')]",
-				"[concat(variables('factoryId'), '/datasets/azuredelpoy_adls')]",
-				"[concat(variables('factoryId'), '/datasets/Binary_getmetadata')]",
-				"[concat(variables('factoryId'), '/pipelines/copydata')]",
-				"[concat(variables('factoryId'), '/datasets/jobparam_ds')]",
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/jobparam_ds')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_adfdevelopment",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
+				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "jobparam.txt",
-						"container": "transiant"
-					},
-					"columnDelimiter": "|",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "ENV",
-						"type": "String"
-					},
-					{
-						"name": "Blob_path",
-						"type": "String"
-					},
-					{
-						"name": "ADLS_Path",
-						"type": "String"
-					},
-					{
-						"name": "Token_Id",
-						"type": "String"
-					},
-					{
-						"name": "Param_Path",
-						"type": "String"
-					}
-				]
+					"blobPathBeginsWith": "/rawblob/blobs/Customer_",
+					"blobPathEndsWith": ".xls",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('adf_blobread_to_loadADLS_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
+				"[concat(variables('factoryId'), '/pipelines/copydatablob toadls_getmetadata')]"
 			]
 		}
 	]
