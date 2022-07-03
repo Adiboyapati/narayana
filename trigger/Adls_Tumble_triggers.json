@@ -1,0 +1,29 @@
+{
+	"name": "Adls_Tumble_triggers",
+	"properties": {
+		"description": "this Trigger will fire on the around the day ",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipeline": {
+			"pipelineReference": {
+				"referenceName": "setvariable_Swich_copydata",
+				"type": "PipelineReference"
+			},
+			"parameters": {
+				"Filename": "Customer_ABC_Items.xls"
+			}
+		},
+		"type": "TumblingWindowTrigger",
+		"typeProperties": {
+			"frequency": "Minute",
+			"interval": 15,
+			"startTime": "2022-07-03T03:40:00Z",
+			"delay": "00:00:00",
+			"maxConcurrency": 50,
+			"retryPolicy": {
+				"intervalInSeconds": 30
+			},
+			"dependsOn": []
+		}
+	}
+}
