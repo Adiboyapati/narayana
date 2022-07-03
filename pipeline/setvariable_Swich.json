@@ -190,6 +190,9 @@
 				"type": "String"
 			}
 		},
+		"folder": {
+			"name": "ISE"
+		},
 		"annotations": []
 	}
 }

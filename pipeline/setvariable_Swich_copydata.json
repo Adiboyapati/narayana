@@ -124,6 +124,7 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -327,6 +328,9 @@
 			"Tokenpath": {
 				"type": "String"
 			}
+		},
+		"folder": {
+			"name": "ISE"
 		},
 		"annotations": []
 	}
