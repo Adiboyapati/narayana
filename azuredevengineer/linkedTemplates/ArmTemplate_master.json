@@ -70,9 +70,6 @@
 					},
 					"AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url')]"
-					},
-					"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
-						"value": "[parameters('azuredatacopy_adls_triggers_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -91,6 +88,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
+						"value": "[parameters('azuredatacopy_adls_triggers_properties_typeProperties_scope')]"
 					},
 					"Adls_Tumble_triggers_properties_pipeline_parameters_Filename": {
 						"value": "[parameters('Adls_Tumble_triggers_properties_pipeline_parameters_Filename')]"
