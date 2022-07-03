@@ -23,6 +23,9 @@
 		"adf_schedule_triggers_properties_blobToadls_getmetadata_lookup_parameters_Filaname": {
 			"value": "Customer_ABC_Items.xls"
 		},
+		"Adls_Tumble_triggers_properties_pipeline_parameters_Filename": {
+			"value": "Customer_ABC_Items.xls"
+		},
 		"containerUri": {
 			"value": ""
 		},

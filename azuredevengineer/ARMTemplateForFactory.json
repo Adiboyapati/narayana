@@ -30,6 +30,10 @@
 		"adf_schedule_triggers_properties_blobToadls_getmetadata_lookup_parameters_Filaname": {
 			"type": "string",
 			"defaultValue": "Customer_ABC_Items.xls"
+		},
+		"Adls_Tumble_triggers_properties_pipeline_parameters_Filename": {
+			"type": "string",
+			"defaultValue": "Customer_ABC_Items.xls"
 		}
 	},
 	"variables": {
@@ -122,6 +126,9 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "ISE"
 				},
 				"annotations": []
 			},
@@ -358,6 +365,9 @@
 						"type": "string"
 					}
 				},
+				"folder": {
+					"name": "ISE"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -467,6 +477,9 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "ISE"
 				},
 				"annotations": []
 			},
@@ -659,6 +672,9 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"folder": {
+					"name": "ISE"
+				},
 				"annotations": []
 			},
 			"dependsOn": [
@@ -767,6 +783,9 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "ISE"
 				},
 				"annotations": []
 			},
@@ -973,6 +992,9 @@
 					"TokenID1": {
 						"type": "String"
 					}
+				},
+				"folder": {
+					"name": "ISE"
 				},
 				"annotations": []
 			},
@@ -1319,6 +1341,9 @@
 					"Tokenpath": {
 						"type": "String"
 					}
+				},
+				"folder": {
+					"name": "ISE"
 				},
 				"annotations": []
 			},
@@ -1722,6 +1747,40 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/blobToadls_getmetadata_lookup')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Adls_Tumble_triggers')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this Trigger will fire on the around the day ",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "setvariable_Swich_copydata",
+						"type": "PipelineReference"
+					},
+					"parameters": {
+						"Filename": "[parameters('Adls_Tumble_triggers_properties_pipeline_parameters_Filename')]"
+					}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 15,
+					"startTime": "2022-07-03T03:40:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/setvariable_Swich_copydata')]"
 			]
 		}
 	]

@@ -14,6 +14,10 @@
 		"adf_schedule_triggers_properties_blobToadls_getmetadata_lookup_parameters_Filaname": {
 			"type": "string",
 			"defaultValue": "Customer_ABC_Items.xls"
+		},
+		"Adls_Tumble_triggers_properties_pipeline_parameters_Filename": {
+			"type": "string",
+			"defaultValue": "Customer_ABC_Items.xls"
 		}
 	},
 	"variables": {
@@ -77,6 +81,38 @@
 						"startTime": "2022-07-03T08:25:00",
 						"timeZone": "India Standard Time"
 					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Adls_Tumble_triggers')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this Trigger will fire on the around the day ",
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "setvariable_Swich_copydata",
+						"type": "PipelineReference"
+					},
+					"parameters": {
+						"Filename": "[parameters('Adls_Tumble_triggers_properties_pipeline_parameters_Filename')]"
+					}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 15,
+					"startTime": "2022-07-03T03:40:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
 				}
 			},
 			"dependsOn": []
