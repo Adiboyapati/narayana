@@ -1,0 +1,28 @@
+{
+	"name": "adf_schedule_triggers",
+	"properties": {
+		"description": "This triggers will run the wall clock window ",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "blobToadls_getmetadata_lookup",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"Filaname": "Customer_ABC_Items.xls"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Minute",
+				"interval": 3,
+				"startTime": "2022-07-03T08:25:00",
+				"timeZone": "India Standard Time"
+			}
+		}
+	}
+}
