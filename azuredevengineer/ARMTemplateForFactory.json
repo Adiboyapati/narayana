@@ -19,9 +19,9 @@
 			"type": "string",
 			"defaultValue": "https://azuredatalakestoragee.dfs.core.windows.net/"
 		},
-		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
+		"Adls_Tumble_triggers_properties_pipeline_parameters_Filename": {
 			"type": "string",
-			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
+			"defaultValue": "Customer_ABC_Items.xls"
 		},
 		"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
 			"type": "string",
@@ -31,9 +31,9 @@
 			"type": "string",
 			"defaultValue": "Customer_ABC_Items.xls"
 		},
-		"Adls_Tumble_triggers_properties_pipeline_parameters_Filename": {
+		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
 			"type": "string",
-			"defaultValue": "Customer_ABC_Items.xls"
+			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
 		}
 	},
 	"variables": {
@@ -1617,72 +1617,44 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/azuredatacopy_adls_triggers')]",
+			"name": "[concat(parameters('factoryName'), '/Adls_Tumble_triggers')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "this triggers will run based on event created",
+				"description": "this Trigger will fire on the around the day ",
 				"annotations": [],
 				"runtimeState": "Stopped",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "CopyPipeline_onetimecopy",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "setvariable_Swich_copydata",
+						"type": "PipelineReference"
+					},
+					"parameters": {
+						"Filename": "[parameters('Adls_Tumble_triggers_properties_pipeline_parameters_Filename')]"
 					}
-				],
-				"type": "BlobEventsTrigger",
+				},
+				"type": "TumblingWindowTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/rawblob/blobs/Autoinvoice_",
-					"blobPathEndsWith": ".txt",
-					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('azuredatacopy_adls_triggers_properties_typeProperties_scope')]",
-					"events": [
-						"Microsoft.Storage.BlobCreated"
+					"frequency": "Minute",
+					"interval": 15,
+					"startTime": "2022-07-03T03:40:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": [
+						{
+							"type": "SelfDependencyTumblingWindowTriggerReference",
+							"size": "0:00:00:00",
+							"offset": "-1:00:00:00"
+						}
 					]
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/CopyPipeline_onetimecopy')]"
+				"[concat(variables('factoryId'), '/pipelines/setvariable_Swich_copydata')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/AutoResolveIntegrationRuntime')]",
-			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "Managed",
-				"typeProperties": {
-					"computeProperties": {
-						"location": "AutoResolve",
-						"dataFlowProperties": {
-							"computeType": "General",
-							"coreCount": 8,
-							"timeToLive": 0,
-							"cleanup": true
-						},
-						"pipelineExternalComputeScaleProperties": {
-							"timeToLive": 60
-						}
-					}
-				},
-				"managedVirtualNetwork": {
-					"type": "ManagedVirtualNetworkReference",
-					"referenceName": "default"
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/default')]",
-			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
-			"apiVersion": "2018-06-01",
-			"properties": {},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/adf_blobread_to_loadADLS')]",
@@ -1750,44 +1722,72 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Adls_Tumble_triggers')]",
+			"name": "[concat(parameters('factoryName'), '/azuredatacopy_adls_triggers')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
-				"description": "this Trigger will fire on the around the day ",
+				"description": "this triggers will run based on event created",
 				"annotations": [],
 				"runtimeState": "Stopped",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "setvariable_Swich_copydata",
-						"type": "PipelineReference"
-					},
-					"parameters": {
-						"Filename": "[parameters('Adls_Tumble_triggers_properties_pipeline_parameters_Filename')]"
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "CopyPipeline_onetimecopy",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
-				},
-				"type": "TumblingWindowTrigger",
+				],
+				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"frequency": "Minute",
-					"interval": 15,
-					"startTime": "2022-07-03T03:40:00Z",
-					"delay": "00:00:00",
-					"maxConcurrency": 50,
-					"retryPolicy": {
-						"intervalInSeconds": 30
-					},
-					"dependsOn": [
-						{
-							"type": "SelfDependencyTumblingWindowTriggerReference",
-							"size": "0:00:00:00",
-							"offset": "-1:00:00:00"
-						}
+					"blobPathBeginsWith": "/rawblob/blobs/Autoinvoice_",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('azuredatacopy_adls_triggers_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
 					]
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/setvariable_Swich_copydata')]"
+				"[concat(variables('factoryId'), '/pipelines/CopyPipeline_onetimecopy')]"
 			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AutoResolveIntegrationRuntime')]",
+			"type": "Microsoft.DataFactory/factories/integrationRuntimes",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "Managed",
+				"typeProperties": {
+					"computeProperties": {
+						"location": "AutoResolve",
+						"dataFlowProperties": {
+							"computeType": "General",
+							"coreCount": 8,
+							"timeToLive": 0,
+							"cleanup": true
+						},
+						"pipelineExternalComputeScaleProperties": {
+							"timeToLive": 60
+						}
+					}
+				},
+				"managedVirtualNetwork": {
+					"type": "ManagedVirtualNetworkReference",
+					"referenceName": "default"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/managedVirtualNetworks/default')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"properties": {},
+			"dependsOn": []
 		}
 	]
 }
