@@ -103,7 +103,7 @@
 									"type": "BinarySource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
-										"fileListPath": "rawblob/Dimensions_1.sql",
+										"recursive": true,
 										"deleteFilesAfterCompletion": true
 									},
 									"formatSettings": {
