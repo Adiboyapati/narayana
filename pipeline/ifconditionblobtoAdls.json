@@ -79,7 +79,7 @@
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"fileListPath": "rawblob/Dimensions_1.sql",
+									"recursive": true,
 									"enablePartitionDiscovery": false
 								}
 							}
