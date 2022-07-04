@@ -1539,6 +1539,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "Dimensions_1.sql",
 						"container": "rawblob"
 					}
 				}
@@ -2067,7 +2068,7 @@
 										"enableLogging": true,
 										"storeSettings": {
 											"type": "AzureBlobStorageReadSettings",
-											"fileListPath": "rawblob/Dimensions_1.sql",
+											"recursive": true,
 											"enablePartitionDiscovery": false
 										}
 									}
@@ -2091,7 +2092,7 @@
 											"type": "BinarySource",
 											"storeSettings": {
 												"type": "AzureBlobStorageReadSettings",
-												"fileListPath": "rawblob/Dimensions_1.sql",
+												"recursive": true,
 												"deleteFilesAfterCompletion": true
 											},
 											"formatSettings": {
