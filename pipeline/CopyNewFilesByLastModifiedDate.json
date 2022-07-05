@@ -55,10 +55,6 @@
 							"Container": {
 								"value": "@pipeline().parameters.FolderPath_Source",
 								"type": "Expression"
-							},
-							"Directory": {
-								"value": "@pipeline().parameters.Directory_Source",
-								"type": "Expression"
 							}
 						}
 					}
@@ -70,10 +66,6 @@
 						"parameters": {
 							"Container": {
 								"value": "@pipeline().parameters.FolderPath_Destination",
-								"type": "Expression"
-							},
-							"Directory": {
-								"value": "@pipeline().parameters.Directory_Destination",
 								"type": "Expression"
 							}
 						}
@@ -87,8 +79,7 @@
 				"defaultValue": "sourcefolder"
 			},
 			"FolderPath_Destination": {
-				"type": "String",
-				"defaultValue": "destinationfolder"
+				"type": "String"
 			},
 			"LastModified_From": {
 				"type": "String",
