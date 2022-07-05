@@ -79,7 +79,8 @@
 				"defaultValue": "sourcefolder"
 			},
 			"FolderPath_Destination": {
-				"type": "String"
+				"type": "String",
+				"defaultValue": "de"
 			},
 			"LastModified_From": {
 				"type": "String",
@@ -89,6 +90,9 @@
 				"type": "String",
 				"defaultValue": "2022-07-04T00:00:00Z"
 			}
+		},
+		"folder": {
+			"name": "Azure Template"
 		},
 		"annotations": []
 	}
