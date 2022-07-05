@@ -34,6 +34,9 @@
 								"value": "*",
 								"type": "Expression"
 							}
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
 						}
 					},
 					"sink": {
@@ -83,17 +86,9 @@
 				"type": "String",
 				"defaultValue": "sourcefolder"
 			},
-			"Directory_Source": {
-				"type": "String",
-				"defaultValue": "subfolder"
-			},
 			"FolderPath_Destination": {
 				"type": "String",
 				"defaultValue": "destinationfolder"
-			},
-			"Directory_Destination": {
-				"type": "String",
-				"defaultValue": "subfolder"
 			},
 			"LastModified_From": {
 				"type": "String",
