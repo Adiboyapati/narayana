@@ -79,6 +79,9 @@
 										"type": "AzureBlobStorageReadSettings",
 										"recursive": true
 									},
+									"formatSettings": {
+										"type": "BinaryReadSettings"
+									},
 									"recursive": false
 								},
 								"sink": {
@@ -99,10 +102,6 @@
 											"value": "@pipeline().parameters.SourceStore_Location",
 											"type": "Expression"
 										},
-										"Directory": {
-											"value": "@pipeline().parameters.SourceStore_Directory",
-											"type": "Expression"
-										},
 										"filename": {
 											"value": "@item().name",
 											"type": "Expression"
@@ -117,10 +116,6 @@
 									"parameters": {
 										"Container": {
 											"value": "@pipeline().parameters.DestinationStore_Location",
-											"type": "Expression"
-										},
-										"Directory": {
-											"value": "@pipeline().parameters.DestinationStore_Directory",
 											"type": "Expression"
 										},
 										"filename": {
@@ -158,10 +153,6 @@
 									"parameters": {
 										"Container": {
 											"value": "@pipeline().parameters.SourceStore_Location",
-											"type": "Expression"
-										},
-										"Directory": {
-											"value": "@pipeline().parameters.SourceStore_Directory",
 											"type": "Expression"
 										},
 										"filename": {
