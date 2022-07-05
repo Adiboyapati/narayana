@@ -10,9 +10,6 @@
 			"Container": {
 				"type": "String"
 			},
-			"Directory": {
-				"type": "String"
-			},
 			"filename": {
 				"type": "string"
 			}
