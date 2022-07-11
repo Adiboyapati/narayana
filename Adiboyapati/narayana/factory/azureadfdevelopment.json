@@ -1,0 +1,9 @@
+{
+	"name": "azureadfdevelopment",
+	"location": "southindia",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2f5cb7ec-f4cc-47ee-bb7d-f0805f332787",
+		"tenantId": "0fd84221-ee0f-4efb-85c4-e6bc0aa6b5f8"
+	}
+}
