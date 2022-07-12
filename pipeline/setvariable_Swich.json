@@ -1,0 +1,200 @@
+{
+	"name": "setvariable_Swich",
+	"properties": {
+		"description": "this is data copy from azureblodstoraage to azuredatalake storage",
+		"activities": [
+			{
+				"name": "Set variable_tokenID",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "TokenID",
+					"value": {
+						"value": "@split(pipeline().parameters.Filename,'_')[1]",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable_value",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Value",
+					"value": {
+						"value": "@split(pipeline().parameters.Filename,'_')[2]",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable_runtokenvalue",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set variable_tokenID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable_value",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set variable_TokenID1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "Runtokenvalue",
+					"value": {
+						"value": "@concat(variables('TokenID1'),'_',variables('TokenID'),'_',variables('Value'))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Switch_setvaTokenID",
+				"type": "Switch",
+				"dependsOn": [
+					{
+						"activity": "Set variable_runtokenvalue",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"on": {
+						"value": "@variables('TokenID')",
+						"type": "Expression"
+					},
+					"cases": [
+						{
+							"value": "ABC",
+							"activities": [
+								{
+									"name": "Set variable_ABC",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": {
+											"value": "/struckzone/",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"value": "DEF",
+							"activities": [
+								{
+									"name": "Set variable_DEF",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": {
+											"value": "/struckzone/",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"value": "GHI",
+							"activities": [
+								{
+									"name": "Set variable_GHI",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": {
+											"value": "/struckzone/",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"value": "XYZ",
+							"activities": [
+								{
+									"name": "Set variable_XYZ",
+									"type": "SetVariable",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "Tokenpath",
+										"value": {
+											"value": "/struckzone/",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"name": "Set variable_TokenID1",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "TokenID1",
+					"value": {
+						"value": "@split(pipeline().parameters.Filename,'_')[0]",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"Filename": {
+				"type": "string"
+			}
+		},
+		"variables": {
+			"TokenID": {
+				"type": "String"
+			},
+			"Value": {
+				"type": "String"
+			},
+			"Runtokenvalue": {
+				"type": "String"
+			},
+			"Tokenpath": {
+				"type": "String"
+			},
+			"TokenID1": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "ISE"
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-07-12T09:11:20Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
