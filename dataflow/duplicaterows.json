@@ -1,0 +1,57 @@
+{
+	"name": "duplicaterows",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_invlocaor",
+						"type": "DatasetReference"
+					},
+					"name": "Invlocator"
+				},
+				{
+					"dataset": {
+						"referenceName": "ds_innlocaornew",
+						"type": "DatasetReference"
+					},
+					"name": "invlocaornew"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "combinedatga"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          ORGANIZATION_ID as string,",
+				"          Location1 as string,",
+				"          Location2 as string,",
+				"          Location3 as string,",
+				"          Location4 as string,",
+				"          {Location Type} as string,",
+				"          PICKING_ORDER as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> Invlocator",
+				"source(output(",
+				"          ORGANIZATION_ID as string,",
+				"          Location1 as string,",
+				"          Location2 as string,",
+				"          Location3 as string,",
+				"          Location4 as string,",
+				"          {Location Type} as string,",
+				"          PICKING_ORDER as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> invlocaornew",
+				"Invlocator, invlocaornew union(byName: true)~> combinedatga"
+			]
+		}
+	}
+}

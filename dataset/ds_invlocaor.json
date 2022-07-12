@@ -1,0 +1,50 @@
+{
+	"name": "ds_invlocaor",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlob_adf_development",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Excel",
+		"typeProperties": {
+			"sheetName": "data.view",
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "already.xls",
+				"container": "rawblob"
+			},
+			"firstRowAsHeader": true
+		},
+		"schema": [
+			{
+				"name": "ORGANIZATION_ID",
+				"type": "String"
+			},
+			{
+				"name": "Location1",
+				"type": "String"
+			},
+			{
+				"name": "Location2",
+				"type": "String"
+			},
+			{
+				"name": "Location3",
+				"type": "String"
+			},
+			{
+				"name": "Location4",
+				"type": "String"
+			},
+			{
+				"name": "Location Type",
+				"type": "String"
+			},
+			{
+				"name": "PICKING_ORDER",
+				"type": "String"
+			}
+		]
+	}
+}
