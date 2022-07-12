@@ -13,5 +13,6 @@
 				"fileSystem": "struckzone"
 			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }

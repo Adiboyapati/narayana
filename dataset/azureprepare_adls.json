@@ -13,5 +13,6 @@
 				"fileSystem": "preparezone"
 			}
 		}
-	}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
 }
