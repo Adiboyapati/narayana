@@ -1,0 +1,23 @@
+{
+	"name": "ds_locator",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlob_adf_development",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "already.xls",
+				"container": "rawblob"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
