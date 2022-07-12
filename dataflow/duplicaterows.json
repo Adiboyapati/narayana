@@ -19,10 +19,24 @@
 					"name": "invlocaornew"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_combinelocaor",
+						"type": "DatasetReference"
+					},
+					"name": "invlocatondata"
+				}
+			],
 			"transformations": [
 				{
-					"name": "combinedatga"
+					"name": "combination"
+				},
+				{
+					"name": "aggregate1"
+				},
+				{
+					"name": "sort1"
 				}
 			],
 			"scriptLines": [
@@ -50,7 +64,25 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> invlocaornew",
-				"Invlocator, invlocaornew union(byName: true)~> combinedatga"
+				"Invlocator, invlocaornew union(byName: true)~> combination",
+				"combination aggregate(groupBy(PICKING_ORDER),",
+				"     each(match(name !='PICKING_ORDER'), $$ = first($$))) ~> aggregate1",
+				"aggregate1 sort(asc(PICKING_ORDER, true)) ~> sort1",
+				"sort1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          {1001} as string,",
+				"          {adi        } as string,",
+				"          AP as string,",
+				"          {9742989539} as string",
+				"     ),",
+				"     partitionFileNames:['inv_locaor.csv'],",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> invlocatondata"
 			]
 		}
 	}
