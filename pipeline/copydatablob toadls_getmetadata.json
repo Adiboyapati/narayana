@@ -207,6 +207,23 @@
 				}
 			}
 		],
+		"parameters": {
+			"filename": {
+				"type": "string"
+			},
+			"dataFactoryName": {
+				"type": "string"
+			},
+			"pipelineName": {
+				"type": "string"
+			},
+			"message": {
+				"type": "string"
+			},
+			"receiver": {
+				"type": "string"
+			}
+		},
 		"folder": {
 			"name": "ISE"
 		},
