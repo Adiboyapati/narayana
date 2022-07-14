@@ -4,17 +4,7 @@
 		"description": "This triggers will run the wall clock window ",
 		"annotations": [],
 		"runtimeState": "Stopped",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "blobToadls_getmetadata_lookup",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"Filaname": "Customer_ABC_Items.xls"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
 			"recurrence": {
