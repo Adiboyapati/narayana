@@ -1,0 +1,17 @@
+{
+	"name": "azureprepare_adls2",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLake_adf_development",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "preparezone"
+			}
+		}
+	}
+}
