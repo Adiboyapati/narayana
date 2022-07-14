@@ -23,6 +23,10 @@
 			"type": "secureString",
 			"metadata": "Secure string for 'accountKey' of 'AzureDataLake_adf_development'"
 		},
+		"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
+		},
 		"AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://azuredatalakestoragee.dfs.core.windows.net/"
@@ -239,6 +243,78 @@
 				},
 				"annotations": [],
 				"lastPublishTime": "2022-07-12T11:05:44Z"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Adls_Tumble_triggers')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this Trigger will fire on the around the day ",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Minute",
+					"interval": 15,
+					"startTime": "2022-07-03T03:40:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": [
+						{
+							"type": "SelfDependencyTumblingWindowTriggerReference",
+							"size": "0:00:00:00",
+							"offset": "-1:00:00:00"
+						}
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/adf_blobread_to_loadADLS')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This triggers data copy from blob to ADLS",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/rawblob/blobs/Customer_",
+					"blobPathEndsWith": ".xls",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('adf_blobread_to_loadADLS_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/adf_schedule_triggers')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "This triggers will run the wall clock window ",
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [],
+				"type": "ScheduleTrigger",
+				"typeProperties": {
+					"recurrence": {
+						"frequency": "Minute",
+						"interval": 3,
+						"startTime": "2022-07-03T08:25:00",
+						"timeZone": "India Standard Time"
+					}
+				}
 			},
 			"dependsOn": []
 		},
@@ -634,99 +710,6 @@
 						"container": "rawblob"
 					}
 				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DestinationDataset_vl0')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLakeStorage_adfdevelopment",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "struckzone"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
-					"quoteChar": "\""
-				},
-				"schema": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeStorage_adfdevelopment')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/InvLocator_ds')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlob_adf_development",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "already.xls",
-						"container": "rawblob"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": true,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "��\u0011ࡱ\u001a�\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000>\u0000\u0003\u0000��\t\u0000\u0006\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0010\u0000\u0000%\u0000\u0000\u0000\u0001\u0000\u0000\u0000����\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0000����������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������)\u0000\u0000\u0000\u0003\u0000\u0000\u0000\u0004\u0000\u0000\u0000\u0005\u0000\u0000\u0000\u0006\u0000\u0000\u0000\u0007\u0000\u0000\u0000\b\u0000\u0000\u0000\t\u0000\u0000\u0000",
-						"type": "String"
-					}
-				]
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_development')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/SourceDataset_vl0')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_adfdevelopment",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "DelimitedText",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Mass_Additions_Post_300320.txt",
-						"container": "rawblob"
-					},
-					"columnDelimiter": ",",
-					"escapeChar": "\\",
-					"firstRowAsHeader": false,
-					"quoteChar": "\""
-				},
-				"schema": [
-					{
-						"name": "       Transaction Type:",
-						"type": "String"
-					}
-				]
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
