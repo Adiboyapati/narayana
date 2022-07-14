@@ -461,6 +461,28 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Azureblobstorage1')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlob_adf_development",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "rawblob"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_development')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BinaryDataDestination')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -670,49 +692,25 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/Binary_blob_foreach_ds')]",
+			"name": "[concat(parameters('factoryName'), '/Binary_Adls_forloop_ds2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_adfdevelopment",
+					"referenceName": "AzureDataLake_adf_development",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
 				"type": "Binary",
 				"typeProperties": {
 					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Dimensions_1.sql",
-						"container": "rawblob"
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "struckzone"
 					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Binary_blob_foreach_ds1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlob_adf_development",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"fileName": "Dimensions_1.sql",
-						"container": "rawblob"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_development')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLake_adf_development')]"
 			]
 		}
 	]
