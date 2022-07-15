@@ -78,9 +78,6 @@
 					"AzureDataLake_adf_development_accountKey": {
 						"value": "[parameters('AzureDataLake_adf_development_accountKey')]"
 					},
-					"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
-						"value": "[parameters('adf_blobread_to_loadADLS_properties_typeProperties_scope')]"
-					},
 					"AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url')]"
 					},
@@ -147,6 +144,9 @@
 					},
 					"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
 						"value": "[parameters('azuredatacopy_adls_triggers_properties_typeProperties_scope')]"
+					},
+					"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
+						"value": "[parameters('adf_blobread_to_loadADLS_properties_typeProperties_scope')]"
 					}
 				}
 			},
