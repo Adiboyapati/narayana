@@ -203,7 +203,17 @@
 							"value": "application/json",
 							"type": "Expression"
 						}
-					}
+					},
+					"body": {
+						"value": "{\"dataFactoryName\":{@pipeline().parameters.dataFactoryName}\",\"pipelineName\":{@pipeline().parameters.pipelineName}\",\"message\":{@pipeline().parameters.message}\",\"receiver\":{@pipeline().parameters.receiver}\"}",
+						"type": "Expression"
+					},
+					"linkedServices": [
+						{
+							"referenceName": "AzureDataLake_adf_development",
+							"type": "LinkedServiceReference"
+						}
+					]
 				}
 			}
 		],
