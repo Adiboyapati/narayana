@@ -205,7 +205,7 @@
 						}
 					},
 					"body": {
-						"value": "{\"dataFactoryName\":{@pipeline().parameters.dataFactoryName}\",\"pipelineName\":{@pipeline().parameters.pipelineName}\",\"message\":{@pipeline().parameters.message}\",\"receiver\":{@pipeline().parameters.receiver}\"}",
+						"value": "{\r\n  \"message\":   \"this is custom dynamic message from your pipeline with run TO @{pipeline().RunId}.\",\r\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\r\n  \"pipelineName\":    \"@{pipeline().Pipeline}\",\r\n  \"receiver\":        \"@{pipeline().parameters.receiver}\"\r\n}",
 						"type": "Expression"
 					},
 					"linkedServices": [
