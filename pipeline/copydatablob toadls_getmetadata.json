@@ -178,6 +178,24 @@
 						"dependencyConditions": [
 							"Failed"
 						]
+					},
+					{
+						"activity": "Filter_condition",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "copy azureblob to ADLS",
+						"dependencyConditions": [
+							"Failed"
+						]
+					},
+					{
+						"activity": "delete copydata",
+						"dependencyConditions": [
+							"Failed"
+						]
 					}
 				],
 				"userProperties": [],
