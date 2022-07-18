@@ -44,6 +44,26 @@
 				}
 			}
 		],
+		"parameters": {
+			"dataFactoryName": {
+				"type": "string"
+			},
+			"pipelineName": {
+				"type": "string"
+			},
+			"message": {
+				"type": "string"
+			},
+			"receiver": {
+				"type": "string"
+			},
+			"Sourcefile": {
+				"type": "string"
+			},
+			"Status": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
