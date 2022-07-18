@@ -846,7 +846,7 @@
 								}
 							},
 							"body": {
-								"value": "{\r\n  \"message\":   \"this is custom dynamic message from your pipeline with run TO @{pipeline().RunId}.\",\r\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\r\n  \"pipelineName\":    \"@{pipeline().Pipeline}\",\r\n  \"receiver\":        \"@{pipeline().parameters.receiver}\"\r\n}",
+								"value": "{\n  \"message\":   \"this is custom dynamic message from your pipeline with run TO @{pipeline().RunId}.\",\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n  \"pipelineName\":    \"@{pipeline().Pipeline}\",\n  \"receiver\":        \"@{pipeline().parameters.receiver}\"\n}",
 								"type": "Expression"
 							},
 							"linkedServices": [
@@ -863,9 +863,6 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"filename": {
-						"type": "string"
-					},
 					"dataFactoryName": {
 						"type": "string"
 					},
@@ -876,6 +873,12 @@
 						"type": "string"
 					},
 					"receiver": {
+						"type": "string"
+					},
+					"Sourcefile": {
+						"type": "string"
+					},
+					"Status": {
 						"type": "string"
 					}
 				},
