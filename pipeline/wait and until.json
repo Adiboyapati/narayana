@@ -1,0 +1,94 @@
+{
+	"name": "wait and until",
+	"properties": {
+		"activities": [
+			{
+				"name": "Wait_until",
+				"type": "Wait",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 60
+				}
+			},
+			{
+				"name": "identity_set1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Wait_until",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ID1",
+					"value": {
+						"value": "20",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "identity_set2",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Wait_until",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "ID2",
+					"value": {
+						"value": "30",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "until_testpipeline",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "identity_set1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "identity_set2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(int(variables('ID1')),int(variables('ID2')))",
+						"type": "Expression"
+					},
+					"timeout": "0.00:07:00"
+				}
+			}
+		],
+		"variables": {
+			"ID1": {
+				"type": "String"
+			},
+			"ID2": {
+				"type": "String"
+			}
+		},
+		"folder": {
+			"name": "ISE"
+		},
+		"annotations": []
+	}
+}
