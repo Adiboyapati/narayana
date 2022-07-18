@@ -819,6 +819,24 @@
 								"dependencyConditions": [
 									"Failed"
 								]
+							},
+							{
+								"activity": "Filter_condition",
+								"dependencyConditions": [
+									"Failed"
+								]
+							},
+							{
+								"activity": "copy azureblob to ADLS",
+								"dependencyConditions": [
+									"Failed"
+								]
+							},
+							{
+								"activity": "delete copydata",
+								"dependencyConditions": [
+									"Failed"
+								]
 							}
 						],
 						"userProperties": [],
@@ -1983,7 +2001,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "rawblob"
+						"container": "rawblob1"
 					}
 				}
 			},
