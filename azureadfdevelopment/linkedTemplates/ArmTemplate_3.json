@@ -1562,6 +1562,145 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/wait and until')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wait_until",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 60
+						}
+					},
+					{
+						"name": "identity_set1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Wait_until",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "ID1",
+							"value": {
+								"value": "20",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "identity_set2",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Wait_until",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "ID2",
+							"value": {
+								"value": "30",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "until_testpipeline",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "identity_set1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "identity_set2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(int(variables('ID1')),int(variables('ID2')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Execute Pipeline_until",
+									"type": "ExecutePipeline",
+									"dependsOn": [],
+									"userProperties": [],
+									"typeProperties": {
+										"pipeline": {
+											"referenceName": "copydatablob toadls_getmetadata",
+											"type": "PipelineReference"
+										},
+										"waitOnCompletion": true,
+										"parameters": {}
+									}
+								},
+								{
+									"name": "Set variable_unil",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Execute Pipeline_until",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ID1",
+										"value": {
+											"value": "70",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"timeout": "0.00:07:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"ID1": {
+						"type": "String"
+					},
+					"ID2": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "ISE"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/copydatablob toadls_getmetadata')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/adf_blobread_to_loadADLS')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
