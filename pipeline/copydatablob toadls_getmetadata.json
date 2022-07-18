@@ -176,7 +176,7 @@
 					{
 						"activity": "Get Metadata_copydata",
 						"dependencyConditions": [
-							"Succeeded"
+							"Failed"
 						]
 					}
 				],
