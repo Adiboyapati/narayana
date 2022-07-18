@@ -64,6 +64,9 @@
 				"type": "string"
 			}
 		},
+		"folder": {
+			"name": "ISE"
+		},
 		"annotations": []
 	}
 }
