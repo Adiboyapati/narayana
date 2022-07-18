@@ -31,7 +31,7 @@
 						}
 					},
 					"body": {
-						"value": "{\n  \"message\":   \"this is custom dynamic message from your pipeline with run TO @{pipeline().RunId}.\",\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n  \"pipelineName\":    \"@{pipeline().Pipeline}\"\n \n}",
+						"value": "{\n  \"message\":   \"this is custom dynamic message from your pipeline with run TO @{pipeline().RunId}.\",\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n  \"pipelineName\":    \"@{pipeline().Pipeline}\",\n  \"receiver\"  :      \"@{pipeline().parameters.receiver}\"\n \n}",
 						"type": "Expression"
 					},
 					"linkedServices": [
