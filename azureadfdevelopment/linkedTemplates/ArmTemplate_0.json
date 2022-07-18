@@ -413,6 +413,85 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/emailnotification')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "send email notification",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": {
+								"value": "https://prod-27.southindia.logic.azure.com:443/workflows/ce245314226f4e22bc1d6cdad4f58e3f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ld3B73-FkAXYYtgochSfMi4z3BMXhryRimQDkvwTZ1E",
+								"type": "Expression"
+							},
+							"connectVia": {
+								"referenceName": "AutoResolveIntegrationRuntime",
+								"type": "IntegrationRuntimeReference"
+							},
+							"method": "POST",
+							"headers": {
+								"Content-type": {
+									"value": "application/json",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "{\n  \"message\":   \"this is custom dynamic message from your pipeline with run TO @{pipeline().RunId}.\",\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n  \"pipelineName\":    \"@{pipeline().Pipeline}\",\n  \"receiver\"  :      \"@{pipeline().parameters.receiver}\"\n \n}",
+								"type": "Expression"
+							},
+							"linkedServices": [
+								{
+									"referenceName": "AzureDataLake_adf_development",
+									"type": "LinkedServiceReference"
+								}
+							],
+							"httpRequestTimeout": "00:01:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"dataFactoryName": {
+						"type": "string"
+					},
+					"pipelineName": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"receiver": {
+						"type": "string"
+					},
+					"Sourcefile": {
+						"type": "string"
+					},
+					"Status": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLake_adf_development')]",
+				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Azureblobstorage')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -667,28 +746,6 @@
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Binary_Adls_forloop_ds1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLake_adf_development",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "struckzone"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLake_adf_development')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Binary_Adls_forloop_ds2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {

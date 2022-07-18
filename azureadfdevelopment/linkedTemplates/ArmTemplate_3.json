@@ -21,6 +21,112 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/copydata1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "this is data copy from azureblodstoraage to azuredatalake storage",
+				"activities": [
+					{
+						"name": "copy azureblob to ADLS",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"deleteFilesAfterCompletion": false
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "azureblobprepare2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "azureprepare_adls2",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "delete copydata",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "copy azureblob to ADLS",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "azureblobprepare2",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"logStorageSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzureBlob_adf_development",
+									"type": "LinkedServiceReference"
+								},
+								"path": "logzone"
+							},
+							"enableLogging": true,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "ISE"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/copydata2')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -912,7 +1018,7 @@
 								}
 							},
 							"body": {
-								"value": "{\"dataFactoryName\":{@pipeline().parameters.dataFactoryName}\",\"pipelineName\":{@pipeline().parameters.pipelineName}\",\"message\":{@pipeline().parameters.message}\",\"receiver\":{@pipeline().parameters.receiver}\"}",
+								"value": "{\r\n  \"message\":   \"this is custom dynamic message from your pipeline with run TO @{pipeline().RunId}.\",\r\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\r\n  \"pipelineName\":    \"@{pipeline().Pipeline}\",\r\n  \"receiver\":        \"@{pipeline().parameters.receiver}\"\r\n}",
 								"type": "Expression"
 							},
 							"linkedServices": [
@@ -1401,7 +1507,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/copydata1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/azuredatacopy_adls_triggers')]",
