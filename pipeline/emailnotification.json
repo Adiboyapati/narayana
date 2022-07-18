@@ -42,6 +42,16 @@
 					],
 					"httpRequestTimeout": "00:01:00"
 				}
+			},
+			{
+				"name": "WebHook1",
+				"type": "WebHook",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"method": "POST",
+					"timeout": "00:10:00"
+				}
 			}
 		],
 		"parameters": {
