@@ -170,13 +170,46 @@
 				}
 			},
 			{
-				"name": "Execute Pipeline Email notification",
+				"name": "Execute Pipeline Email notification fail",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{
 						"activity": "Get Metadata_copydata",
 						"dependencyConditions": [
 							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "emailnotification",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"dataFactoryName": {
+							"value": "@pipeline().DataFactory",
+							"type": "Expression"
+						},
+						"pipelineName": {
+							"value": "@pipeline().Pipeline",
+							"type": "Expression"
+						},
+						"receiver": "adiazure9@gmail.com",
+						"Sourcefile": "Autoinvoice_Import_Program_300320.txt",
+						"Status": "\"fail\""
+					}
+				}
+			},
+			{
+				"name": "Execute Pipeline Email notification_sucess",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "delete copydata",
+						"dependencyConditions": [
+							"Succeeded"
 						]
 					}
 				],
