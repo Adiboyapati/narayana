@@ -983,8 +983,8 @@
 						}
 					},
 					{
-						"name": "send email to fail",
-						"type": "WebActivity",
+						"name": "Execute Pipeline Email notification",
+						"type": "ExecutePipeline",
 						"dependsOn": [
 							{
 								"activity": "Get Metadata_copydata",
@@ -993,66 +993,32 @@
 								]
 							}
 						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
 						"userProperties": [],
 						"typeProperties": {
-							"url": {
-								"value": "https://prod-27.southindia.logic.azure.com:443/workflows/ce245314226f4e22bc1d6cdad4f58e3f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ld3B73-FkAXYYtgochSfMi4z3BMXhryRimQDkvwTZ1E",
-								"type": "Expression"
+							"pipeline": {
+								"referenceName": "emailnotification",
+								"type": "PipelineReference"
 							},
-							"connectVia": {
-								"referenceName": "AutoResolveIntegrationRuntime",
-								"type": "IntegrationRuntimeReference"
-							},
-							"method": "POST",
-							"headers": {
-								"Content-type": {
-									"value": "application/json",
+							"waitOnCompletion": true,
+							"parameters": {
+								"dataFactoryName": {
+									"value": "@pipeline().DataFactory",
 									"type": "Expression"
-								}
-							},
-							"body": {
-								"value": "{\n  \"message\":   \"this is custom dynamic message from your pipeline with run TO @{pipeline().RunId}.\",\n  \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n  \"pipelineName\":    \"@{pipeline().Pipeline}\",\n  \"receiver\":        \"@{pipeline().parameters.receiver}\"\n}",
-								"type": "Expression"
-							},
-							"linkedServices": [
-								{
-									"referenceName": "AzureDataLake_adf_development",
-									"type": "LinkedServiceReference"
-								}
-							]
+								},
+								"pipelineName": {
+									"value": "@pipeline().Pipeline",
+									"type": "Expression"
+								},
+								"receiver": "adiazure9@gmail.com",
+								"Sourcefile": "Autoinvoice_Import_Program_300320.txt",
+								"Status": "\"fail\""
+							}
 						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
-				},
-				"parameters": {
-					"dataFactoryName": {
-						"type": "string"
-					},
-					"pipelineName": {
-						"type": "string"
-					},
-					"message": {
-						"type": "string"
-					},
-					"receiver": {
-						"type": "string"
-					},
-					"Sourcefile": {
-						"type": "string"
-					},
-					"Status": {
-						"type": "string"
-					}
 				},
 				"folder": {
 					"name": "ISE"
