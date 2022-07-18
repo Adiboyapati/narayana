@@ -2486,7 +2486,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "rawblob1"
+						"container": "rawblob"
 					}
 				}
 			},
