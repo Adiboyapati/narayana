@@ -5,6 +5,10 @@
 			"filename": {
 				"type": "string",
 				"value": "Autoinvoice_Import_Program_061219.txt"
+			},
+			"Env": {
+				"type": "string",
+				"value": "Dev"
 			}
 		}
 	},
