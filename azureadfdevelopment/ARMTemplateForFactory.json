@@ -38,6 +38,14 @@
 		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
+		},
+		"default_properties_filename_value": {
+			"type": "string",
+			"defaultValue": "Autoinvoice_Import_Program_061219.txt"
+		},
+		"default_properties_Env_value": {
+			"type": "string",
+			"defaultValue": "Dev"
 		}
 	},
 	"variables": {
@@ -3905,6 +3913,22 @@
 			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
 			"apiVersion": "2018-06-01",
 			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/globalparameters",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"filename": {
+					"type": "string",
+					"value": "[parameters('default_properties_filename_value')]"
+				},
+				"Env": {
+					"type": "string",
+					"value": "[parameters('default_properties_Env_value')]"
+				}
+			},
 			"dependsOn": []
 		}
 	]

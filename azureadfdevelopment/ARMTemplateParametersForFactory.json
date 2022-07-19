@@ -28,6 +28,12 @@
 		},
 		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
 			"value": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
+		},
+		"default_properties_filename_value": {
+			"value": "Autoinvoice_Import_Program_061219.txt"
+		},
+		"default_properties_Env_value": {
+			"value": "Dev"
 		}
 	}
 }
