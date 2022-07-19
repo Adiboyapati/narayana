@@ -5,6 +5,11 @@
 			"referenceName": "AzureBlob_adf_development",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"filename_ds": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {
