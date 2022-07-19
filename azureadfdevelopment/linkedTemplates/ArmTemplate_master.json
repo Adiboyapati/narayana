@@ -86,6 +86,12 @@
 					"AzureDataLake_adf_development_accountKey": {
 						"value": "[parameters('AzureDataLake_adf_development_accountKey')]"
 					},
+					"default_properties_filename_value": {
+						"value": "[parameters('default_properties_filename_value')]"
+					},
+					"default_properties_Env_value": {
+						"value": "[parameters('default_properties_Env_value')]"
+					},
 					"AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url')]"
 					},

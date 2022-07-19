@@ -690,7 +690,16 @@
 							{
 								"referenceName": "Azureblobstorage2",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"filename_ds": {
+										"value": "@pipeline().globalParameters.filename",
+										"type": "Expression"
+									},
+									"Env_ds": {
+										"value": "@pipeline().globalParameters.Env",
+										"type": "Expression"
+									}
+								}
 							}
 						],
 						"outputs": [
@@ -724,7 +733,16 @@
 							"dataset": {
 								"referenceName": "Azureblobstorage2",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"filename_ds": {
+										"value": "@pipeline().globalParameters.filename",
+										"type": "Expression"
+									},
+									"Env_ds": {
+										"value": "@pipeline().globalParameters.Env",
+										"type": "Expression"
+									}
+								}
 							},
 							"logStorageSettings": {
 								"linkedServiceName": {
@@ -907,6 +925,11 @@
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
+				"variables": {
+					"filename": {
+						"type": "String"
+					}
+				},
 				"folder": {
 					"name": "ISE"
 				},
@@ -1002,46 +1025,6 @@
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLake_adf_development')]",
 				"[concat(variables('factoryId'), '/integrationRuntimes/AutoResolveIntegrationRuntime')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/emailnotification_webhook')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "WebHook_email",
-						"type": "WebHook",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"url": {
-								"value": "https://prod-27.southindia.logic.azure.com:443/workflows/ce245314226f4e22bc1d6cdad4f58e3f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=ld3B73-FkAXYYtgochSfMi4z3BMXhryRimQDkvwTZ1E",
-								"type": "Expression"
-							},
-							"method": "POST",
-							"headers": {
-								"Contest-type": {
-									"value": "application/json",
-									"type": "Expression"
-								}
-							},
-							"body": {},
-							"timeout": "00:10:00",
-							"reportStatusOnCallBack": true
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "ISE"
-				},
-				"annotations": []
-			},
-			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/foreachblobtoAdls')]",
@@ -2182,6 +2165,14 @@
 				"linkedServiceName": {
 					"referenceName": "AzureBlob_adf_development",
 					"type": "LinkedServiceReference"
+				},
+				"parameters": {
+					"filename_ds": {
+						"type": "string"
+					},
+					"Env_ds": {
+						"type": "string"
+					}
 				},
 				"annotations": [],
 				"type": "Binary",

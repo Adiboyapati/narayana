@@ -960,7 +960,16 @@
 							{
 								"referenceName": "Azureblobstorage2",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"filename_ds": {
+										"value": "@pipeline().globalParameters.filename",
+										"type": "Expression"
+									},
+									"Env_ds": {
+										"value": "@pipeline().globalParameters.Env",
+										"type": "Expression"
+									}
+								}
 							}
 						],
 						"outputs": [
@@ -994,7 +1003,16 @@
 							"dataset": {
 								"referenceName": "Azureblobstorage2",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"filename_ds": {
+										"value": "@pipeline().globalParameters.filename",
+										"type": "Expression"
+									},
+									"Env_ds": {
+										"value": "@pipeline().globalParameters.Env",
+										"type": "Expression"
+									}
+								}
 							},
 							"logStorageSettings": {
 								"linkedServiceName": {
@@ -1176,6 +1194,11 @@
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"variables": {
+					"filename": {
+						"type": "String"
+					}
 				},
 				"folder": {
 					"name": "ISE"
