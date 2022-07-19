@@ -1,5 +1,13 @@
 {
 	"name": "azureadfdevelopment",
+	"properties": {
+		"globalParameters": {
+			"filename": {
+				"type": "string",
+				"value": "Autoinvoice_Import_Program_061219.txt"
+			}
+		}
+	},
 	"location": "southindia",
 	"identity": {
 		"type": "SystemAssigned",
