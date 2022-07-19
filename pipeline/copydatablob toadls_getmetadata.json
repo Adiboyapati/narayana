@@ -87,7 +87,17 @@
 				"typeProperties": {
 					"dataset": {
 						"referenceName": "Azureblobstorage2",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"filename_ds": {
+								"value": "@pipeline().globalParameters.filename",
+								"type": "Expression"
+							},
+							"Env_ds": {
+								"value": "@pipeline().globalParameters.Env",
+								"type": "Expression"
+							}
+						}
 					},
 					"logStorageSettings": {
 						"linkedServiceName": {
