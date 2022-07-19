@@ -254,6 +254,11 @@
 				}
 			}
 		],
+		"variables": {
+			"filename": {
+				"type": "String"
+			}
+		},
 		"folder": {
 			"name": "ISE"
 		},
