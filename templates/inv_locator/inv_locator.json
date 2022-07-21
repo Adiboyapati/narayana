@@ -1,0 +1,311 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name"
+		},
+		"AzureBlob_adf_development": {
+			"type": "string"
+		},
+		"AzureDataLake_adf_development": {
+			"type": "string"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/inv_locator')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "duplicaterows",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "1.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "duplicaterows",
+								"type": "DataFlowReference"
+							},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"folder": {
+					"name": "ISE"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/duplicaterows')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/duplicaterows')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "ds_invlocaor",
+								"type": "DatasetReference"
+							},
+							"name": "Invlocator"
+						},
+						{
+							"dataset": {
+								"referenceName": "ds_innlocaornew",
+								"type": "DatasetReference"
+							},
+							"name": "invlocaornew"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "ds_combinelocaor",
+								"type": "DatasetReference"
+							},
+							"name": "invlocatondata"
+						}
+					],
+					"transformations": [
+						{
+							"name": "combination"
+						},
+						{
+							"name": "aggregate1"
+						},
+						{
+							"name": "sort1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ORGANIZATION_ID as string,",
+						"          Location1 as string,",
+						"          Location2 as string,",
+						"          Location3 as string,",
+						"          Location4 as string,",
+						"          {Location Type} as string,",
+						"          PICKING_ORDER as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> Invlocator",
+						"source(output(",
+						"          ORGANIZATION_ID as string,",
+						"          Location1 as string,",
+						"          Location2 as string,",
+						"          Location3 as string,",
+						"          Location4 as string,",
+						"          {Location Type} as string,",
+						"          PICKING_ORDER as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> invlocaornew",
+						"Invlocator, invlocaornew union(byName: true)~> combination",
+						"combination aggregate(groupBy(PICKING_ORDER),",
+						"     each(match(name!='PICKING_ORDER'), $$ = first($$))) ~> aggregate1",
+						"aggregate1 sort(asc(PICKING_ORDER, true)) ~> sort1",
+						"sort1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     input(",
+						"          {1001} as string,",
+						"          {adi        } as string,",
+						"          AP as string,",
+						"          {9742989539} as string",
+						"     ),",
+						"     partitionFileNames:['inv_locaor.csv'],",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> invlocatondata"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_invlocaor')]",
+				"[concat(variables('factoryId'), '/datasets/ds_innlocaornew')]",
+				"[concat(variables('factoryId'), '/datasets/ds_combinelocaor')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_invlocaor')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlob_adf_development')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "data.view",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "already.xls",
+						"container": "rawblob"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "ORGANIZATION_ID",
+						"type": "String"
+					},
+					{
+						"name": "Location1",
+						"type": "String"
+					},
+					{
+						"name": "Location2",
+						"type": "String"
+					},
+					{
+						"name": "Location3",
+						"type": "String"
+					},
+					{
+						"name": "Location4",
+						"type": "String"
+					},
+					{
+						"name": "Location Type",
+						"type": "String"
+					},
+					{
+						"name": "PICKING_ORDER",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_innlocaornew')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureBlob_adf_development')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "data.view",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "already1.xls",
+						"container": "rawblob"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "ORGANIZATION_ID",
+						"type": "String"
+					},
+					{
+						"name": "Location1",
+						"type": "String"
+					},
+					{
+						"name": "Location2",
+						"type": "String"
+					},
+					{
+						"name": "Location3",
+						"type": "String"
+					},
+					{
+						"name": "Location4",
+						"type": "String"
+					},
+					{
+						"name": "Location Type",
+						"type": "String"
+					},
+					{
+						"name": "PICKING_ORDER",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_combinelocaor')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "[parameters('AzureDataLake_adf_development')]",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "struckzone"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "1001",
+						"type": "String"
+					},
+					{
+						"name": "adi        ",
+						"type": "String"
+					},
+					{
+						"name": "AP",
+						"type": "String"
+					},
+					{
+						"name": "9742989539",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/default')]",
+			"type": "Microsoft.DataFactory/factories/managedVirtualNetworks",
+			"apiVersion": "2018-06-01",
+			"dependsOn": []
+		}
+	]
+}
