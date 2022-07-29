@@ -44,7 +44,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"notebook": {
-								"referenceName": "samplenote",
+								"referenceName": "Notebook 1",
 								"type": "NotebookReference"
 							},
 							"snapshot": true,
@@ -62,7 +62,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/notebooks/samplenote')]",
+				"[concat(variables('workspaceId'), '/notebooks/Notebook 1')]",
 				"[concat(variables('workspaceId'), '/bigDataPools/sparkpool')]"
 			]
 		},
@@ -198,7 +198,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "71d38d77-171b-4b05-bae8-3a47058c68c2"
+						"spark.autotune.trackingId": "8b3af81f-d400-4d6b-a8fc-68b54f6fb1c8"
 					}
 				},
 				"metadata": {
@@ -223,8 +223,7 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
