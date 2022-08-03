@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "This triggers data copy from blob to ADLS",
 		"annotations": [],
-		"runtimeState": "Started",
+		"runtimeState": "Stopped",
 		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
