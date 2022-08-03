@@ -1,0 +1,9 @@
+{
+	"name": "azureadffactorydev",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "2a7ba589-c329-4bec-b12a-0de84f03798a",
+		"tenantId": "d294c88b-b9e2-42fb-a6d3-00df8422b7f9"
+	}
+}
