@@ -81,10 +81,6 @@
 							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
-								"pipeline": {
-									"referenceName": "copydatablob toadls_getmetadata",
-									"type": "PipelineReference"
-								},
 								"waitOnCompletion": true
 							}
 						},
