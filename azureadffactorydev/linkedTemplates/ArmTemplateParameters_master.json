@@ -1,0 +1,48 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "azureadffactorydev"
+		},
+		"AzureBlobStorage_adfdevelopment_connectionString": {
+			"value": ""
+		},
+		"AzureBlob_adf_dev_connectionString": {
+			"value": ""
+		},
+		"AzureBlob_adf_development_connectionString": {
+			"value": ""
+		},
+		"AzureDataLakeStorage_adfdevelopment_accountKey": {
+			"value": ""
+		},
+		"AzureDataLake_adf_dev_accountKey": {
+			"value": ""
+		},
+		"AzureDataLake_adf_development_accountKey": {
+			"value": ""
+		},
+		"AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url": {
+			"value": "https://azuredatalakestoragee.dfs.core.windows.net/"
+		},
+		"AzureDataLake_adf_dev_properties_typeProperties_url": {
+			"value": "https://azureadlsdev.dfs.core.windows.net/"
+		},
+		"AzureDataLake_adf_development_properties_typeProperties_url": {
+			"value": "https://azuredatalakestoragedev.dfs.core.windows.net/"
+		},
+		"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
+			"value": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
+		},
+		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
+			"value": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

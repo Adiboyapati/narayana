@@ -1,0 +1,179 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "azureadffactorydev"
+		},
+		"AzureBlobStorage_adfdevelopment_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage_adfdevelopment'"
+		},
+		"AzureBlob_adf_dev_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlob_adf_dev'"
+		},
+		"AzureBlob_adf_development_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlob_adf_development'"
+		},
+		"AzureDataLakeStorage_adfdevelopment_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage_adfdevelopment'"
+		},
+		"AzureDataLake_adf_dev_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLake_adf_dev'"
+		},
+		"AzureDataLake_adf_development_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLake_adf_development'"
+		},
+		"AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://azuredatalakestoragee.dfs.core.windows.net/"
+		},
+		"AzureDataLake_adf_dev_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://azureadlsdev.dfs.core.windows.net/"
+		},
+		"AzureDataLake_adf_development_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://azuredatalakestoragedev.dfs.core.windows.net/"
+		},
+		"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
+		},
+		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "azureadffactorydev_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureBlobStorage_adfdevelopment_connectionString": {
+						"value": "[parameters('AzureBlobStorage_adfdevelopment_connectionString')]"
+					},
+					"AzureBlob_adf_dev_connectionString": {
+						"value": "[parameters('AzureBlob_adf_dev_connectionString')]"
+					},
+					"AzureBlob_adf_development_connectionString": {
+						"value": "[parameters('AzureBlob_adf_development_connectionString')]"
+					},
+					"AzureDataLakeStorage_adfdevelopment_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage_adfdevelopment_accountKey')]"
+					},
+					"AzureDataLake_adf_dev_accountKey": {
+						"value": "[parameters('AzureDataLake_adf_dev_accountKey')]"
+					},
+					"AzureDataLake_adf_development_accountKey": {
+						"value": "[parameters('AzureDataLake_adf_development_accountKey')]"
+					},
+					"AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage_adfdevelopment_properties_typeProperties_url')]"
+					},
+					"AzureDataLake_adf_dev_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLake_adf_dev_properties_typeProperties_url')]"
+					},
+					"AzureDataLake_adf_development_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLake_adf_development_properties_typeProperties_url')]"
+					},
+					"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
+						"value": "[parameters('adf_blobread_to_loadADLS_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "azureadffactorydev_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'azureadffactorydev_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "azureadffactorydev_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'azureadffactorydev_ArmTemplate_1')]"
+			]
+		},
+		{
+			"name": "azureadffactorydev_ArmTemplate_3",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_3.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
+						"value": "[parameters('azuredatacopy_adls_triggers_properties_typeProperties_scope')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'azureadffactorydev_ArmTemplate_2')]"
+			]
+		}
+	]
+}
