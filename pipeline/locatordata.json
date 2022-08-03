@@ -84,6 +84,26 @@
 						"enablePartitionDiscovery": false
 					}
 				}
+			},
+			{
+				"name": "Customer_copy",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "deletelocator",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "customercopy",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"folder": {
