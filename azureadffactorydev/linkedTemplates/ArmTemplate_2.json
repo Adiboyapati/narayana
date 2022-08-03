@@ -247,7 +247,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": ".xls",
+						"fileName": "Customer_ABC_Items.xls",
 						"container": "preparezone"
 					}
 				}
