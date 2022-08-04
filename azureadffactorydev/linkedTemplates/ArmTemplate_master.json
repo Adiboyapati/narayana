@@ -43,14 +43,6 @@
 			"type": "string",
 			"defaultValue": "https://azuredatalakestoragedev.dfs.core.windows.net/"
 		},
-		"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
-		},
-		"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
-			"type": "string",
-			"defaultValue": "/subscriptions/007dcd1d-92b6-47f6-a5f4-a566d7fdef64/resourceGroups/azuredevelopment-rg/providers/Microsoft.Storage/storageAccounts/azureblobstoragee"
-		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -104,9 +96,6 @@
 					},
 					"AzureDataLake_adf_development_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLake_adf_development_properties_typeProperties_url')]"
-					},
-					"adf_blobread_to_loadADLS_properties_typeProperties_scope": {
-						"value": "[parameters('adf_blobread_to_loadADLS_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -185,9 +174,6 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
-					},
-					"azuredatacopy_adls_triggers_properties_typeProperties_scope": {
-						"value": "[parameters('azuredatacopy_adls_triggers_properties_typeProperties_scope')]"
 					}
 				}
 			},
