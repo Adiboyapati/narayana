@@ -1,0 +1,114 @@
+{
+	"name": "Getmetadata",
+	"properties": {
+		"activities": [
+			{
+				"name": "locatorcopy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Filter_condition",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "locator_blob_ds",
+						"type": "DatasetReference"
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "dalalake_locator_ds",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "blob to adls",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "metadata_blob_ds",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "BinaryReadSettings"
+					}
+				}
+			},
+			{
+				"name": "Filter_condition",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "blob to adls",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('blob to adls').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@contains(activity('blob to adls').output.childItems[0].name,item().name)",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "EMR"
+		},
+		"annotations": []
+	}
+}
