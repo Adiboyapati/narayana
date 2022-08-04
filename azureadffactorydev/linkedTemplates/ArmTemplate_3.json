@@ -1319,7 +1319,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "blob to adls",
+								"activity": "Filter_condition",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1455,6 +1455,29 @@
 							},
 							"formatSettings": {
 								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Filter_condition",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "blob to adls",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('blob to adls').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@contains(activity('blob to adls').output.childItems[0].name,item().name)",
+								"type": "Expression"
 							}
 						}
 					}
