@@ -1,18 +1,12 @@
 {
-	"name": "Getmetadata",
+	"name": "copydata3",
 	"properties": {
+		"description": "this is data copy from azureblodstoraage to azuredatalake storage",
 		"activities": [
 			{
-				"name": "locatorcopy",
+				"name": "copy azureblob to ADLS",
 				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Filter_condition",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -26,7 +20,8 @@
 						"type": "BinarySource",
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
+							"recursive": true,
+							"deleteFilesAfterCompletion": false
 						},
 						"formatSettings": {
 							"type": "BinaryReadSettings"
@@ -42,21 +37,28 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "locator_blob_ds",
+						"referenceName": "azureblobprepare4",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "dalalake_locator_ds",
+						"referenceName": "azureprepare_adls4",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "blob to adls",
-				"type": "GetMetadata",
-				"dependsOn": [],
+				"name": "delete copydata",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "copy azureblob to ADLS",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -67,48 +69,27 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "metadata_blob_ds",
+						"referenceName": "azureblobprepare4",
 						"type": "DatasetReference"
 					},
-					"fieldList": [
-						"childItems"
-					],
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlob_adf_dev",
+							"type": "LinkedServiceReference"
+						},
+						"path": "logzone"
+					},
+					"enableLogging": true,
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"recursive": true,
 						"enablePartitionDiscovery": false
-					},
-					"formatSettings": {
-						"type": "BinaryReadSettings"
-					}
-				}
-			},
-			{
-				"name": "Filter_condition",
-				"type": "Filter",
-				"dependsOn": [
-					{
-						"activity": "blob to adls",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('blob to adls').output.childItems",
-						"type": "Expression"
-					},
-					"condition": {
-						"value": "@contains(activity('blob to adls').output.childItems[0].name,item().name)",
-						"type": "Expression"
 					}
 				}
 			}
 		],
 		"folder": {
-			"name": "EMR"
+			"name": "ISE"
 		},
 		"annotations": []
 	}
