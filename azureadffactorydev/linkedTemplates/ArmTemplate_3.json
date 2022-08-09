@@ -13,6 +13,59 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_invlocaor')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlob_adf_development",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "data.view",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "already.xls",
+						"container": "rawblob"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "ORGANIZATION_ID",
+						"type": "String"
+					},
+					{
+						"name": "Location1",
+						"type": "String"
+					},
+					{
+						"name": "Location2",
+						"type": "String"
+					},
+					{
+						"name": "Location3",
+						"type": "String"
+					},
+					{
+						"name": "Location4",
+						"type": "String"
+					},
+					{
+						"name": "Location Type",
+						"type": "String"
+					},
+					{
+						"name": "PICKING_ORDER",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_locator')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -165,7 +218,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Employee.txt",
+						"fileName": "Customer_ABC_Items.csv",
 						"container": "rawzone"
 					}
 				}
@@ -186,9 +239,73 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "Customer_ABC_Items.csv",
 						"container": "rawzone"
 					}
 				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/source_ds')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlob_adf_dev",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Customer_ABC_Items.csv",
+						"container": "rawzone"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					},
+					{
+						"type": "String"
+					}
+				]
 			},
 			"dependsOn": []
 		},
@@ -364,7 +481,7 @@
 								"parameters": {}
 							},
 							"fieldList": [
-								"childItems"
+								"exists"
 							],
 							"storeSettings": {
 								"type": "AzureBlobStorageReadSettings",
@@ -390,7 +507,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@activity('blob to adls').output.childItems",
+								"value": "@activity('blob to adls').output.exists",
 								"type": "Expression"
 							},
 							"condition": {
@@ -847,7 +964,14 @@
 					{
 						"name": "customercopy",
 						"type": "Copy",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Filter_condition",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -929,6 +1053,60 @@
 								"enablePartitionDiscovery": false
 							}
 						}
+					},
+					{
+						"name": "blob to lake",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "metadata_blob_ds",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"itemType"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "Filter_condition",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "blob to lake",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('blob to lake').output.itemType",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@first(activity('blob to lake').output.itemType)",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
@@ -940,7 +1118,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/metadata_blob_ds')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/foreachblobtoAdls')]",
@@ -1394,7 +1574,9 @@
 					]
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/ds_invlocaor')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/empdatafile')]",
@@ -1465,108 +1647,6 @@
 				}
 			},
 			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Empdata')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "empdatafile",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "empdatafile",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"empdatavaliddation": {},
-									"employeeoutput": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "ISE"
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-07-12T11:05:46Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/empdatafile')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/inv_locator')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "duplicaterows",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "duplicaterows",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"Invlocator": {},
-									"invlocaornew": {},
-									"invlocatondata": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "ISE"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/duplicaterows')]"
-			]
 		}
 	]
 }
