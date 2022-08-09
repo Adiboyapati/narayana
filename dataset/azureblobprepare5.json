@@ -1,0 +1,17 @@
+{
+	"name": "azureblobprepare5",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureBlob_adf_dev",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "prepare"
+			}
+		}
+	}
+}
