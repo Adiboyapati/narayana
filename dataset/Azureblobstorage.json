@@ -2,7 +2,7 @@
 	"name": "Azureblobstorage",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage_adfdevelopment",
+			"referenceName": "AzureBlob_adf_dev",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,7 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "rawzone"
+				"fileName": "Customer_DEF_Items.xls",
+				"container": "preparezone"
 			}
 		}
 	}
