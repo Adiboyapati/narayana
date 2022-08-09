@@ -1041,7 +1041,7 @@
 						"type": "GetMetadata",
 						"dependsOn": [
 							{
-								"activity": "Set variable_runID",
+								"activity": "Switch1_RunTokenID",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1125,6 +1125,87 @@
 								"type": "Expression"
 							}
 						}
+					},
+					{
+						"name": "Switch1_RunTokenID",
+						"type": "Switch",
+						"dependsOn": [
+							{
+								"activity": "Set variable_runID",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"on": {
+								"value": "@variables('TokenID')",
+								"type": "Expression"
+							},
+							"cases": [
+								{
+									"value": "ABC",
+									"activities": [
+										{
+											"name": "Set variable_ABC",
+											"type": "SetVariable",
+											"dependsOn": [],
+											"userProperties": [],
+											"typeProperties": {
+												"variableName": "TokenPath",
+												"value": "/struckzone/"
+											}
+										}
+									]
+								},
+								{
+									"value": "DEF",
+									"activities": [
+										{
+											"name": "Set variable_DEF",
+											"type": "SetVariable",
+											"dependsOn": [],
+											"userProperties": [],
+											"typeProperties": {
+												"variableName": "TokenPath",
+												"value": "/struckzone/"
+											}
+										}
+									]
+								},
+								{
+									"value": "GHI",
+									"activities": [
+										{
+											"name": "Set variable_GHI",
+											"type": "SetVariable",
+											"dependsOn": [],
+											"userProperties": [],
+											"typeProperties": {
+												"variableName": "TokenPath",
+												"value": "/datazone/"
+											}
+										}
+									]
+								},
+								{
+									"value": "XYZ",
+									"activities": [
+										{
+											"name": "Set variable_XYZ",
+											"type": "SetVariable",
+											"dependsOn": [],
+											"userProperties": [],
+											"typeProperties": {
+												"variableName": "TokenPath",
+												"value": "/datazone/"
+											}
+										}
+									]
+								}
+							]
+						}
 					}
 				],
 				"policy": {
@@ -1144,6 +1225,9 @@
 						"type": "String"
 					},
 					"RunID": {
+						"type": "String"
+					},
+					"TokenPath": {
 						"type": "String"
 					}
 				},
