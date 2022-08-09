@@ -427,7 +427,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_adfdevelopment",
+					"referenceName": "AzureBlob_adf_dev",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -435,12 +435,13 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "rawblob"
+						"fileName": "Customer_DEF_Items.xls",
+						"container": "preparezone"
 					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		},
 		{
