@@ -3,133 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "customercopy",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "blob to lake",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "BinarySource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
-						},
-						"formatSettings": {
-							"type": "BinaryReadSettings"
-						}
-					},
-					"sink": {
-						"type": "BinarySink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "customer_blob_ds",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "customer_adls_ds",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "deletelocator",
-				"type": "Delete",
-				"dependsOn": [
-					{
-						"activity": "customercopy",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataset": {
-						"referenceName": "delete_customer_blob_ds",
-						"type": "DatasetReference"
-					},
-					"logStorageSettings": {
-						"linkedServiceName": {
-							"referenceName": "AzureBlob_adf_dev",
-							"type": "LinkedServiceReference"
-						},
-						"path": "logzone"
-					},
-					"enableLogging": true,
-					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
-						"enablePartitionDiscovery": false
-					}
-				}
-			},
-			{
-				"name": "blob to lake",
-				"type": "GetMetadata",
-				"dependsOn": [
-					{
-						"activity": "Switch1_RunTokenID",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"dataset": {
-						"referenceName": "metadata_blob_ds",
-						"type": "DatasetReference"
-					},
-					"fieldList": [
-						"lastModified"
-					],
-					"storeSettings": {
-						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
-						"enablePartitionDiscovery": false
-					},
-					"formatSettings": {
-						"type": "BinaryReadSettings"
-					}
-				}
-			},
-			{
 				"name": "Set variable_TokenID",
 				"type": "SetVariable",
 				"dependsOn": [],
@@ -176,13 +49,13 @@
 				"typeProperties": {
 					"variableName": "RunID",
 					"value": {
-						"value": "@concat(variables('TokenID'),'_',variables('Value'),'_run.sql')",
+						"value": "@concat(variables('TokenID'),'_',variables('Value'))",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "Switch1_RunTokenID",
+				"name": "Switch_RunTokenID",
 				"type": "Switch",
 				"dependsOn": [
 					{
@@ -203,14 +76,48 @@
 							"value": "Load",
 							"activities": [
 								{
-									"name": "Set variable_LOAD",
-									"type": "SetVariable",
+									"name": "Copy data1",
+									"type": "Copy",
 									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
 									"userProperties": [],
 									"typeProperties": {
-										"variableName": "TokenPath",
-										"value": "/datazone/"
-									}
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											}
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "Azureblobstorage",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "dalalake_locator_ds",
+											"type": "DatasetReference"
+										}
+									]
 								}
 							]
 						},
@@ -218,14 +125,48 @@
 							"value": "Down",
 							"activities": [
 								{
-									"name": "Set variable_Down",
-									"type": "SetVariable",
+									"name": "Copy data2",
+									"type": "Copy",
 									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
 									"userProperties": [],
 									"typeProperties": {
-										"variableName": "TokenPath",
-										"value": "/datazone/"
-									}
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											}
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "Azureblobstorage",
+											"type": "DatasetReference"
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "azureprepare_adls",
+											"type": "DatasetReference"
+										}
+									]
 								}
 							]
 						}
