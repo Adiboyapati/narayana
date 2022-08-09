@@ -10,7 +10,7 @@
 				"typeProperties": {
 					"variableName": "TokenID",
 					"value": {
-						"value": "@split(pipeline().parameters.filename,'_')[1]",
+						"value": "@split(pipeline().parameters.folderName,'_')[1]",
 						"type": "Expression"
 					}
 				}
@@ -23,7 +23,7 @@
 				"typeProperties": {
 					"variableName": "Value",
 					"value": {
-						"value": "@split(pipeline().parameters.filename,'_')[2]",
+						"value": "@split(pipeline().parameters.folderName,'_')[2]",
 						"type": "Expression"
 					}
 				}
