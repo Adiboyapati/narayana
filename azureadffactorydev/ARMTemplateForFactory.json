@@ -951,7 +951,7 @@
 						"typeProperties": {
 							"variableName": "TokenID",
 							"value": {
-								"value": "@split(pipeline().parameters.filename,'_')[1]",
+								"value": "@split(pipeline().parameters.folderName,'_')[1]",
 								"type": "Expression"
 							}
 						}
@@ -964,7 +964,7 @@
 						"typeProperties": {
 							"variableName": "Value",
 							"value": {
-								"value": "@split(pipeline().parameters.filename,'_')[2]",
+								"value": "@split(pipeline().parameters.folderName,'_')[2]",
 								"type": "Expression"
 							}
 						}
@@ -1124,8 +1124,9 @@
 					"cancelAfter": {}
 				},
 				"parameters": {
-					"filename": {
-						"type": "string"
+					"folderName": {
+						"type": "string",
+						"defaultValue": "output1"
 					}
 				},
 				"variables": {
@@ -2385,8 +2386,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Full_Load_Specification Rating.sql",
-						"container": "preparezone"
+						"fileName": "Full_Down_Displacement_Information.sql",
+						"container": "rawzone"
 					}
 				}
 			},
