@@ -888,7 +888,6 @@
 							],
 							"storeSettings": {
 								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
 								"enablePartitionDiscovery": false
 							},
 							"formatSettings": {
@@ -3726,7 +3725,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Customer_ABC_Items.csv",
+						"fileName": ".csv",
 						"container": "rawzone"
 					}
 				}

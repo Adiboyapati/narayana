@@ -239,7 +239,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Customer_ABC_Items.csv",
+						"fileName": ".csv",
 						"container": "rawzone"
 					}
 				}
@@ -1077,7 +1077,6 @@
 							],
 							"storeSettings": {
 								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
 								"enablePartitionDiscovery": false
 							},
 							"formatSettings": {
