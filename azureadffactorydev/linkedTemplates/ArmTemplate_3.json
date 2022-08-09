@@ -1223,7 +1223,14 @@
 					{
 						"name": "blob to lake",
 						"type": "GetMetadata",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Set variable_runID",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -1250,11 +1257,79 @@
 								"type": "BinaryReadSettings"
 							}
 						}
+					},
+					{
+						"name": "Set variable_TokenID",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "TokenID",
+							"value": {
+								"value": "@split(pipeline().parameters.filename,'_')[1]",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable_Value",
+						"type": "SetVariable",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "Value",
+							"value": {
+								"value": "@split(pipeline().parameters.filename,'_')[2]",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Set variable_runID",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Set variable_TokenID",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set variable_Value",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "RunID",
+							"value": {
+								"value": "@concat(variables('TokenID'),'_',variables('Value'),'_Runrequest.xls')",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"filename": {
+						"type": "string"
+					}
+				},
+				"variables": {
+					"TokenID": {
+						"type": "String"
+					},
+					"Value": {
+						"type": "String"
+					},
+					"RunID": {
+						"type": "String"
+					}
 				},
 				"folder": {
 					"name": "EMR"
