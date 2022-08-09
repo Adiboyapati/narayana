@@ -4543,7 +4543,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "rawblob"
+						"container": "rawzone"
 					}
 				}
 			},
