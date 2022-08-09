@@ -218,13 +218,13 @@
 							"value": "Down",
 							"activities": [
 								{
-									"name": "Set variable_DEF",
+									"name": "Set variable_Down",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "TokenPath",
-										"value": "/struckzone/"
+										"value": "/datazone/"
 									}
 								}
 							]
