@@ -200,22 +200,22 @@
 					},
 					"cases": [
 						{
-							"value": "ABC",
+							"value": "Load",
 							"activities": [
 								{
-									"name": "Set variable_ABC",
+									"name": "Set variable_LOAD",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
 									"typeProperties": {
 										"variableName": "TokenPath",
-										"value": "/struckzone/"
+										"value": "/datazone/"
 									}
 								}
 							]
 						},
 						{
-							"value": "DEF",
+							"value": "Down",
 							"activities": [
 								{
 									"name": "Set variable_DEF",
@@ -234,21 +234,6 @@
 							"activities": [
 								{
 									"name": "Set variable_GHI",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "TokenPath",
-										"value": "/datazone/"
-									}
-								}
-							]
-						},
-						{
-							"value": "XYZ",
-							"activities": [
-								{
-									"name": "Set variable_XYZ",
 									"type": "SetVariable",
 									"dependsOn": [],
 									"userProperties": [],
