@@ -175,8 +175,9 @@
 			}
 		],
 		"parameters": {
-			"filename": {
-				"type": "string"
+			"folderName": {
+				"type": "string",
+				"defaultValue": "output1"
 			}
 		},
 		"variables": {
