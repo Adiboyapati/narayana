@@ -176,7 +176,7 @@
 				"typeProperties": {
 					"variableName": "RunID",
 					"value": {
-						"value": "@concat(variables('TokenID'),'_',variables('Value'),'_Runrequest.xls')",
+						"value": "@concat(variables('TokenID'),'_',variables('Value'),'_run.sql')",
 						"type": "Expression"
 					}
 				}
