@@ -196,7 +196,7 @@
 						"typeProperties": {
 							"variableName": "RunID",
 							"value": {
-								"value": "@concat(variables('TokenID'),'_',variables('Value'),'_Runrequest.xls')",
+								"value": "@concat(variables('TokenID'),'_',variables('Value'),'_run.sql')",
 								"type": "Expression"
 							}
 						}
@@ -220,40 +220,10 @@
 							},
 							"cases": [
 								{
-									"value": "ABC",
+									"value": "Load",
 									"activities": [
 										{
-											"name": "Set variable_ABC",
-											"type": "SetVariable",
-											"dependsOn": [],
-											"userProperties": [],
-											"typeProperties": {
-												"variableName": "TokenPath",
-												"value": "/struckzone/"
-											}
-										}
-									]
-								},
-								{
-									"value": "DEF",
-									"activities": [
-										{
-											"name": "Set variable_DEF",
-											"type": "SetVariable",
-											"dependsOn": [],
-											"userProperties": [],
-											"typeProperties": {
-												"variableName": "TokenPath",
-												"value": "/struckzone/"
-											}
-										}
-									]
-								},
-								{
-									"value": "GHI",
-									"activities": [
-										{
-											"name": "Set variable_GHI",
+											"name": "Set variable_LOAD",
 											"type": "SetVariable",
 											"dependsOn": [],
 											"userProperties": [],
@@ -265,10 +235,10 @@
 									]
 								},
 								{
-									"value": "XYZ",
+									"value": "Down",
 									"activities": [
 										{
-											"name": "Set variable_XYZ",
+											"name": "Set variable_Down",
 											"type": "SetVariable",
 											"dependsOn": [],
 											"userProperties": [],
