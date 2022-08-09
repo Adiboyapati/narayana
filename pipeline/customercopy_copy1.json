@@ -228,21 +228,6 @@
 									}
 								}
 							]
-						},
-						{
-							"value": "GHI",
-							"activities": [
-								{
-									"name": "Set variable_GHI",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "TokenPath",
-										"value": "/datazone/"
-									}
-								}
-							]
 						}
 					]
 				}
