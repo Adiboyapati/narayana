@@ -2,7 +2,7 @@
 	"name": "azureprepare_adls",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorage_adfdevelopment",
+			"referenceName": "AzureDataLake_adf_dev",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
