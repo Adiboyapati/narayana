@@ -3726,6 +3726,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "Customer_ABC_Items.csv",
 						"container": "rawzone"
 					}
 				}
