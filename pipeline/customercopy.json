@@ -5,7 +5,14 @@
 			{
 				"name": "customercopy",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Filter_condition",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "7.00:00:00",
 					"retry": 0,
@@ -125,7 +132,17 @@
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('blob to lake').output.itemType",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@first(activity('blob to lake').output.itemName)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"folder": {
