@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Filter_condition",
+						"activity": "blob to lake",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -119,29 +119,6 @@
 					},
 					"formatSettings": {
 						"type": "BinaryReadSettings"
-					}
-				}
-			},
-			{
-				"name": "Filter_condition",
-				"type": "Filter",
-				"dependsOn": [
-					{
-						"activity": "blob to lake",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('blob to lake').output.lastModified",
-						"type": "Expression"
-					},
-					"condition": {
-						"value": "@contains(activity('blob to lake').output.lastModified[0].name,item().name)",
-						"type": "Expression"
 					}
 				}
 			}
