@@ -110,10 +110,11 @@
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"itemType"
+						"exists"
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
@@ -135,11 +136,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('blob to lake').output.itemType",
+						"value": "@activity('blob to lake').output.exists",
 						"type": "Expression"
 					},
 					"condition": {
-						"value": "@first(activity('blob to lake').output.itemType)",
+						"value": "@activity('blob to lake').output.contentMD5",
 						"type": "Expression"
 					}
 				}
