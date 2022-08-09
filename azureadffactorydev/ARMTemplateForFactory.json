@@ -4499,7 +4499,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "rawblob"
+						"container": "rawzone"
 					}
 				}
 			},
@@ -4565,7 +4565,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "prepare"
+						"container": "preparezone"
 					}
 				}
 			},
@@ -4587,7 +4587,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileSystem": "preparezone"
+						"fileSystem": "datazone"
 					}
 				}
 			},
