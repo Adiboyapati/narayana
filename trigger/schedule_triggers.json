@@ -3,7 +3,7 @@
 	"properties": {
 		"description": "this triggers will run schedule based",
 		"annotations": [],
-		"runtimeState": "Stopped",
+		"runtimeState": "Started",
 		"pipelines": [],
 		"type": "ScheduleTrigger",
 		"typeProperties": {
