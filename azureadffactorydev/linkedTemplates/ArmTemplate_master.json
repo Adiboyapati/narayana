@@ -51,10 +51,6 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
 		},
-		"storage_triggers_properties_setvariable_Swich_copydata1_parameters_Filename": {
-			"type": "string",
-			"defaultValue": "Full_Load_Specification Rating.sql"
-		},
 		"storage_triggers_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
@@ -112,6 +108,9 @@
 					},
 					"AzureDataLake_adf_development_properties_typeProperties_url": {
 						"value": "[parameters('AzureDataLake_adf_development_properties_typeProperties_url')]"
+					},
+					"storage_triggers_properties_typeProperties_scope": {
+						"value": "[parameters('storage_triggers_properties_typeProperties_scope')]"
 					}
 				}
 			},
@@ -196,12 +195,6 @@
 					},
 					"stogage_blobtoadls_triggers_properties_typeProperties_scope": {
 						"value": "[parameters('stogage_blobtoadls_triggers_properties_typeProperties_scope')]"
-					},
-					"storage_triggers_properties_setvariable_Swich_copydata1_parameters_Filename": {
-						"value": "[parameters('storage_triggers_properties_setvariable_Swich_copydata1_parameters_Filename')]"
-					},
-					"storage_triggers_properties_typeProperties_scope": {
-						"value": "[parameters('storage_triggers_properties_typeProperties_scope')]"
 					}
 				}
 			},

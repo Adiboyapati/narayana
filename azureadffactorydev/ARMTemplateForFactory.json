@@ -51,10 +51,6 @@
 			"type": "string",
 			"defaultValue": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
 		},
-		"storage_triggers_properties_setvariable_Swich_copydata1_parameters_Filename": {
-			"type": "string",
-			"defaultValue": "Full_Load_Specification Rating.sql"
-		},
 		"storage_triggers_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
@@ -224,7 +220,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Filter_condition",
+								"activity": "getmetadata_filter",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -273,7 +269,30 @@
 						]
 					},
 					{
-						"name": "blob to adls",
+						"name": "getmetadata_filter",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_blob",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata_blob').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@contains(activity('Get Metadata_blob').output.childItems[0].name,item().name)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get Metadata_blob",
 						"type": "GetMetadata",
 						"dependsOn": [],
 						"policy": {
@@ -286,43 +305,19 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "metadata_blob_ds",
+								"referenceName": "azure_blob_metafata_ds",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
 							"fieldList": [
-								"exists"
+								"childItems"
 							],
 							"storeSettings": {
 								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
 								"enablePartitionDiscovery": false
 							},
 							"formatSettings": {
 								"type": "BinaryReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Filter_condition",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "blob to adls",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('blob to adls').output.exists",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@contains(activity('blob to adls').output.childItems[0].name,item().name)",
-								"type": "Expression"
 							}
 						}
 					}
@@ -339,7 +334,7 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/locator_blob_ds')]",
 				"[concat(variables('factoryId'), '/datasets/dalalake_locator_ds')]",
-				"[concat(variables('factoryId'), '/datasets/metadata_blob_ds')]"
+				"[concat(variables('factoryId'), '/datasets/azure_blob_metafata_ds')]"
 			]
 		},
 		{
@@ -4511,8 +4506,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Customer_ABC_Items.csv",
-						"container": "rawzone"
+						"fileName": "Autoinvoice_Import_Program_061219.txt",
+						"container": "preparezone"
 					}
 				}
 			},
@@ -4534,6 +4529,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": "Full_Load_Specification Rating.sql",
 						"container": "rawzone"
 					}
 				}
@@ -4704,16 +4700,8 @@
 			"properties": {
 				"description": "this triggers will run schedule based",
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "Getmetadata",
-							"type": "PipelineReference"
-						},
-						"parameters": {}
-					}
-				],
+				"runtimeState": "Stopped",
+				"pipelines": [],
 				"type": "ScheduleTrigger",
 				"typeProperties": {
 					"recurrence": {
@@ -4725,9 +4713,7 @@
 					}
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Getmetadata')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/dataflow1')]",
@@ -4992,14 +4978,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipeline": {
-					"pipelineReference": {
-						"referenceName": "Getmetadata",
-						"type": "PipelineReference"
-					},
-					"parameters": {}
-				},
+				"runtimeState": "Stopped",
 				"type": "TumblingWindowTrigger",
 				"typeProperties": {
 					"frequency": "Hour",
@@ -5014,9 +4993,7 @@
 					"dependsOn": []
 				}
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/Getmetadata')]"
-			]
+			"dependsOn": []
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/stogage_blobtoadls_triggers')]",
@@ -5035,6 +5012,13 @@
 						"parameters": {
 							"Filename": "[parameters('stogage_blobtoadls_triggers_properties_setvariable_Swich_copydata1_parameters_Filename')]"
 						}
+					},
+					{
+						"pipelineReference": {
+							"referenceName": "Getmetadata",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
 					}
 				],
 				"type": "BlobEventsTrigger",
@@ -5049,7 +5033,8 @@
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/setvariable_Swich_copydata1')]"
+				"[concat(variables('factoryId'), '/pipelines/setvariable_Swich_copydata1')]",
+				"[concat(variables('factoryId'), '/pipelines/Getmetadata')]"
 			]
 		},
 		{
@@ -5058,18 +5043,8 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
-				"pipelines": [
-					{
-						"pipelineReference": {
-							"referenceName": "setvariable_Swich_copydata1",
-							"type": "PipelineReference"
-						},
-						"parameters": {
-							"Filename": "[parameters('storage_triggers_properties_setvariable_Swich_copydata1_parameters_Filename')]"
-						}
-					}
-				],
+				"runtimeState": "Stopped",
+				"pipelines": [],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
 					"blobPathBeginsWith": "/rawzone/blobs/Full_",
@@ -5081,8 +5056,28 @@
 					]
 				}
 			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/azure_blob_metafata_ds')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlob_adf_dev",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "rawzone"
+					}
+				}
+			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/setvariable_Swich_copydata1')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		}
 	]
