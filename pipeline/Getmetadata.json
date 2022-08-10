@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Filter_condition",
+						"activity": "getmetadata_filter",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -54,7 +54,30 @@
 				]
 			},
 			{
-				"name": "blob to adls",
+				"name": "getmetadata_filter",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata_blob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata_blob').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@contains(activity('Get Metadata_blob').output.childItems[0].name,item().name)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Metadata_blob",
 				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
@@ -67,42 +90,18 @@
 				"userProperties": [],
 				"typeProperties": {
 					"dataset": {
-						"referenceName": "metadata_blob_ds",
+						"referenceName": "azure_blob_metafata_ds",
 						"type": "DatasetReference"
 					},
 					"fieldList": [
-						"exists"
+						"childItems"
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
-						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
 						"type": "BinaryReadSettings"
-					}
-				}
-			},
-			{
-				"name": "Filter_condition",
-				"type": "Filter",
-				"dependsOn": [
-					{
-						"activity": "blob to adls",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('blob to adls').output.exists",
-						"type": "Expression"
-					},
-					"condition": {
-						"value": "@contains(activity('blob to adls').output.childItems[0].name,item().name)",
-						"type": "Expression"
 					}
 				}
 			}
