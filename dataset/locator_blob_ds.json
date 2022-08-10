@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Full_Load_Displacement_Information.sql",
+				"fileName": "Full_Load_Specification Rating_1.sql",
 				"container": "preparezone"
 			}
 		}
