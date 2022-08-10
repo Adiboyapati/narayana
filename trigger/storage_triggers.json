@@ -3,17 +3,7 @@
 	"properties": {
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [
-			{
-				"pipelineReference": {
-					"referenceName": "setvariable_Swich_copydata1",
-					"type": "PipelineReference"
-				},
-				"parameters": {
-					"Filename": "Full_Load_Specification Rating.sql"
-				}
-			}
-		],
+		"pipelines": [],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/rawzone/blobs/Full_",
