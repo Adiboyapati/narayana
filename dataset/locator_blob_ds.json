@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Customer_ABC_Items.csv",
-				"container": "rawzone"
+				"fileName": "Autoinvoice_Import_Program_061219.txt",
+				"container": "preparezone"
 			}
 		}
 	}
