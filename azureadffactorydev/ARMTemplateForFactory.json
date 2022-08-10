@@ -898,7 +898,7 @@
 						"type": "Copy",
 						"dependsOn": [
 							{
-								"activity": "Filter_condition",
+								"activity": "Filter_condition_metadata",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -987,7 +987,30 @@
 						}
 					},
 					{
-						"name": "blob to lake",
+						"name": "Filter_condition_metadata",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_bloto Adls",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata_bloto Adls').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@contains(activity('Get Metadata_bloto Adls').output.childItems[0].name,item().name)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get Metadata_bloto Adls",
 						"type": "GetMetadata",
 						"dependsOn": [],
 						"policy": {
@@ -1009,34 +1032,10 @@
 							],
 							"storeSettings": {
 								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
 								"enablePartitionDiscovery": false
 							},
 							"formatSettings": {
 								"type": "BinaryReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Filter_condition",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "blob to lake",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('blob to lake').output.childItems",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@contains(activity('blob to lake').output.childItems[0].name,item().name)",
-								"type": "Expression"
 							}
 						}
 					}
@@ -4070,7 +4069,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Customer_ABC_Items.xls",
+						"fileName": "Customer_DEF_Items.xls",
 						"container": "preparezone"
 					}
 				}
@@ -4529,7 +4528,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Full_Load_Specification Rating.sql",
 						"container": "rawzone"
 					}
 				}
