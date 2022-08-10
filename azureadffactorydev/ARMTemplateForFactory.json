@@ -4703,8 +4703,8 @@
 					"recurrence": {
 						"frequency": "Minute",
 						"interval": 5,
-						"startTime": "2022-08-04T14:50:00",
-						"endTime": "2022-08-04T15:00:00",
+						"startTime": "2022-08-10T17:42:00",
+						"endTime": "2022-08-10T17:58:00",
 						"timeZone": "India Standard Time"
 					}
 				}
@@ -4968,6 +4968,38 @@
 				"[concat(variables('factoryId'), '/datasets/ds_empdatafile')]",
 				"[concat(variables('factoryId'), '/datasets/ds_empoutputdata')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLake_adf_development')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/tumbling_triggers')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipeline": {
+					"pipelineReference": {
+						"referenceName": "Getmetadata",
+						"type": "PipelineReference"
+					},
+					"parameters": {}
+				},
+				"type": "TumblingWindowTrigger",
+				"typeProperties": {
+					"frequency": "Hour",
+					"interval": 1,
+					"startTime": "2022-08-10T12:50:00Z",
+					"endTime": "2022-08-10T18:00:00Z",
+					"delay": "00:00:00",
+					"maxConcurrency": 50,
+					"retryPolicy": {
+						"intervalInSeconds": 30
+					},
+					"dependsOn": []
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Getmetadata')]"
 			]
 		}
 	]
