@@ -522,6 +522,28 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Azureblobstorage4')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlob_adf_dev",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Binary",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"container": "rawzone"
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/BinaryDataDestination')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -710,28 +732,6 @@
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Binary_Adls_forloop_ds1')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLake_adf_development",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "struckzone"
-					}
-				}
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureDataLake_adf_development')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Binary_Adls_forloop_ds2')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {

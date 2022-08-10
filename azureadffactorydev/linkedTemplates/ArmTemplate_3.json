@@ -13,6 +13,184 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/ds_combinelocaor')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLake_adf_development",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "struckzone"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "1001",
+						"type": "String"
+					},
+					{
+						"name": "adi        ",
+						"type": "String"
+					},
+					{
+						"name": "AP",
+						"type": "String"
+					},
+					{
+						"name": "9742989539",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_empdatafile')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlob_adf_development",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Employee.txt",
+						"container": "rawblob"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_empfixedlength')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlob_adf_development",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "Employee.txt",
+						"container": "rawblob"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_empoutputdata')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLake_adf_development",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "struckzone"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": false,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ds_innlocaornew')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureBlob_adf_development",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Excel",
+				"typeProperties": {
+					"sheetName": "data.view",
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "already1.xls",
+						"container": "rawblob"
+					},
+					"firstRowAsHeader": true
+				},
+				"schema": [
+					{
+						"name": "ORGANIZATION_ID",
+						"type": "String"
+					},
+					{
+						"name": "Location1",
+						"type": "String"
+					},
+					{
+						"name": "Location2",
+						"type": "String"
+					},
+					{
+						"name": "Location3",
+						"type": "String"
+					},
+					{
+						"name": "Location4",
+						"type": "String"
+					},
+					{
+						"name": "Location Type",
+						"type": "String"
+					},
+					{
+						"name": "PICKING_ORDER",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/ds_invlocaor')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -305,106 +483,6 @@
 						"type": "String"
 					}
 				]
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Azureblobstorage4')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlob_adf_dev",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "rawzone"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/azuredelpoy_adls4')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLake_adf_dev",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "struckzone"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Binary_getmetadata3')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlob_adf_dev",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "rawzone"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/azureblobprepare5')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureBlob_adf_dev",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobStorageLocation",
-						"container": "preparezone"
-					}
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/azureprepare_adls5')]",
-			"type": "Microsoft.DataFactory/factories/datasets",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"linkedServiceName": {
-					"referenceName": "AzureDataLake_adf_dev",
-					"type": "LinkedServiceReference"
-				},
-				"annotations": [],
-				"type": "Binary",
-				"typeProperties": {
-					"location": {
-						"type": "AzureBlobFSLocation",
-						"fileSystem": "datazone"
-					}
-				}
 			},
 			"dependsOn": []
 		},
@@ -1055,22 +1133,16 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/customercopy')]",
+			"name": "[concat(parameters('factoryName'), '/copydata4')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
+				"description": "this is data copy from azureblodstoraage to azuredatalake storage",
 				"activities": [
 					{
-						"name": "customercopy",
+						"name": "copy azureblob to ADLS",
 						"type": "Copy",
-						"dependsOn": [
-							{
-								"activity": "Filter_condition",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
+						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
 							"retry": 0,
@@ -1084,7 +1156,8 @@
 								"type": "BinarySource",
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"recursive": true
+									"recursive": true,
+									"deleteFilesAfterCompletion": false
 								},
 								"formatSettings": {
 									"type": "BinaryReadSettings"
@@ -1100,25 +1173,25 @@
 						},
 						"inputs": [
 							{
-								"referenceName": "customer_blob_ds",
+								"referenceName": "azureblobprepare5",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "customer_adls_ds",
+								"referenceName": "azureprepare_adls5",
 								"type": "DatasetReference",
 								"parameters": {}
 							}
 						]
 					},
 					{
-						"name": "deletelocator",
+						"name": "delete copydata",
 						"type": "Delete",
 						"dependsOn": [
 							{
-								"activity": "customercopy",
+								"activity": "copy azureblob to ADLS",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1134,7 +1207,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"dataset": {
-								"referenceName": "delete_customer_blob_ds",
+								"referenceName": "azureblobprepare5",
 								"type": "DatasetReference",
 								"parameters": {}
 							},
@@ -1152,60 +1225,6 @@
 								"enablePartitionDiscovery": false
 							}
 						}
-					},
-					{
-						"name": "blob to lake",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "metadata_blob_ds",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"exists"
-							],
-							"storeSettings": {
-								"type": "AzureBlobStorageReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "BinaryReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Filter_condition",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "blob to lake",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('blob to lake').output.exists",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@activity('blob to lake').output.exists",
-								"type": "Expression"
-							}
-						}
 					}
 				],
 				"policy": {
@@ -1213,13 +1232,11 @@
 					"cancelAfter": {}
 				},
 				"folder": {
-					"name": "EMR"
+					"name": "ISE"
 				},
 				"annotations": []
 			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/metadata_blob_ds')]"
-			]
+			"dependsOn": []
 		}
 	]
 }
