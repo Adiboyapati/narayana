@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Customer_DEF_Items.xls",
 				"container": "preparezone"
 			}
 		}
