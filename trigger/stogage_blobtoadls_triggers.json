@@ -13,12 +13,6 @@
 				"parameters": {
 					"Filename": "Full_Down_Displacement_Information.sql"
 				}
-			},
-			{
-				"pipelineReference": {
-					"referenceName": "Getmetadata",
-					"type": "PipelineReference"
-				}
 			}
 		],
 		"type": "BlobEventsTrigger",
