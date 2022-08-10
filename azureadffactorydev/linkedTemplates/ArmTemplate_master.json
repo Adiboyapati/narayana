@@ -43,6 +43,14 @@
 			"type": "string",
 			"defaultValue": "https://azuredatalakestoragedev.dfs.core.windows.net/"
 		},
+		"stogage_blobtoadls_triggers_properties_setvariable_Swich_copydata1_parameters_Filename": {
+			"type": "string",
+			"defaultValue": "Full_Down_Displacement_Information.sql"
+		},
+		"stogage_blobtoadls_triggers_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -174,6 +182,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"stogage_blobtoadls_triggers_properties_setvariable_Swich_copydata1_parameters_Filename": {
+						"value": "[parameters('stogage_blobtoadls_triggers_properties_setvariable_Swich_copydata1_parameters_Filename')]"
+					},
+					"stogage_blobtoadls_triggers_properties_typeProperties_scope": {
+						"value": "[parameters('stogage_blobtoadls_triggers_properties_typeProperties_scope')]"
 					}
 				}
 			},

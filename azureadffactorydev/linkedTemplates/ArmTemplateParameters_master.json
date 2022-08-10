@@ -32,6 +32,12 @@
 		"AzureDataLake_adf_development_properties_typeProperties_url": {
 			"value": "https://azuredatalakestoragedev.dfs.core.windows.net/"
 		},
+		"stogage_blobtoadls_triggers_properties_setvariable_Swich_copydata1_parameters_Filename": {
+			"value": "Full_Down_Displacement_Information.sql"
+		},
+		"stogage_blobtoadls_triggers_properties_typeProperties_scope": {
+			"value": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
+		},
 		"containerUri": {
 			"value": ""
 		},
