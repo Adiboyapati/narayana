@@ -4,7 +4,17 @@
 		"description": "this triggers  data files move  azure blob storage to azure Adls storage",
 		"annotations": [],
 		"runtimeState": "Started",
-		"pipelines": [],
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "setvariable_Swich_copydata1",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"Filename": "Full_Down_Displacement_Information.sql"
+				}
+			}
+		],
 		"type": "BlobEventsTrigger",
 		"typeProperties": {
 			"blobPathBeginsWith": "/rawzone/blobs/Full_",
