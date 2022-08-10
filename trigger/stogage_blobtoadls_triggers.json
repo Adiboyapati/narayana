@@ -1,0 +1,19 @@
+{
+	"name": "stogage_blobtoadls_triggers",
+	"properties": {
+		"description": "this triggers  data files move  azure blob storage to azure Adls storage",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/rawzone/blobs/Full_",
+			"blobPathEndsWith": ".sql",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
