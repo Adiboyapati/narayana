@@ -136,11 +136,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('blob to lake').output.exists",
+						"value": "@activity('blob to lake').output.childItems",
 						"type": "Expression"
 					},
 					"condition": {
-						"value": "@activity('blob to lake').output.exists",
+						"value": "@contains(activity('blob to lake').output.childItems[0].name,item().name)",
 						"type": "Expression"
 					}
 				}
