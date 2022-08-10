@@ -1,0 +1,28 @@
+{
+	"name": "storage_triggers",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "setvariable_Swich_copydata1",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"Filename": "Full_Load_Specification Rating.sql"
+				}
+			}
+		],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/rawzone/blobs/Full_",
+			"blobPathEndsWith": ".sql",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}
