@@ -4014,7 +4014,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Customer_DEF_Items.xls",
+						"fileName": "Autoinvoice_Import_Program_061219.txt",
 						"container": "preparezone"
 					}
 				}
