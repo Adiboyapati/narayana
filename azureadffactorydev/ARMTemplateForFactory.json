@@ -4505,7 +4505,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Autoinvoice_Import_Program_061219.txt",
+						"fileName": "Full_Load_Specification Rating_1.sql",
 						"container": "preparezone"
 					}
 				}
