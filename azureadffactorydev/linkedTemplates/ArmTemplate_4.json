@@ -14,6 +14,14 @@
 		"stogage_blobtoadls_triggers_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
+		},
+		"storage_triggers_properties_setvariable_Swich_copydata1_parameters_Filename": {
+			"type": "string",
+			"defaultValue": "Full_Load_Specification Rating.sql"
+		},
+		"storage_triggers_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Storage/storageAccounts/azureblobstoragedev1"
 		}
 	},
 	"variables": {
@@ -2043,6 +2051,39 @@
 					"blobPathEndsWith": ".sql",
 					"ignoreEmptyBlobs": true,
 					"scope": "[parameters('stogage_blobtoadls_triggers_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/setvariable_Swich_copydata1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/storage_triggers')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Started",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "setvariable_Swich_copydata1",
+							"type": "PipelineReference"
+						},
+						"parameters": {
+							"Filename": "[parameters('storage_triggers_properties_setvariable_Swich_copydata1_parameters_Filename')]"
+						}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/rawzone/blobs/Full_",
+					"blobPathEndsWith": ".sql",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('storage_triggers_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]
