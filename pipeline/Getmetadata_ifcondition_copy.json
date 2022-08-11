@@ -101,6 +101,7 @@
 									"type": "BinarySource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
+										"maxConcurrentConnections": 1,
 										"fileListPath": "rawzone/Full_Down_Displacement_Information.sql",
 										"deleteFilesAfterCompletion": true
 									},
