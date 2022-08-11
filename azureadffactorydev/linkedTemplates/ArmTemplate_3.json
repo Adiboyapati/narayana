@@ -580,7 +580,7 @@
 							"value": "@dataset().output",
 							"type": "Expression"
 						},
-						"fileSystem": "struckzone"
+						"fileSystem": "datazone"
 					}
 				}
 			},
