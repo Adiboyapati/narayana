@@ -1,0 +1,26 @@
+{
+	"name": "binary_adls_output_iflopp_ds",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLake_adf_dev",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"output": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@dataset().output",
+					"type": "Expression"
+				},
+				"fileSystem": "struckzone"
+			}
+		}
+	}
+}
