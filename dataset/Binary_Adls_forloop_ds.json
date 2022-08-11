@@ -2,7 +2,7 @@
 	"name": "Binary_Adls_forloop_ds",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLakeStorage_adfdevelopment",
+			"referenceName": "AzureDataLake_adf_dev",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
