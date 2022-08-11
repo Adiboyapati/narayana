@@ -121,10 +121,18 @@
 									"referenceName": "azureblobprepare",
 									"type": "DatasetReference"
 								},
+								"logStorageSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureBlob_adf_dev",
+										"type": "LinkedServiceReference"
+									},
+									"path": "logzone"
+								},
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,
+									"wildcardFileName": "*.txt",
 									"enablePartitionDiscovery": false
 								}
 							}
