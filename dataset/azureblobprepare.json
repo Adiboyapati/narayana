@@ -2,7 +2,7 @@
 	"name": "azureblobprepare",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage_adfdevelopment",
+			"referenceName": "AzureBlob_adf_dev",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "prepare"
+				"container": "rawzone"
 			}
 		}
 	}
