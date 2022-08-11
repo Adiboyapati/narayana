@@ -1,81 +1,7 @@
 {
-	"name": "Getmetadata",
+	"name": "Getmetadata_ForEach",
 	"properties": {
 		"activities": [
-			{
-				"name": "locatorcopy",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "getmetadata_filter",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "BinarySource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true
-						},
-						"formatSettings": {
-							"type": "BinaryReadSettings"
-						}
-					},
-					"sink": {
-						"type": "BinarySink",
-						"storeSettings": {
-							"type": "AzureBlobFSWriteSettings"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "locator_blob_ds",
-						"type": "DatasetReference"
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "dalalake_locator_ds",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "getmetadata_filter",
-				"type": "Filter",
-				"dependsOn": [
-					{
-						"activity": "Get Metadata_blob",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"items": {
-						"value": "@activity('Get Metadata_blob').output.childItems",
-						"type": "Expression"
-					},
-					"condition": {
-						"value": "@contains(activity('Get Metadata_blob').output.childItems[0].name,item().name)",
-						"type": "Expression"
-					}
-				}
-			},
 			{
 				"name": "Get Metadata_blob",
 				"type": "GetMetadata",
@@ -98,11 +24,80 @@
 					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					},
 					"formatSettings": {
 						"type": "BinaryReadSettings"
 					}
+				}
+			},
+			{
+				"name": "foreach_iterativeloop",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata_blob",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata_blob').output.childItems",
+						"type": "Expression"
+					},
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "for_each_copydata",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "BinarySource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"wildcardFileName": ".txt",
+										"deleteFilesAfterCompletion": false
+									},
+									"formatSettings": {
+										"type": "BinaryReadSettings"
+									}
+								},
+								"sink": {
+									"type": "BinarySink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "azure_blob_metafata_ds",
+									"type": "DatasetReference"
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Binary_Adls_forloop_ds1",
+									"type": "DatasetReference"
+								}
+							]
+						}
+					]
 				}
 			}
 		],
