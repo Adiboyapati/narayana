@@ -101,7 +101,7 @@
 									"type": "BinarySource",
 									"storeSettings": {
 										"type": "AzureBlobStorageReadSettings",
-										"fileListPath": "rawzone/SKDC_AR_Invoice_Extraction Data_V2.csv",
+										"fileListPath": "rawzone/Full_Down_Displacement_Information.sql",
 										"deleteFilesAfterCompletion": true
 									},
 									"formatSettings": {
