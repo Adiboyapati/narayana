@@ -2,7 +2,7 @@
 	"name": "Binary_Adls_forloop_ds1",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureDataLake_adf_development",
+			"referenceName": "AzureDataLake_adf_dev",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,6 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"folderPath": "output3",
 				"fileSystem": "struckzone"
 			}
 		}
