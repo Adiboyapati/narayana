@@ -2,7 +2,7 @@
 	"name": "Binary_blob_forloop",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlobStorage_adfdevelopment",
+			"referenceName": "AzureBlob_adf_dev",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Dimensions_1.sql",
-				"container": "rawblob"
+				"container": "rawzone"
 			}
 		}
 	}
