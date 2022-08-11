@@ -2413,7 +2413,7 @@
 				"runtimeState": "Started",
 				"pipeline": {
 					"pipelineReference": {
-						"referenceName": "Getmetadata",
+						"referenceName": "Getmetadata_ForEach",
 						"type": "PipelineReference"
 					},
 					"parameters": {}
