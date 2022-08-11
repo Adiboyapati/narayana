@@ -5,11 +5,20 @@
 			"referenceName": "AzureDataLake_adf_dev",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"FolderNmae": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@dataset().FolderNmae",
+					"type": "Expression"
+				},
 				"fileSystem": "struckzone"
 			}
 		}
