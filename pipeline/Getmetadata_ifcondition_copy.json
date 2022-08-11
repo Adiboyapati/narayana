@@ -67,6 +67,13 @@
 									"referenceName": "Binary_blob_foreach_ds",
 									"type": "DatasetReference"
 								},
+								"logStorageSettings": {
+									"linkedServiceName": {
+										"referenceName": "AzureDataLake_adf_dev",
+										"type": "LinkedServiceReference"
+									},
+									"path": "logzone"
+								},
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
