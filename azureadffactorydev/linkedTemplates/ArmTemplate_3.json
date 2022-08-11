@@ -754,6 +754,47 @@
 											"parameters": {}
 										}
 									]
+								},
+								{
+									"name": "Delete_data",
+									"type": "Delete",
+									"dependsOn": [
+										{
+											"activity": "for_each_copydata",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "azureblobprepare",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"logStorageSettings": {
+											"linkedServiceName": {
+												"referenceName": "AzureBlob_adf_dev",
+												"type": "LinkedServiceReference"
+											},
+											"path": "logzone"
+										},
+										"enableLogging": true,
+										"storeSettings": {
+											"type": "AzureBlobStorageReadSettings",
+											"recursive": true,
+											"wildcardFileName": "*.txt",
+											"enablePartitionDiscovery": false
+										}
+									}
 								}
 							]
 						}

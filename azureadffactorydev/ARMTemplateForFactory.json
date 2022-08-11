@@ -312,6 +312,47 @@
 											"parameters": {}
 										}
 									]
+								},
+								{
+									"name": "Delete_data",
+									"type": "Delete",
+									"dependsOn": [
+										{
+											"activity": "for_each_copydata",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "azureblobprepare",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"logStorageSettings": {
+											"linkedServiceName": {
+												"referenceName": "AzureBlob_adf_dev",
+												"type": "LinkedServiceReference"
+											},
+											"path": "logzone"
+										},
+										"enableLogging": true,
+										"storeSettings": {
+											"type": "AzureBlobStorageReadSettings",
+											"recursive": true,
+											"wildcardFileName": "*.txt",
+											"enablePartitionDiscovery": false
+										}
+									}
 								}
 							]
 						}
@@ -328,7 +369,9 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/azure_blob_metafata_ds')]",
-				"[concat(variables('factoryId'), '/datasets/Binary_Adls_forloop_ds1')]"
+				"[concat(variables('factoryId'), '/datasets/Binary_Adls_forloop_ds1')]",
+				"[concat(variables('factoryId'), '/datasets/azureblobprepare')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		},
 		{
@@ -3165,7 +3208,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "output3",
+						"folderPath": "output1",
 						"fileSystem": "struckzone"
 					}
 				}
@@ -3637,7 +3680,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"linkedServiceName": {
-					"referenceName": "AzureBlobStorage_adfdevelopment",
+					"referenceName": "AzureBlob_adf_dev",
 					"type": "LinkedServiceReference"
 				},
 				"annotations": [],
@@ -3645,12 +3688,12 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "prepare"
+						"container": "rawzone"
 					}
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlobStorage_adfdevelopment')]"
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		},
 		{
