@@ -49,24 +49,6 @@
 						"value": "@activity('Get Metadata_blob').output.exists",
 						"type": "Expression"
 					},
-					"ifFalseActivities": [
-						{
-							"name": "Copy data1",
-							"type": "Copy",
-							"dependsOn": [],
-							"policy": {
-								"timeout": "7.00:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"enableStaging": false
-							}
-						}
-					],
 					"ifTrueActivities": [
 						{
 							"name": "Copy data_ifcondition",
@@ -92,23 +74,11 @@
 										"type": "BinaryReadSettings"
 									}
 								},
-								"sink": {
-									"type": "BinarySink",
-									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings"
-									}
-								},
 								"enableStaging": false
 							},
 							"inputs": [
 								{
 									"referenceName": "Binary_blob_foreach_ds",
-									"type": "DatasetReference"
-								}
-							],
-							"outputs": [
-								{
-									"referenceName": "Binary_Adls_forloop_ds",
 									"type": "DatasetReference"
 								}
 							]
