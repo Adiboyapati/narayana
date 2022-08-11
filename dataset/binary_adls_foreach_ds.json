@@ -2,15 +2,15 @@
 	"name": "binary_adls_foreach_ds",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureBlob_adf_dev",
+			"referenceName": "AzureDataLake_adf_dev",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation",
-				"container": "rawzone"
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "struckzone"
 			}
 		}
 	}
