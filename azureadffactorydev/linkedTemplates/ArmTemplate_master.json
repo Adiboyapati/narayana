@@ -189,6 +189,26 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'azureadffactorydev_ArmTemplate_3')]"
+			]
+		},
+		{
+			"name": "azureadffactorydev_ArmTemplate_5",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_5.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"stogage_blobtoadls_triggers_properties_setvariable_Swich_copydata1_parameters_Filename": {
 						"value": "[parameters('stogage_blobtoadls_triggers_properties_setvariable_Swich_copydata1_parameters_Filename')]"
@@ -199,7 +219,7 @@
 				}
 			},
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'azureadffactorydev_ArmTemplate_3')]"
+				"[resourceId('Microsoft.Resources/deployments', 'azureadffactorydev_ArmTemplate_4')]"
 			]
 		}
 	]
