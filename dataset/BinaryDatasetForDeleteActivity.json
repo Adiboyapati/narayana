@@ -9,9 +9,6 @@
 		"parameters": {
 			"FolderPath": {
 				"type": "string"
-			},
-			"Directory": {
-				"type": "string"
 			}
 		},
 		"annotations": [],
