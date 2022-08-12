@@ -87,7 +87,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"fileName": "Full_Down_Displacement_Information.sql",
+						"fileName": "SKDC_AR_Invoice_Extraction Data_V2.csv",
 						"container": "rawzone"
 					}
 				}
