@@ -9,7 +9,9 @@
 		"type": "Binary",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobStorageLocation"
+				"type": "AzureBlobStorageLocation",
+				"fileName": "SKDC_AR_Invoice_Extraction Data_V2.csv",
+				"container": "rawzone"
 			}
 		}
 	}
