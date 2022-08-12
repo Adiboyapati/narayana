@@ -10,7 +10,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Full_Down_Displacement_Information.sql",
 				"container": "rawzone"
 			}
 		}
