@@ -77,7 +77,7 @@
 								"enableLogging": true,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
-									"fileListPath": "rawzone/SKDC_AR_Invoice_Extraction Data_V2.csv",
+									"recursive": true,
 									"enablePartitionDiscovery": false
 								}
 							}
