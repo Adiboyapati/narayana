@@ -1071,6 +1071,9 @@
 					},
 					"receiver": {
 						"type": "string"
+					},
+					"status": {
+						"type": "string"
 					}
 				},
 				"folder": {
