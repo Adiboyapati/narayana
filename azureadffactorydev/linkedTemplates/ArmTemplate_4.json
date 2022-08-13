@@ -13,6 +13,166 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Getmetadata_ForEach')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Get Metadata_blob",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "azure_blob_metafata_ds",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "foreach_iterativeloop",
+						"type": "ForEach",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_blob",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata_blob').output.childItems",
+								"type": "Expression"
+							},
+							"isSequential": true,
+							"activities": [
+								{
+									"name": "for_each_copydata",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true,
+												"wildcardFileName": "*.txt",
+												"deleteFilesAfterCompletion": false
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											}
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "azure_blob_metafata_ds",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Binary_Adls_forloop_ds1",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								},
+								{
+									"name": "Delete_data",
+									"type": "Delete",
+									"dependsOn": [
+										{
+											"activity": "for_each_copydata",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"dataset": {
+											"referenceName": "azureblobprepare",
+											"type": "DatasetReference",
+											"parameters": {}
+										},
+										"logStorageSettings": {
+											"linkedServiceName": {
+												"referenceName": "AzureBlob_adf_dev",
+												"type": "LinkedServiceReference"
+											},
+											"path": "logzone"
+										},
+										"enableLogging": true,
+										"storeSettings": {
+											"type": "AzureBlobStorageReadSettings",
+											"recursive": true,
+											"wildcardFileName": "*.txt",
+											"enablePartitionDiscovery": false
+										}
+									}
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"folder": {
+					"name": "EMR"
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Getmetadata_ifcondition_copy')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -846,11 +1006,72 @@
 								"type": "BinaryReadSettings"
 							}
 						}
+					},
+					{
+						"name": "Web_activitylogicapp",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_bloto Adls",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod2-49.eastus.logic.azure.com:443/workflows/c5036fb8b4bb4ddab9ec749d30b7a57a/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lwhl2gygB3dVBPMl6eEQnnzTZ23AG4YjEUp-S-6FkoM",
+							"method": "POST",
+							"headers": {
+								"content-Type": {
+									"value": "application/json",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "{ \n \"message\" : \"This is custom dynamic application from your pipeline with runid @{pipeline().RunId}.\",\n \"datafactoryName\" : \"@{pipeline().DataFactory}.\",\n \"pipelineName\"  : \"@{pipeline().Pipeline}.\",\n \"receiver\"   : \"@{pipeline().parameters.receiver}\"\n \n}",
+								"type": "Expression"
+							},
+							"linkedServices": [
+								{
+									"referenceName": "AzureDataLake_adf_dev",
+									"type": "LinkedServiceReference"
+								}
+							],
+							"httpRequestTimeout": {
+								"value": "00:00:10",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
+				},
+				"parameters": {
+					"FileName": {
+						"type": "string"
+					},
+					"datafactoryName": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"pipelineName": {
+						"type": "string"
+					},
+					"receiver": {
+						"type": "string"
+					}
 				},
 				"folder": {
 					"name": "EMR"
@@ -1834,78 +2055,6 @@
 						"     partitionBy('hash', 1)) ~> employeeoutput"
 					]
 				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Delete files older than 3 days')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"description": "Please input a folder path as the parameter for this pipeline, and the pipeline will delete files which were last modified more than 30 days ago under the particular folder path.",
-				"activities": [
-					{
-						"name": "DeleteFiles",
-						"description": "Connect to your storage account to save the log file.",
-						"type": "Delete",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "BinaryDatasetForDeleteActivity",
-								"type": "DatasetReference",
-								"parameters": {
-									"FolderPath": {
-										"value": "@pipeline().parameters.SourceFolder",
-										"type": "Expression"
-									}
-								}
-							},
-							"logStorageSettings": {
-								"linkedServiceName": {
-									"referenceName": "AzureDataLake_adf_dev",
-									"type": "LinkedServiceReference"
-								},
-								"path": {
-									"value": "@pipeline().parameters.LoggingPath",
-									"type": "Expression"
-								}
-							},
-							"enableLogging": true,
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"modifiedDatetimeEnd": {
-									"value": "@{adddays(pipeline().TriggerTime, -3)}",
-									"type": "Expression"
-								},
-								"wildcardFileName": "*"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"SourceFolder": {
-						"type": "string",
-						"defaultValue": "sourcefolder"
-					},
-					"LoggingPath": {
-						"type": "string",
-						"defaultValue": "loggingfolder/subfolder"
-					}
-				},
-				"annotations": []
 			},
 			"dependsOn": []
 		},
