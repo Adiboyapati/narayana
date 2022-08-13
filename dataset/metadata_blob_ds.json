@@ -10,7 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"container": "rawzone"
+				"fileName": "already.xls",
+				"container": "rawblob"
 			}
 		}
 	}
