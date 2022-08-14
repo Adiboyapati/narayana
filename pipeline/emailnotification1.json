@@ -43,6 +43,21 @@
 		"parameters": {
 			"fileName": {
 				"type": "string"
+			},
+			"datafactoryName": {
+				"type": "string"
+			},
+			"pipelineName": {
+				"type": "string"
+			},
+			"message": {
+				"type": "string"
+			},
+			"receiver": {
+				"type": "string"
+			},
+			"status": {
+				"type": "string"
 			}
 		},
 		"annotations": []
