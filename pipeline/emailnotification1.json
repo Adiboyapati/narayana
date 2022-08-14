@@ -24,7 +24,7 @@
 						}
 					},
 					"body": {
-						"value": "{ \n \"message\" : \"This is custom dynamic application from your pipeline with runid @{pipeline().RunId}.\",\n \"datafactoryName\" : \"@{pipeline().DataFactory}.\",\n  \"pipelineName\"   :\"@{pipeline().Pipeline}.\",\n  \"receiver\"       :\"@{pipeline().parameters.fileName}\"\n \n}",
+						"value": "{ \n \"message\" : \"This is custom dynamic application from your pipeline with runid @{pipeline().RunId}.\",\n \"datafactoryName\" : \"@{pipeline().DataFactory}.\",\n  \"pipelineName\"   :\"@{pipeline().Pipeline}.\",\n  \"receiver\"       :\"@{pipeline().parameters.fileName}\",\n  \"status\"         :\"@{pipeline().parameters.status}\"\n \n}",
 						"type": "Expression"
 					},
 					"linkedServices": [
