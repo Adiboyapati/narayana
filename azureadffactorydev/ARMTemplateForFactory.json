@@ -1308,6 +1308,52 @@
 								"type": "BinaryReadSettings"
 							}
 						}
+					},
+					{
+						"name": "emailnotification_pipeline",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_bloto Adls",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "emailnotification1",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"fileName": {
+									"value": "@pipeline().parameters.FileName",
+									"type": "Expression"
+								},
+								"datafactoryName": {
+									"value": "@pipeline().parameters.datafactoryName",
+									"type": "Expression"
+								},
+								"pipelineName": {
+									"value": "@pipeline().parameters.pipelineName",
+									"type": "Expression"
+								},
+								"message": {
+									"value": "@pipeline().parameters.message",
+									"type": "Expression"
+								},
+								"receiver": {
+									"value": "@pipeline().parameters.receiver",
+									"type": "Expression"
+								},
+								"status": {
+									"value": "@pipeline().parameters.status",
+									"type": "Expression"
+								}
+							}
+						}
 					}
 				],
 				"policy": {
@@ -1344,6 +1390,7 @@
 				"[concat(variables('factoryId'), '/datasets/customer_adls_ds')]",
 				"[concat(variables('factoryId'), '/datasets/delete_customer_blob_ds')]",
 				"[concat(variables('factoryId'), '/datasets/metadata_blob_ds')]",
+				"[concat(variables('factoryId'), '/pipelines/emailnotification1')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		},
@@ -1639,6 +1686,80 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLake_adf_development')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/emailnotification1')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "emailnotification",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod2-49.eastus.logic.azure.com:443/workflows/c5036fb8b4bb4ddab9ec749d30b7a57a/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lwhl2gygB3dVBPMl6eEQnnzTZ23AG4YjEUp-S-6FkoM",
+							"method": "POST",
+							"headers": {
+								"content-Type": {
+									"value": "application/json",
+									"type": "Expression"
+								}
+							},
+							"body": {
+								"value": "{ \n \"message\" : \"This is custom dynamic application from your pipeline with runid @{pipeline().RunId}.\",\n \"datafactoryName\" : \"@{pipeline().DataFactory}.\",\n  \"pipelineName\"   :\"@{pipeline().Pipeline}.\",\n  \"receiver\"       :\"@{pipeline().parameters.fileName}\"\n \n}",
+								"type": "Expression"
+							},
+							"linkedServices": [
+								{
+									"referenceName": "AzureBlob_adf_dev",
+									"type": "LinkedServiceReference"
+								}
+							],
+							"httpRequestTimeout": {
+								"value": "00:00:10",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"fileName": {
+						"type": "string"
+					},
+					"datafactoryName": {
+						"type": "string"
+					},
+					"pipelineName": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"receiver": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		},
 		{
@@ -5721,80 +5842,6 @@
 				"[concat(variables('factoryId'), '/datasets/ds_empdatafile')]",
 				"[concat(variables('factoryId'), '/datasets/ds_empoutputdata')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLake_adf_development')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/emailnotification1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "emailnotification",
-						"type": "WebActivity",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://prod2-49.eastus.logic.azure.com:443/workflows/c5036fb8b4bb4ddab9ec749d30b7a57a/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lwhl2gygB3dVBPMl6eEQnnzTZ23AG4YjEUp-S-6FkoM",
-							"method": "POST",
-							"headers": {
-								"content-Type": {
-									"value": "application/json",
-									"type": "Expression"
-								}
-							},
-							"body": {
-								"value": "{ \n \"message\" : \"This is custom dynamic application from your pipeline with runid @{pipeline().RunId}.\",\n \"datafactoryName\" : \"@{pipeline().DataFactory}.\",\n  \"pipelineName\"   :\"@{pipeline().Pipeline}.\",\n  \"receiver\"       :\"@{pipeline().parameters.fileName}\"\n \n}",
-								"type": "Expression"
-							},
-							"linkedServices": [
-								{
-									"referenceName": "AzureBlob_adf_dev",
-									"type": "LinkedServiceReference"
-								}
-							],
-							"httpRequestTimeout": {
-								"value": "00:00:10",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"parameters": {
-					"fileName": {
-						"type": "string"
-					},
-					"datafactoryName": {
-						"type": "string"
-					},
-					"pipelineName": {
-						"type": "string"
-					},
-					"message": {
-						"type": "string"
-					},
-					"receiver": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string"
-					}
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		}
 	]
