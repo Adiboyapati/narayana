@@ -29,7 +29,7 @@
 					},
 					"linkedServices": [
 						{
-							"referenceName": "AzureDataLake_adf_dev",
+							"referenceName": "AzureBlob_adf_dev",
 							"type": "LinkedServiceReference"
 						}
 					],
