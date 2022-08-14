@@ -84,6 +84,29 @@
 						"enablePartitionDiscovery": false
 					}
 				}
+			},
+			{
+				"name": "Faildata",
+				"type": "Fail",
+				"dependsOn": [
+					{
+						"activity": "Copy data_fail",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"message": {
+						"value": "{\n \"pipeline\" : \"@{pipeline().Pipeline}\",\n \"type\"  : \"failure message\",\n \"error code\": \"500\"\n}",
+						"type": "Expression"
+					},
+					"errorCode": {
+						"value": "500",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"folder": {
