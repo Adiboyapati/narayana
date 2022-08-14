@@ -13,6 +13,78 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Delete files older than 3 days')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Please input a folder path as the parameter for this pipeline, and the pipeline will delete files which were last modified more than 30 days ago under the particular folder path.",
+				"activities": [
+					{
+						"name": "DeleteFiles",
+						"description": "Connect to your storage account to save the log file.",
+						"type": "Delete",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "BinaryDatasetForDeleteActivity",
+								"type": "DatasetReference",
+								"parameters": {
+									"FolderPath": {
+										"value": "@pipeline().parameters.SourceFolder",
+										"type": "Expression"
+									}
+								}
+							},
+							"logStorageSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzureDataLake_adf_dev",
+									"type": "LinkedServiceReference"
+								},
+								"path": {
+									"value": "@pipeline().parameters.LoggingPath",
+									"type": "Expression"
+								}
+							},
+							"enableLogging": true,
+							"storeSettings": {
+								"type": "AzureBlobFSReadSettings",
+								"recursive": true,
+								"modifiedDatetimeEnd": {
+									"value": "@{adddays(pipeline().TriggerTime, -3)}",
+									"type": "Expression"
+								},
+								"wildcardFileName": "*"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"SourceFolder": {
+						"type": "string",
+						"defaultValue": "sourcefolder"
+					},
+					"LoggingPath": {
+						"type": "string",
+						"defaultValue": "loggingfolder/subfolder"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Getmetadata_ForEach')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1004,50 +1076,6 @@
 							},
 							"formatSettings": {
 								"type": "BinaryReadSettings"
-							}
-						}
-					},
-					{
-						"name": "Web_activityl_fail",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata_bloto Adls",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://prod2-49.eastus.logic.azure.com:443/workflows/c5036fb8b4bb4ddab9ec749d30b7a57a/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=lwhl2gygB3dVBPMl6eEQnnzTZ23AG4YjEUp-S-6FkoM",
-							"method": "POST",
-							"headers": {
-								"content-Type": {
-									"value": "application/json",
-									"type": "Expression"
-								}
-							},
-							"body": {
-								"value": "{ \n \"message\" : \"This is custom dynamic application from your pipeline with runid @{pipeline().RunId}.\",\n \"datafactoryName\" : \"@{pipeline().DataFactory}.\",\n \"pipelineName\"  : \"@{pipeline().Pipeline}.\",\n \"receiver\"   : \"@{pipeline().parameters.receiver}\"\n \n}",
-								"type": "Expression"
-							},
-							"linkedServices": [
-								{
-									"referenceName": "AzureDataLake_adf_dev",
-									"type": "LinkedServiceReference"
-								}
-							],
-							"httpRequestTimeout": {
-								"value": "00:00:10",
-								"type": "Expression"
 							}
 						}
 					},
@@ -2393,57 +2421,6 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/customercopy')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/runningtotal')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "dataflow1",
-						"type": "ExecuteDataFlow",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "1.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataflow": {
-								"referenceName": "dataflow1",
-								"type": "DataFlowReference",
-								"parameters": {},
-								"datasetParameters": {
-									"PoRunningTotal": {},
-									"ouputsink": {}
-								}
-							},
-							"staging": {},
-							"compute": {
-								"coreCount": 8,
-								"computeType": "General"
-							},
-							"traceLevel": "Fine"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"folder": {
-					"name": "ISE"
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-07-12T11:05:45Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/dataflows/dataflow1')]"
 			]
 		}
 	]
