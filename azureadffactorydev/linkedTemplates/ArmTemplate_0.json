@@ -612,7 +612,8 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
-						"container": "rawblob"
+						"fileName": "Customer_ABC_Items.xls",
+						"container": "rawzone"
 					}
 				}
 			},
