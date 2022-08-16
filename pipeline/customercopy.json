@@ -150,52 +150,6 @@
 						"type": "BinaryReadSettings"
 					}
 				}
-			},
-			{
-				"name": "emailnotification_pipeline",
-				"type": "ExecutePipeline",
-				"dependsOn": [
-					{
-						"activity": "Get Metadata_bloto Adls",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "emailnotification1",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"fileName": {
-							"value": "@pipeline().parameters.FileName",
-							"type": "Expression"
-						},
-						"datafactoryName": {
-							"value": "@pipeline().parameters.datafactoryName",
-							"type": "Expression"
-						},
-						"pipelineName": {
-							"value": "@pipeline().parameters.pipelineName",
-							"type": "Expression"
-						},
-						"message": {
-							"value": "@pipeline().parameters.message",
-							"type": "Expression"
-						},
-						"receiver": {
-							"value": "@pipeline().parameters.receiver",
-							"type": "Expression"
-						},
-						"status": {
-							"value": "@pipeline().parameters.status",
-							"type": "Expression"
-						}
-					}
-				}
 			}
 		],
 		"parameters": {
