@@ -80,6 +80,10 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobStorageLocation",
+						"fileName": {
+							"value": "@dataset().filename_ds",
+							"type": "Expression"
+						},
 						"container": "preparezone"
 					}
 				}
