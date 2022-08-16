@@ -15,7 +15,6 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "Autoinvoice_Import_Program_061219.txt",
 				"container": "preparezone"
 			}
 		}
