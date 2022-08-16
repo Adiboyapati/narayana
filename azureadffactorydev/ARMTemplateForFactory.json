@@ -1313,77 +1313,11 @@
 								"type": "BinaryReadSettings"
 							}
 						}
-					},
-					{
-						"name": "emailnotification_pipeline",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata_bloto Adls",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "emailnotification1",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"fileName": {
-									"value": "@pipeline().parameters.FileName",
-									"type": "Expression"
-								},
-								"datafactoryName": {
-									"value": "@pipeline().parameters.datafactoryName",
-									"type": "Expression"
-								},
-								"pipelineName": {
-									"value": "@pipeline().parameters.pipelineName",
-									"type": "Expression"
-								},
-								"message": {
-									"value": "@pipeline().parameters.message",
-									"type": "Expression"
-								},
-								"receiver": {
-									"value": "@pipeline().parameters.receiver",
-									"type": "Expression"
-								},
-								"status": {
-									"value": "@pipeline().parameters.status",
-									"type": "Expression"
-								}
-							}
-						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
-				},
-				"parameters": {
-					"FileName": {
-						"type": "string"
-					},
-					"datafactoryName": {
-						"type": "string"
-					},
-					"message": {
-						"type": "string"
-					},
-					"pipelineName": {
-						"type": "string"
-					},
-					"receiver": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string"
-					}
 				},
 				"folder": {
 					"name": "EMR"
@@ -1395,7 +1329,6 @@
 				"[concat(variables('factoryId'), '/datasets/customer_adls_ds')]",
 				"[concat(variables('factoryId'), '/datasets/delete_customer_blob_ds')]",
 				"[concat(variables('factoryId'), '/datasets/metadata_blob_ds')]",
-				"[concat(variables('factoryId'), '/pipelines/emailnotification1')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		},
@@ -1614,6 +1547,249 @@
 				"[concat(variables('factoryId'), '/datasets/Azureblobstorage')]",
 				"[concat(variables('factoryId'), '/datasets/dalalake_locator_ds')]",
 				"[concat(variables('factoryId'), '/datasets/azureprepare_adls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/customercopy_gp')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "customercopy",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "Filter_condition_metadata",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "BinarySource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true
+								},
+								"formatSettings": {
+									"type": "BinaryReadSettings"
+								}
+							},
+							"sink": {
+								"type": "BinarySink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "customer_blob_ds",
+								"type": "DatasetReference",
+								"parameters": {
+									"filename_ds": {
+										"value": "@pipeline().globalParameters.filename",
+										"type": "Expression"
+									}
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "customer_adls_ds",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					},
+					{
+						"name": "deletelocator",
+						"type": "Delete",
+						"dependsOn": [
+							{
+								"activity": "customercopy",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "delete_customer_blob_ds",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"logStorageSettings": {
+								"linkedServiceName": {
+									"referenceName": "AzureBlob_adf_dev",
+									"type": "LinkedServiceReference"
+								},
+								"path": "logzone"
+							},
+							"enableLogging": true,
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							}
+						}
+					},
+					{
+						"name": "Filter_condition_metadata",
+						"type": "Filter",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_bloto Adls",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"items": {
+								"value": "@activity('Get Metadata_bloto Adls').output.childItems",
+								"type": "Expression"
+							},
+							"condition": {
+								"value": "@contains(activity('Get Metadata_bloto Adls').output.childItems[0].name,item().name)",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Get Metadata_bloto Adls",
+						"type": "GetMetadata",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataset": {
+								"referenceName": "metadata_blob_ds",
+								"type": "DatasetReference",
+								"parameters": {}
+							},
+							"fieldList": [
+								"childItems"
+							],
+							"storeSettings": {
+								"type": "AzureBlobStorageReadSettings",
+								"recursive": true,
+								"enablePartitionDiscovery": false
+							},
+							"formatSettings": {
+								"type": "BinaryReadSettings"
+							}
+						}
+					},
+					{
+						"name": "emailnotification_pipeline",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "Get Metadata_bloto Adls",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "emailnotification1",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {
+								"fileName": {
+									"value": "@pipeline().parameters.FileName",
+									"type": "Expression"
+								},
+								"datafactoryName": {
+									"value": "@pipeline().parameters.datafactoryName",
+									"type": "Expression"
+								},
+								"pipelineName": {
+									"value": "@pipeline().parameters.pipelineName",
+									"type": "Expression"
+								},
+								"message": {
+									"value": "@pipeline().parameters.message",
+									"type": "Expression"
+								},
+								"receiver": {
+									"value": "@pipeline().parameters.receiver",
+									"type": "Expression"
+								},
+								"status": {
+									"value": "@pipeline().parameters.status",
+									"type": "Expression"
+								}
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"parameters": {
+					"fileName": {
+						"type": "string"
+					},
+					"datafactoryName": {
+						"type": "string"
+					},
+					"pipelineName": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"receiver": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string"
+					}
+				},
+				"folder": {
+					"name": "EMR"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/customer_blob_ds')]",
+				"[concat(variables('factoryId'), '/datasets/customer_adls_ds')]",
+				"[concat(variables('factoryId'), '/datasets/delete_customer_blob_ds')]",
+				"[concat(variables('factoryId'), '/datasets/metadata_blob_ds')]",
+				"[concat(variables('factoryId'), '/pipelines/emailnotification1')]",
+				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		},
 		{
