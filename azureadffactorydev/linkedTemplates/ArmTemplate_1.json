@@ -55,6 +55,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"folderPath": "output2",
 						"fileSystem": "struckzone"
 					}
 				}
