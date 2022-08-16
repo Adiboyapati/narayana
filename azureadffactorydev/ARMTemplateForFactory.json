@@ -1706,77 +1706,11 @@
 								"type": "BinaryReadSettings"
 							}
 						}
-					},
-					{
-						"name": "emailnotification_pipeline",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata_bloto Adls",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "emailnotification1",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {
-								"fileName": {
-									"value": "@pipeline().parameters.FileName",
-									"type": "Expression"
-								},
-								"datafactoryName": {
-									"value": "@pipeline().parameters.datafactoryName",
-									"type": "Expression"
-								},
-								"pipelineName": {
-									"value": "@pipeline().parameters.pipelineName",
-									"type": "Expression"
-								},
-								"message": {
-									"value": "@pipeline().parameters.message",
-									"type": "Expression"
-								},
-								"receiver": {
-									"value": "@pipeline().parameters.receiver",
-									"type": "Expression"
-								},
-								"status": {
-									"value": "@pipeline().parameters.status",
-									"type": "Expression"
-								}
-							}
-						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
-				},
-				"parameters": {
-					"fileName": {
-						"type": "string"
-					},
-					"datafactoryName": {
-						"type": "string"
-					},
-					"pipelineName": {
-						"type": "string"
-					},
-					"message": {
-						"type": "string"
-					},
-					"receiver": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string"
-					}
 				},
 				"folder": {
 					"name": "EMR"
@@ -1788,7 +1722,6 @@
 				"[concat(variables('factoryId'), '/datasets/customer_adls_ds')]",
 				"[concat(variables('factoryId'), '/datasets/delete_customer_blob_ds')]",
 				"[concat(variables('factoryId'), '/datasets/metadata_blob_ds')]",
-				"[concat(variables('factoryId'), '/pipelines/emailnotification1')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
 			]
 		},
