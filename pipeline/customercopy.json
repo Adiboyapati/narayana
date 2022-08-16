@@ -43,7 +43,13 @@
 				"inputs": [
 					{
 						"referenceName": "customer_blob_ds",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"filename_ds": {
+								"value": "@pipeline().globalParameters.filename",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
