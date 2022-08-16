@@ -1,0 +1,206 @@
+{
+	"name": "customercopy_gp",
+	"properties": {
+		"activities": [
+			{
+				"name": "customercopy",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Filter_condition_metadata",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "BinarySource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true
+						},
+						"formatSettings": {
+							"type": "BinaryReadSettings"
+						}
+					},
+					"sink": {
+						"type": "BinarySink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "customer_blob_ds",
+						"type": "DatasetReference",
+						"parameters": {
+							"filename_ds": {
+								"value": "@pipeline().globalParameters.filename",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "customer_adls_ds",
+						"type": "DatasetReference"
+					}
+				]
+			},
+			{
+				"name": "deletelocator",
+				"type": "Delete",
+				"dependsOn": [
+					{
+						"activity": "customercopy",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "delete_customer_blob_ds",
+						"type": "DatasetReference"
+					},
+					"logStorageSettings": {
+						"linkedServiceName": {
+							"referenceName": "AzureBlob_adf_dev",
+							"type": "LinkedServiceReference"
+						},
+						"path": "logzone"
+					},
+					"enableLogging": true,
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					}
+				}
+			},
+			{
+				"name": "Filter_condition_metadata",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata_bloto Adls",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Metadata_bloto Adls').output.childItems",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@contains(activity('Get Metadata_bloto Adls').output.childItems[0].name,item().name)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Metadata_bloto Adls",
+				"type": "GetMetadata",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataset": {
+						"referenceName": "metadata_blob_ds",
+						"type": "DatasetReference"
+					},
+					"fieldList": [
+						"childItems"
+					],
+					"storeSettings": {
+						"type": "AzureBlobStorageReadSettings",
+						"recursive": true,
+						"enablePartitionDiscovery": false
+					},
+					"formatSettings": {
+						"type": "BinaryReadSettings"
+					}
+				}
+			},
+			{
+				"name": "emailnotification_pipeline",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata_bloto Adls",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "emailnotification1",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"fileName": {
+							"value": "@pipeline().parameters.FileName",
+							"type": "Expression"
+						},
+						"datafactoryName": {
+							"value": "@pipeline().parameters.datafactoryName",
+							"type": "Expression"
+						},
+						"pipelineName": {
+							"value": "@pipeline().parameters.pipelineName",
+							"type": "Expression"
+						},
+						"message": {
+							"value": "@pipeline().parameters.message",
+							"type": "Expression"
+						},
+						"receiver": {
+							"value": "@pipeline().parameters.receiver",
+							"type": "Expression"
+						},
+						"status": {
+							"value": "@pipeline().parameters.status",
+							"type": "Expression"
+						}
+					}
+				}
+			}
+		],
+		"folder": {
+			"name": "EMR"
+		},
+		"annotations": []
+	}
+}
