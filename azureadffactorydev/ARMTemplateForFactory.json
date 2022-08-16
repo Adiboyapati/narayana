@@ -1204,7 +1204,12 @@
 							{
 								"referenceName": "customer_blob_ds",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"filename_ds": {
+										"value": "@pipeline().globalParameters.filename",
+										"type": "Expression"
+									}
+								}
 							}
 						],
 						"outputs": [
@@ -2670,6 +2675,169 @@
 				"[concat(variables('factoryId'), '/pipelines/customercopy')]",
 				"[concat(variables('factoryId'), '/datasets/metadata_blob_ds')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureBlob_adf_dev')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline_until')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Wait_activity",
+						"type": "Wait",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"waitTimeInSeconds": 45
+						}
+					},
+					{
+						"name": "Set variable1",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Wait_activity",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "ID1",
+							"value": "20"
+						}
+					},
+					{
+						"name": "Set variable2",
+						"type": "SetVariable",
+						"dependsOn": [
+							{
+								"activity": "Wait_activity",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"variableName": "ID2",
+							"value": "50"
+						}
+					},
+					{
+						"name": "Until_activity",
+						"type": "Until",
+						"dependsOn": [
+							{
+								"activity": "Set variable1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							},
+							{
+								"activity": "Set variable2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(int(variables('ID1')),int(variables('ID2')))",
+								"type": "Expression"
+							},
+							"activities": [
+								{
+									"name": "Copy data_util",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "7.00:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "BinarySource",
+											"storeSettings": {
+												"type": "AzureBlobStorageReadSettings",
+												"recursive": true
+											},
+											"formatSettings": {
+												"type": "BinaryReadSettings"
+											}
+										},
+										"sink": {
+											"type": "BinarySink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "Azureblobstorage1",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "Binary_Adls_forloop_ds",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									]
+								},
+								{
+									"name": "Set variable3",
+									"type": "SetVariable",
+									"dependsOn": [
+										{
+											"activity": "Copy data_util",
+											"dependencyConditions": [
+												"Succeeded"
+											]
+										}
+									],
+									"userProperties": [],
+									"typeProperties": {
+										"variableName": "ID1",
+										"value": "70"
+									}
+								}
+							],
+							"timeout": "0.00:05:00"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"variables": {
+					"ID1": {
+						"type": "String"
+					},
+					"ID2": {
+						"type": "String"
+					}
+				},
+				"folder": {
+					"name": "EMR"
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Azureblobstorage1')]",
+				"[concat(variables('factoryId'), '/datasets/Binary_Adls_forloop_ds')]"
 			]
 		},
 		{
@@ -4929,6 +5097,11 @@
 					"referenceName": "AzureBlob_adf_dev",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"filename_ds": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "Binary",
 				"typeProperties": {
@@ -5975,169 +6148,6 @@
 				"[concat(variables('factoryId'), '/datasets/ds_empdatafile')]",
 				"[concat(variables('factoryId'), '/datasets/ds_empoutputdata')]",
 				"[concat(variables('factoryId'), '/linkedServices/AzureDataLake_adf_development')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline_until')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Wait_activity",
-						"type": "Wait",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"waitTimeInSeconds": 45
-						}
-					},
-					{
-						"name": "Set variable1",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Wait_activity",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "ID1",
-							"value": "20"
-						}
-					},
-					{
-						"name": "Set variable2",
-						"type": "SetVariable",
-						"dependsOn": [
-							{
-								"activity": "Wait_activity",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"variableName": "ID2",
-							"value": "50"
-						}
-					},
-					{
-						"name": "Until_activity",
-						"type": "Until",
-						"dependsOn": [
-							{
-								"activity": "Set variable1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "Set variable2",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@greater(int(variables('ID1')),int(variables('ID2')))",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Copy data_util",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "BinarySource",
-											"storeSettings": {
-												"type": "AzureBlobStorageReadSettings",
-												"recursive": true
-											},
-											"formatSettings": {
-												"type": "BinaryReadSettings"
-											}
-										},
-										"sink": {
-											"type": "BinarySink",
-											"storeSettings": {
-												"type": "AzureBlobFSWriteSettings"
-											}
-										},
-										"enableStaging": false
-									},
-									"inputs": [
-										{
-											"referenceName": "Azureblobstorage1",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "Binary_Adls_forloop_ds",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
-								},
-								{
-									"name": "Set variable3",
-									"type": "SetVariable",
-									"dependsOn": [
-										{
-											"activity": "Copy data_util",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "ID1",
-										"value": "70"
-									}
-								}
-							],
-							"timeout": "0.00:05:00"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"variables": {
-					"ID1": {
-						"type": "String"
-					},
-					"ID2": {
-						"type": "String"
-					}
-				},
-				"folder": {
-					"name": "EMR"
-				},
-				"annotations": []
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/Azureblobstorage1')]",
-				"[concat(variables('factoryId'), '/datasets/Binary_Adls_forloop_ds')]"
 			]
 		}
 	]
