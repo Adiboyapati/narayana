@@ -152,26 +152,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"FileName": {
-				"type": "string"
-			},
-			"datafactoryName": {
-				"type": "string"
-			},
-			"message": {
-				"type": "string"
-			},
-			"pipelineName": {
-				"type": "string"
-			},
-			"receiver": {
-				"type": "string"
-			},
-			"status": {
-				"type": "string"
-			}
-		},
 		"folder": {
 			"name": "EMR"
 		},
