@@ -1,5 +1,13 @@
 {
 	"name": "azureadffactorydev",
+	"properties": {
+		"globalParameters": {
+			"filename": {
+				"type": "string",
+				"value": "Full_Load_Displacement_Information_1.sql"
+			}
+		}
+	},
 	"location": "eastus",
 	"identity": {
 		"type": "SystemAssigned",
