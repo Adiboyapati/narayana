@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "e1325b3b-f702-475e-901c-57892a8eb796"
+				"spark.autotune.trackingId": "99f0cd75-0325-4d1b-b4c2-99e7f10e9b1b"
 			}
 		},
 		"metadata": {
@@ -60,7 +60,7 @@
 					"df=spark.read.load(path='abfss://preparezone@azuredatalakegen2dev.dfs.core.windows.net/NYCTripSmall.parquet',format='PARQUET')\r\n",
 					"display(df.limit(25))"
 				],
-				"execution_count": 13
+				"execution_count": 10
 			}
 		]
 	}
