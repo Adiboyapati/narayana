@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"workspaceName": {
+			"value": "azuresynapedev"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"adi-syanpe-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"azuresynapedev-WorkspaceDefaultSqlServer_connectionString": {
+			"value": ""
+		},
+		"adi-syanpe-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://azuredatalakegen2dev.dfs.core.windows.net/"
+		},
+		"azuresynapedev-WorkspaceDefaultStorage_properties_typeProperties_url": {
+			"value": "https://azuredatalakegen2dev.dfs.core.windows.net"
+		}
+	}
+}
