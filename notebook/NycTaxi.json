@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "52ea89b8-1ce0-4e54-9c2f-93738b6a6b8f"
+				"spark.autotune.trackingId": "ad7b6bf9-bbe6-4fdb-bec7-ae9cbaf80b4c"
 			}
 		},
 		"metadata": {
@@ -50,12 +50,17 @@
 		"cells": [
 			{
 				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "python"
+					}
+				},
 				"source": [
-					"\r\n",
-					"df=spark.read.load(path='abfss://preparezone@azuredatalakegen2dev.dfs.core.windows.net/NYCTripSmall.parquet',format='PARQUET')\r\n",
+					"%%pyspark\r\n",
+					"df=spark.read.load(path='https://azuredatalakegen2dev.dfs.core.windows.net/preparezone/ABC_data_file.csv',format='CSV')\r\n",
 					"display(df.limit(25))"
 				],
-				"execution_count": 19
+				"execution_count": 5
 			},
 			{
 				"cell_type": "code",
