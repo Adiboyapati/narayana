@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "99f0cd75-0325-4d1b-b4c2-99e7f10e9b1b"
+				"spark.autotune.trackingId": "52ea89b8-1ce0-4e54-9c2f-93738b6a6b8f"
 			}
 		},
 		"metadata": {
@@ -50,17 +50,32 @@
 		"cells": [
 			{
 				"cell_type": "code",
-				"metadata": {
-					"microsoft": {
-						"language": "python"
-					}
-				},
 				"source": [
-					"%%pyspark\r\n",
+					"\r\n",
 					"df=spark.read.load(path='abfss://preparezone@azuredatalakegen2dev.dfs.core.windows.net/NYCTripSmall.parquet',format='PARQUET')\r\n",
 					"display(df.limit(25))"
 				],
-				"execution_count": 10
+				"execution_count": 19
+			},
+			{
+				"cell_type": "code",
+				"metadata": {
+					"jupyter": {
+						"source_hidden": false,
+						"outputs_hidden": false
+					},
+					"nteract": {
+						"transient": {
+							"deleting": false
+						}
+					}
+				},
+				"source": [
+					"\r\n",
+					"spark.sql(\"CREATE DATABASE IF NOT EXISTS nyctaxi\")\r\n",
+					"df.write.mode(\"overwrite\").saveAsTable(\"nyctaxi.trip\")"
+				],
+				"execution_count": 15
 			}
 		]
 	}
