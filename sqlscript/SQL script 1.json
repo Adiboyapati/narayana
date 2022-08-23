@@ -2,13 +2,13 @@
 	"name": "SQL script 1",
 	"properties": {
 		"content": {
-			"query": "SELECT \ntop 10\n*\nFROM\ndbo.NYCTaxiTripSmall",
+			"query": "SELECT PassengerCount,\n      SUM(TripDistanceMiles) as SumTripDistance,\n      AVG(TripDistanceMiles) as AvgTripDistance\nFROM  dbo.NYCTaxiTripSmall\nWHERE TripDistanceMiles > 0 AND PassengerCount > 0\nGROUP BY PassengerCount\nORDER BY PassengerCount;",
 			"metadata": {
 				"language": "sql"
 			},
 			"currentConnection": {
-				"databaseName": "EMRpool",
-				"poolName": "EMRpool"
+				"databaseName": "EMRSqlpool",
+				"poolName": "EMRSqlpool"
 			},
 			"resultLimit": 5000
 		},
