@@ -41,6 +41,48 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('workspaceName'), '/notebookpipeline')]",
+			"type": "Microsoft.Synapse/workspaces/pipelines",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"activities": [
+					{
+						"name": "runnotebook",
+						"type": "SynapseNotebook",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebook": {
+								"referenceName": "NycTaxi",
+								"type": "NotebookReference"
+							},
+							"snapshot": true,
+							"sparkPool": {
+								"referenceName": "EMRSpark",
+								"type": "BigDataPoolReference"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('workspaceId'), '/notebooks/NycTaxi')]",
+				"[concat(variables('workspaceId'), '/bigDataPools/EMRSpark')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/AzureBlobStorage1')]",
 			"type": "Microsoft.Synapse/workspaces/linkedServices",
 			"apiVersion": "2019-06-01-preview",
@@ -298,7 +340,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "86587ed8-c095-4fd4-9720-2b1aa68f50e1"
+						"spark.autotune.trackingId": "d2987285-a1bf-4cbf-95dd-d06f0a6e7570"
 					}
 				},
 				"metadata": {
@@ -323,8 +365,7 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28,
-						"automaticScaleJobs": false
+						"memory": 28
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -370,7 +411,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "37080ea5-43e5-4972-ba72-2d8dae8d6c40"
+						"spark.autotune.trackingId": "b061ef87-a25c-44b3-98ca-b39876fa7703"
 					}
 				},
 				"metadata": {
@@ -506,7 +547,7 @@
 							"df3.write.mode(\"overwrite\").parquet(\"/nyctaxi/parquetfile\")"
 						],
 						"outputs": [],
-						"execution_count": 8
+						"execution_count": 9
 					}
 				]
 			},
