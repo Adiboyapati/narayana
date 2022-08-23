@@ -1,0 +1,68 @@
+{
+	"name": "Notebook 1",
+	"properties": {
+		"nbformat": 4,
+		"nbformat_minor": 2,
+		"bigDataPool": {
+			"referenceName": "EMRSpark",
+			"type": "BigDataPoolReference"
+		},
+		"sessionProperties": {
+			"driverMemory": "28g",
+			"driverCores": 4,
+			"executorMemory": "28g",
+			"executorCores": 4,
+			"numExecutors": 2,
+			"conf": {
+				"spark.dynamicAllocation.enabled": "false",
+				"spark.dynamicAllocation.minExecutors": "2",
+				"spark.dynamicAllocation.maxExecutors": "2",
+				"spark.autotune.trackingId": "d2987285-a1bf-4cbf-95dd-d06f0a6e7570"
+			}
+		},
+		"metadata": {
+			"saveOutput": true,
+			"enableDebugMode": false,
+			"kernelspec": {
+				"name": "synapse_pyspark",
+				"display_name": "Synapse PySpark"
+			},
+			"language_info": {
+				"name": "python"
+			},
+			"a365ComputeOptions": {
+				"id": "/subscriptions/9815a461-9524-4787-a4d6-80df6d54b073/resourceGroups/azuredevelopment-rs/providers/Microsoft.Synapse/workspaces/azuresynapsedev1/bigDataPools/EMRSpark",
+				"name": "EMRSpark",
+				"type": "Spark",
+				"endpoint": "https://azuresynapsedev1.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/EMRSpark",
+				"auth": {
+					"type": "AAD",
+					"authResource": "https://dev.azuresynapse.net"
+				},
+				"sparkVersion": "3.2",
+				"nodeCount": 10,
+				"cores": 4,
+				"memory": 28,
+				"automaticScaleJobs": false
+			},
+			"sessionKeepAliveTimeout": 30
+		},
+		"cells": [
+			{
+				"cell_type": "code",
+				"metadata": {
+					"microsoft": {
+						"language": "python"
+					}
+				},
+				"source": [
+					"%%pyspark\r\n",
+					"df3=spark.sql(\"select * from nyctaxi.passengercount\")\r\n",
+					"df3.write.mode(\"overwrite\").csv(\"/nyctaxi/csvfile\")\r\n",
+					"df3.write.mode(\"overwrite\").parquet(\"/nyctaxi/parquetfile\")"
+				],
+				"execution_count": 2
+			}
+		]
+	}
+}
