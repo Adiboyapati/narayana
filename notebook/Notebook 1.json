@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "d2987285-a1bf-4cbf-95dd-d06f0a6e7570"
+				"spark.autotune.trackingId": "67ec066d-fe44-4433-89ba-ea92771528a6"
 			}
 		},
 		"metadata": {
@@ -42,7 +42,8 @@
 				"sparkVersion": "3.2",
 				"nodeCount": 10,
 				"cores": 4,
-				"memory": 28
+				"memory": 28,
+				"automaticScaleJobs": false
 			},
 			"sessionKeepAliveTimeout": 30
 		},
@@ -60,7 +61,7 @@
 					"df3.write.mode(\"overwrite\").csv(\"/nyctaxi/csvfile\")\r\n",
 					"df3.write.mode(\"overwrite\").parquet(\"/nyctaxi/parquetfile\")"
 				],
-				"execution_count": 2
+				"execution_count": 17
 			}
 		]
 	}
