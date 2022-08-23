@@ -60,7 +60,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"notebook": {
-								"referenceName": "NycTaxi",
+								"referenceName": "Notebook 1",
 								"type": "NotebookReference"
 							},
 							"snapshot": true,
@@ -78,7 +78,7 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('workspaceId'), '/notebooks/NycTaxi')]",
+				"[concat(variables('workspaceId'), '/notebooks/Notebook 1')]",
 				"[concat(variables('workspaceId'), '/bigDataPools/EMRSpark')]"
 			]
 		},
@@ -340,7 +340,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "d2987285-a1bf-4cbf-95dd-d06f0a6e7570"
+						"spark.autotune.trackingId": "c3ab455f-f665-446a-9c05-4d1ba3a71c4a"
 					}
 				},
 				"metadata": {
@@ -365,7 +365,8 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -384,7 +385,7 @@
 							"df3.write.mode(\"overwrite\").parquet(\"/nyctaxi/parquetfile\")"
 						],
 						"outputs": [],
-						"execution_count": 2
+						"execution_count": 15
 					}
 				]
 			},
