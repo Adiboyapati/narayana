@@ -2,12 +2,12 @@
 	"name": "SQL script 5",
 	"properties": {
 		"content": {
-			"query": "CREATE DATABASE demodb",
+			"query": "USE demodb\nGO\n--create masterkey that will protect the credential\nCREATE MASTER KEY ENCRYPTION BY PASSWORD ='Apps@1234'\n\nCREATE DATABASE SCOPED CREDENTIAL democredential\nWITH IDENTITY = 'SHARED ACCESS SIGNATURE',\nSECRET ='sv=2021-06-08&ss=bfqt&srt=sco&sp=rwdlacupyx&se=2022-08-24T16:48:58Z&st=2022-08-24T08:48:58Z&spr=https&sig=Sm5H%2BnePPYGZlGeIb2rlPwLOoDXS1cuzP8FwJ3DB%2Byo%3D'\nGO\n\n\nCREATE EXTERNAL DATA SOURCE demodatasource WITH(\n    LOCATION ='https://azuredatalakegen2dev.blob.core.windows.net/',\n    CREDENTIAL =democredential\n)",
 			"metadata": {
 				"language": "sql"
 			},
 			"currentConnection": {
-				"databaseName": "master",
+				"databaseName": "demodb",
 				"poolName": "Built-in"
 			},
 			"resultLimit": 5000
