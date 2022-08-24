@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 7",
+	"properties": {
+		"content": {
+			"query": "CREATE TABLE [dbo].[Employee]\n(\n    empid int NOT NULL,\n    empname  NVARCHAR(50),\n    gender   NVARCHAR(9)\n)\nWITH\n(\n    DISTRIBUTION = HASH (empid),\n    CLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\nSELECT * FROM dbo.Employee\n\nINSERT INTO dbo.Employee VALUES(1,'Adi','male')\n\ninsert into [dbo].[Employee] VALUES(2,'narayana','male')\ninsert into [dbo].[Employee] VALUES(3,'souji','female')\ninsert into [dbo].[Employee] VALUES(4,'thishu','female')",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "EMRSqlpool",
+				"poolName": "EMRSqlpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
