@@ -2,7 +2,7 @@
 	"name": "SQL script 6",
 	"properties": {
 		"content": {
-			"query": "CREATE SCHEMA NYCTaxi\n\nCREATE EXTERNAL TABLE NYCTaxi.passengercount\nWITH \n(\n    LOCATION='azuresynapsedev1/NYCTaxi/avgdata/',\n    DATA_SOURCE=demodatasource,\n    FILE_FORMAT=PARQUET\n)\nAS\n      SELECT PassengerCount,\n      SUM(TripDistanceMiles) as SumTripDistance,\n      AVG(TripDistanceMiles) as AvgTripDistance\n      FROM\n       OPENROWSET (\n           BULK 'https://azuredatalakegen2dev.dfs.core.windows.net/preparezone/NYCTripSmall.parquet',\n           FORMAT ='PARQUET'\n       )\n       AS [rows]\n       WHERE TripDistanceMiles > 0 AND PassengerCount > 0\n       GROUP BY PassengerCount\n       ORDER BY PassengerCount\n    GO",
+			"query": "\nCREATE EXTERNAL TABLE NYCTaxi.passengercount\nWITH \n(\n    LOCATION='/preparezone/NYCTaxi/',\n    DATA_SOURCE=demodatasource,\n    FILE_FORMAT=parquetfileformat\n)\nAS\n      SELECT PassengerCount,\n      SUM(TripDistanceMiles) as SumTripDistance,\n      AVG(TripDistanceMiles) as AvgTripDistance\n      FROM\n       OPENROWSET \n       (\n           BULK 'https://azuredatalakegen2dev.dfs.core.windows.net/preparezone/NYCTripSmall.parquet',\n           FORMAT ='PARQUET'\n       )\n       AS [rows]\n       WHERE TripDistanceMiles > 0 AND PassengerCount > 0\n       GROUP BY PassengerCount\n       ORDER BY PassengerCount\n ",
 			"metadata": {
 				"language": "sql"
 			},
