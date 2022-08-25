@@ -360,6 +360,46 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 6')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "\nCREATE EXTERNAL TABLE NYCTaxi.passengercount\nWITH \n(\n    LOCATION='/preparezone/NYCTaxi/',\n    DATA_SOURCE=demodatasource,\n    FILE_FORMAT=parquetfileformat\n)\nAS\n      SELECT PassengerCount,\n      SUM(TripDistanceMiles) as SumTripDistance,\n      AVG(TripDistanceMiles) as AvgTripDistance\n      FROM\n       OPENROWSET \n       (\n           BULK 'https://azuredatalakegen2dev.dfs.core.windows.net/preparezone/NYCTripSmall.parquet',\n           FORMAT ='PARQUET'\n       )\n       AS [rows]\n       WHERE TripDistanceMiles > 0 AND PassengerCount > 0\n       GROUP BY PassengerCount\n       ORDER BY PassengerCount\n ",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "demodb",
+						"poolName": "Built-in"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 7')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "CREATE TABLE [dbo].[Employee]\n(\n    empid int NOT NULL,\n    empname  NVARCHAR(50),\n    gender   NVARCHAR(9)\n)\nWITH\n(\n    DISTRIBUTION = HASH (empid),\n    CLUSTERED COLUMNSTORE INDEX\n)\nGO\n\n\nSELECT * FROM dbo.Employee\n\nINSERT INTO dbo.Employee VALUES(1,'Adi','male')\n\ninsert into [dbo].[Employee] VALUES(2,'narayana','male')\ninsert into [dbo].[Employee] VALUES(3,'souji','female')\ninsert into [dbo].[Employee] VALUES(4,'thishu','female')",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "EMRSqlpool",
+						"poolName": "EMRSqlpool"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/Notebook 1')]",
 			"type": "Microsoft.Synapse/workspaces/notebooks",
 			"apiVersion": "2019-06-01-preview",
@@ -380,7 +420,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "67ec066d-fe44-4433-89ba-ea92771528a6"
+						"spark.autotune.trackingId": "f12e124e-4113-4eba-ba44-9dbc5c3f5db1"
 					}
 				},
 				"metadata": {
@@ -405,7 +445,8 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -424,7 +465,7 @@
 							"df3.write.mode(\"overwrite\").parquet(\"/nyctaxi/parquetfile\")"
 						],
 						"outputs": [],
-						"execution_count": 17
+						"execution_count": 1
 					}
 				]
 			},
@@ -594,18 +635,6 @@
 			"dependsOn": []
 		},
 		{
-			"name": "[concat(parameters('workspaceName'), '/EMRSqlpool')]",
-			"type": "Microsoft.Synapse/workspaces/sqlPools",
-			"apiVersion": "2019-06-01-preview",
-			"properties": {
-				"collation": "SQL_Latin1_General_CP1_CI_AS",
-				"maxSizeBytes": 263882790666240,
-				"annotations": []
-			},
-			"dependsOn": [],
-			"location": "eastus"
-		},
-		{
 			"name": "[concat(parameters('workspaceName'), '/EMRSpark')]",
 			"type": "Microsoft.Synapse/workspaces/bigDataPools",
 			"apiVersion": "2019-06-01-preview",
@@ -631,10 +660,42 @@
 			"location": "eastus"
 		},
 		{
+			"name": "[concat(parameters('workspaceName'), '/EMRSqlpool')]",
+			"type": "Microsoft.Synapse/workspaces/sqlPools",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"collation": "SQL_Latin1_General_CP1_CI_AS",
+				"maxSizeBytes": 263882790666240,
+				"annotations": []
+			},
+			"dependsOn": [],
+			"location": "eastus"
+		},
+		{
 			"name": "[concat(parameters('workspaceName'), '/default')]",
 			"type": "Microsoft.Synapse/workspaces/managedVirtualNetworks",
 			"apiVersion": "2019-06-01-preview",
 			"properties": {},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/SQL script 10')]",
+			"type": "Microsoft.Synapse/workspaces/sqlscripts",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"content": {
+					"query": "IF NOT EXISTS (SELECT * FROM sys.external_file_formats WHERE name = 'SynapseParquetFormat') \n\tCREATE EXTERNAL FILE FORMAT [SynapseParquetFormat] \n\tWITH ( FORMAT_TYPE = PARQUET)\nGO\n\nIF NOT EXISTS (SELECT * FROM sys.external_data_sources WHERE name = 'preparezone_azuredatalakegen2dev_dfs_core_windows_net') \n\tCREATE EXTERNAL DATA SOURCE [preparezone_azuredatalakegen2dev_dfs_core_windows_net] \n\tWITH (\n\t\tLOCATION = 'abfss://preparezone@azuredatalakegen2dev.dfs.core.windows.net' \n\t)\nGO\n\nCREATE EXTERNAL TABLE NYCtaxidata (\n\t[DateID] int,\n\t[MedallionID] int,\n\t[HackneyLicenseID] int,\n\t[PickupTimeID] int,\n\t[DropoffTimeID] int,\n\t[PickupGeographyID] int,\n\t[DropoffGeographyID] int,\n\t[PickupLatitude] float,\n\t[PickupLongitude] float,\n\t[PickupLatLong] nvarchar(4000),\n\t[DropoffLatitude] float,\n\t[DropoffLongitude] float,\n\t[DropoffLatLong] nvarchar(4000),\n\t[PassengerCount] int,\n\t[TripDurationSeconds] int,\n\t[TripDistanceMiles] float,\n\t[PaymentType] nvarchar(4000),\n\t[FareAmount] numeric(19,4),\n\t[SurchargeAmount] numeric(19,4),\n\t[TaxAmount] numeric(19,4),\n\t[TipAmount] numeric(19,4),\n\t[TollsAmount] numeric(19,4),\n\t[TotalAmount] numeric(19,4)\n\t)\n\tWITH (\n\tLOCATION = 'NYCTripSmall.parquet',\n\tDATA_SOURCE = [preparezone_azuredatalakegen2dev_dfs_core_windows_net],\n\tFILE_FORMAT = [SynapseParquetFormat]\n\t)\nGO\n\n\nSELECT TOP 100 * FROM dbo.NYCtaxidata\nGO",
+					"metadata": {
+						"language": "sql"
+					},
+					"currentConnection": {
+						"databaseName": "EMRSqlpool",
+						"poolName": "EMRSqlpool"
+					},
+					"resultLimit": 5000
+				},
+				"type": "SqlQuery"
+			},
 			"dependsOn": []
 		}
 	]
