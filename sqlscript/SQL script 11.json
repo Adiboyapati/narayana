@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 11",
+	"properties": {
+		"content": {
+			"query": " create TABLE dbo.t1\n (\n     id INT IDENTITY(1,1) not NULL\n     ,name NVARCHAR(12)\n )\n WITH\n (\n    DISTRIBUTION=HASH(name)\n    ,CLUSTERED COLUMNSTORE INDEX\n )\n\n insert INTO dbo.t1\n values(NULL)\n\n  insert INTO dbo.t1\n values('a')\n\n SELECT * FROM dbo.t1\n\n DBCC PDW_SHOWSPACEUSED('dbo.t1')\n\n set IDENTITY_INSERT dbo.t1 OFF",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "EMRSqlpool",
+				"poolName": "EMRSqlpool"
+			},
+			"resultLimit": 5000
+		},
+		"type": "SqlQuery"
+	}
+}
