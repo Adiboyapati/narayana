@@ -1,0 +1,9 @@
+{
+	"name": "azuredevelopment-dev",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "674144aa-dac2-4b42-bf9e-84af7781cd0b",
+		"tenantId": "befee70d-f28a-4cd6-a12c-28ab8f10030b"
+	}
+}
