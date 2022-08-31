@@ -484,7 +484,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "25a96060-68f1-405e-b774-395b8edd4842"
+						"spark.autotune.trackingId": "d29f8341-6c5d-4634-a548-ff395bebe492"
 					}
 				},
 				"metadata": {
@@ -545,11 +545,77 @@
 						},
 						"source": [
 							"from notebookutils import mssparkutils\r\n",
-							"mssparkutils.notebook.exit('Your full Name is'+fname+' '+Lname)\r\n",
+							"mssparkutils.notebook.exit('Your full Name is '+fname+' '+Lname)\r\n",
 							""
 						],
 						"outputs": [],
 						"execution_count": null
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('workspaceName'), '/Notebook3')]",
+			"type": "Microsoft.Synapse/workspaces/notebooks",
+			"apiVersion": "2019-06-01-preview",
+			"properties": {
+				"nbformat": 4,
+				"nbformat_minor": 2,
+				"bigDataPool": {
+					"referenceName": "EMRSparkpool",
+					"type": "BigDataPoolReference"
+				},
+				"sessionProperties": {
+					"driverMemory": "28g",
+					"driverCores": 4,
+					"executorMemory": "28g",
+					"executorCores": 4,
+					"numExecutors": 2,
+					"conf": {
+						"spark.dynamicAllocation.enabled": "false",
+						"spark.dynamicAllocation.minExecutors": "2",
+						"spark.dynamicAllocation.maxExecutors": "2",
+						"spark.autotune.trackingId": "a4caa912-71cb-4f39-b29b-612052f97f37"
+					}
+				},
+				"metadata": {
+					"saveOutput": true,
+					"enableDebugMode": false,
+					"kernelspec": {
+						"name": "synapse_pyspark",
+						"display_name": "Synapse PySpark"
+					},
+					"language_info": {
+						"name": "python"
+					},
+					"a365ComputeOptions": {
+						"id": "/subscriptions/9b48e529-62e3-4028-bb18-c2951413201c/resourceGroups/development-rs/providers/Microsoft.Synapse/workspaces/synapsedev2/bigDataPools/EMRSparkpool",
+						"name": "EMRSparkpool",
+						"type": "Spark",
+						"endpoint": "https://synapsedev2.dev.azuresynapse.net/livyApi/versions/2019-11-01-preview/sparkPools/EMRSparkpool",
+						"auth": {
+							"type": "AAD",
+							"authResource": "https://dev.azuresynapse.net"
+						},
+						"sparkVersion": "3.2",
+						"nodeCount": 10,
+						"cores": 4,
+						"memory": 28,
+						"automaticScaleJobs": false
+					},
+					"sessionKeepAliveTimeout": 30
+				},
+				"cells": [
+					{
+						"cell_type": "code",
+						"metadata": {},
+						"source": [
+							"from notebookutils import mssparkutils\r\n",
+							"mssparkutils.notebook.run('/Notebook2',90,{'fname':'souji','Lname':'narayana'})"
+						],
+						"outputs": [],
+						"execution_count": 7
 					}
 				]
 			},
