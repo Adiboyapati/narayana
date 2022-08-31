@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "samplenotebook",
+				"name": "displayblobfiles",
 				"type": "SynapseNotebook",
 				"dependsOn": [],
 				"policy": {
@@ -16,7 +16,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"notebook": {
-						"referenceName": "Samplenotebook",
+						"referenceName": "Notebook3",
 						"type": "NotebookReference"
 					},
 					"snapshot": true,
