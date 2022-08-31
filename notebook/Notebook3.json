@@ -1,5 +1,5 @@
 {
-	"name": "Notebook2",
+	"name": "Notebook3",
 	"properties": {
 		"nbformat": 4,
 		"nbformat_minor": 2,
@@ -17,7 +17,7 @@
 				"spark.dynamicAllocation.enabled": "false",
 				"spark.dynamicAllocation.minExecutors": "2",
 				"spark.dynamicAllocation.maxExecutors": "2",
-				"spark.autotune.trackingId": "6e7f69ae-d43d-469a-a66d-60141d92724b"
+				"spark.autotune.trackingId": "1e4bcb55-fe4f-4ab0-9252-94fe652a086b"
 			}
 		},
 		"metadata": {
@@ -50,37 +50,11 @@
 		"cells": [
 			{
 				"cell_type": "code",
-				"metadata": {
-					"tags": [
-						"parameters"
-					]
-				},
-				"source": [
-					"fname='Adi'\r\n",
-					"Lname='Boyapati'\r\n",
-					""
-				],
-				"execution_count": 6
-			},
-			{
-				"cell_type": "code",
-				"metadata": {
-					"jupyter": {
-						"source_hidden": false,
-						"outputs_hidden": false
-					},
-					"nteract": {
-						"transient": {
-							"deleting": false
-						}
-					}
-				},
 				"source": [
 					"from notebookutils import mssparkutils\r\n",
-					"mssparkutils.notebook.exit('Your full Name is '+fname+' '+Lname)\r\n",
-					""
+					"mssparkutils.notebook.run('/Notebook2',90,{'fname':'souji','Lname':'narayana'})"
 				],
-				"execution_count": null
+				"execution_count": 7
 			}
 		]
 	}
