@@ -557,7 +557,7 @@
 						"spark.dynamicAllocation.enabled": "false",
 						"spark.dynamicAllocation.minExecutors": "2",
 						"spark.dynamicAllocation.maxExecutors": "2",
-						"spark.autotune.trackingId": "eec9a7a2-83a7-41cc-8d69-aba34f50924e"
+						"spark.autotune.trackingId": "a650459b-a035-451b-956f-79f38015f384"
 					}
 				},
 				"metadata": {
@@ -582,7 +582,8 @@
 						"sparkVersion": "3.2",
 						"nodeCount": 10,
 						"cores": 4,
-						"memory": 28
+						"memory": 28,
+						"automaticScaleJobs": false
 					},
 					"sessionKeepAliveTimeout": 30
 				},
@@ -593,11 +594,11 @@
 							"collapsed": false
 						},
 						"source": [
-							"df=spark.read.load(path='abfss://preparezone@azureblobdev1.dfs.core.windows.net/SKDC_AR_Invoice_Extraction Data_V2.csv',format='csv',header=True)\r\n",
-							"display(df)"
+							"from notebookutils import mssparkutils\r\n",
+							"mssparkutils.runtime.context"
 						],
 						"outputs": [],
-						"execution_count": 16
+						"execution_count": 4
 					}
 				]
 			},
