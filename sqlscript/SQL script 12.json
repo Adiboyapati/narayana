@@ -1,0 +1,17 @@
+{
+	"name": "SQL script 12",
+	"properties": {
+		"content": {
+			"query": "-- This is auto-generated code\nSELECT *\nFROM\n    OPENROWSET(\n        BULK 'https://azureblobdev1.blob.core.windows.net/preparezone/al*.csv',\n        FORMAT = 'CSV',\n        header_row=true,\n        PARSER_VERSION = '2.0'\n    ) AS already\n ",
+			"metadata": {
+				"language": "sql"
+			},
+			"currentConnection": {
+				"databaseName": "master",
+				"poolName": "Built-in"
+			},
+			"resultLimit": -1
+		},
+		"type": "SqlQuery"
+	}
+}
